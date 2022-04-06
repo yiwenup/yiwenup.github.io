@@ -1,0 +1,12 @@
+---
+title: "{{ replace .Name "-" " " | title }}"
+date: {{ .Date }}
+categories: [""]
+tags: [""]
+draft: false
+code:
+  copy: true
+toc:
+  enable: true
+---
+
