@@ -1,8 +1,8 @@
 ---
 title: "Windows快速删除大文件"
 date: 2022-04-13T19:12:32+08:00
-categories: ["奇淫巧技"]
-tags: ["奇淫巧技","计算机清理"]
+categories: ["巧技"]
+tags: ["巧技","计算机清理"]
 draft: false
 code:
   copy: true
