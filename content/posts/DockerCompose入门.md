@@ -1,7 +1,7 @@
 ---
 title: "05_Docker Compose 入门"
 date: 2022-04-12T19:12:32+08:00
-categories: ["Docker Compose"]
+categories: ["Docker"]
 tags: ["环境搭建","容器化"]
 draft: false
 code:

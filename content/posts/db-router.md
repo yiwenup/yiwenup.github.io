@@ -1,8 +1,8 @@
 ---
 title: "数据库路由中间件"
 date: 2022-04-05T19:12:32+08:00
-categories: ["中间件"]
-tags: ["Spring","Mybatis"]
+categories: ["工具集"]
+tags: ["Spring","Mybatis","中间件"]
 draft: false
 code:
   copy: true
