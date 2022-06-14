@@ -1,0 +1,1019 @@
+/*
+ * StaffExample.java
+ * Copyright © 2016-2020 Hundsun Technologies Inc.
+ * All right reserved.
+ * 银行企业金融交易银行产品部 交易银行服务平台
+ */
+package cloud.yiwenup.sample.dao.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @Author tbsp
+ * @Date 2022-06-13 13:34:45
+ * <p>
+ * 这是工具生成代码，禁止手工修改
+ */
+public class StaffExample {
+    /**
+     * orderByClause 排序字段
+     */
+    protected String orderByClause;
+
+    /**
+     * distinct 是否过滤重复数据
+     */
+    protected boolean distinct;
+
+    /**
+     * oredCriteria 过滤条件实例
+     */
+    protected List<Criteria> oredCriteria;
+
+    /**
+     * 构造查询条件:staff
+     */
+    public StaffExample() {
+        oredCriteria = new ArrayList<Criteria>();
+    }
+
+    /**
+     * 设置排序字段:staff
+     *
+     * @param orderByClause 排序字段
+     */
+    public void setOrderByClause(String orderByClause) {
+        this.orderByClause = orderByClause;
+    }
+
+    /**
+     * 获取排序字段:staff
+     * 
+     * @return String 排序规则
+     */
+    public String getOrderByClause() {
+        return orderByClause;
+    }
+
+    /**
+     * 设置过滤重复数据:staff
+     *
+     * @param distinct 是否过滤重复数据
+     */
+    public void setDistinct(boolean distinct) {
+        this.distinct = distinct;
+    }
+
+    /**
+     * 是否过滤重复数据:staff
+     * 
+     * @return boolean 是否过滤重复
+     */
+    public boolean isDistinct() {
+        return distinct;
+    }
+
+    /**
+     * 获取当前的查询条件实例:staff
+     * 
+     * @return List<Criteria> 获取标准集
+     */
+    public List<Criteria> getOredCriteria() {
+        return oredCriteria;
+    }
+
+    /**
+     * 根据主键来更新符合条件的数据库记录:staff
+     *
+     * @param criteria 过滤条件实例
+     */
+    public void or(Criteria criteria) {
+        oredCriteria.add(criteria);
+    }
+
+    /**
+     * 根据主键来更新符合条件的数据库记录:staff
+     * 
+     * @return Criteria 标准条件式
+     */
+    public Criteria or() {
+        Criteria criteria = createCriteriaInternal();
+        oredCriteria.add(criteria);
+        return criteria;
+    }
+
+    /**
+     * 创建一个查询条件:staff
+     * 
+     * @return Criteria 标准条件式
+     */
+    public Criteria createCriteria() {
+        Criteria criteria = createCriteriaInternal();
+        if (oredCriteria.size() == 0) {
+            oredCriteria.add(criteria);
+        }
+        return criteria;
+    }
+
+    /**
+     * 内部构建查询条件对象:staff
+     * 
+     * @return Criteria 标准条件式
+     */
+    protected Criteria createCriteriaInternal() {
+        Criteria criteria = new Criteria();
+        return criteria;
+    }
+
+    /**
+     * 清除查询条件:staff
+     */
+    public void clear() {
+        oredCriteria.clear();
+        orderByClause = null;
+        distinct = false;
+    }
+
+    /**
+     * @Title staff表的创建标准内部类
+     * @Description 
+     */
+    protected abstract static class GeneratedCriteria {
+        /**
+         * criteria 标准集
+         */
+        protected List<Criterion> criteria;
+
+        /**
+         * 构造查询条件:staff
+         */
+        protected GeneratedCriteria() {
+            super();
+            criteria = new ArrayList<Criterion>();
+        }
+
+        /**
+         * 是否验证:staff
+         * 
+         * @return boolean 是否有效
+         */
+        public boolean isValid() {
+            return criteria.size() > 0;
+        }
+
+        /**
+         * 获取所有条件集:staff
+         * 
+         * @return List<Criterion> 标准集
+         */
+        public List<Criterion> getAllCriteria() {
+            return criteria;
+        }
+
+        /**
+         * 获取条件集:staff
+         * 
+         * @return List<Criterion> 标准集
+         */
+        public List<Criterion> getCriteria() {
+            return criteria;
+        }
+
+        /**
+         * 增加条件:staff
+         *
+         * @param condition 条件
+         */
+        protected void addCriterion(String condition) {
+            if (condition == null) {
+                throw new RuntimeException("Value for condition cannot be null");
+            }
+            criteria.add(new Criterion(condition));
+        }
+
+        /**
+         * 增加条件:staff
+         *
+         * @param condition 条件
+         * @param value     值
+         * @param property  属性
+         */
+        protected void addCriterion(String condition, Object value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            criteria.add(new Criterion(condition, value));
+        }
+
+        /**
+         * 增加条件:staff
+         *
+         * @param condition 条件
+         * @param value1    起始值
+         * @param value2    结束值
+         * @param property  属性
+         */
+        protected void addCriterion(String condition, Object value1, Object value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        /**
+         * 条件为空:
+         * 
+         * @return 标准
+         */
+        public Criteria andIdIsNull() {
+            addCriterion("id is null");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不为空:
+         * 
+         * @return 标准
+         */
+        public Criteria andIdIsNotNull() {
+            addCriterion("id is not null");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件相等:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andIdEqualTo(Long value) {
+            addCriterion("id =", value, "id");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不相等:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andIdNotEqualTo(Long value) {
+            addCriterion("id <>", value, "id");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件大于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andIdGreaterThan(Long value) {
+            addCriterion("id >", value, "id");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件大于等于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("id >=", value, "id");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件小于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andIdLessThan(Long value) {
+            addCriterion("id <", value, "id");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件小于等于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andIdLessThanOrEqualTo(Long value) {
+            addCriterion("id <=", value, "id");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件在范围:
+         *
+         * @param values 
+         * @return 标准
+         */
+        public Criteria andIdIn(List<Long> values) {
+            addCriterion("id in", values, "id");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不在范围:
+         *
+         * @param values 
+         * @return 标准
+         */
+        public Criteria andIdNotIn(List<Long> values) {
+            addCriterion("id not in", values, "id");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件在区间:
+         *
+         * @param value1 起始值
+         * @param value2 结束值
+         * @return 标准
+         */
+        public Criteria andIdBetween(Long value1, Long value2) {
+            addCriterion("id between", value1, value2, "id");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不在区间:
+         *
+         * @param value1 起始值
+         * @param value2 结束值
+         * @return 标准
+         */
+        public Criteria andIdNotBetween(Long value1, Long value2) {
+            addCriterion("id not between", value1, value2, "id");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件为空:
+         * 
+         * @return 标准
+         */
+        public Criteria andStaffIdIsNull() {
+            addCriterion("staff_id is null");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不为空:
+         * 
+         * @return 标准
+         */
+        public Criteria andStaffIdIsNotNull() {
+            addCriterion("staff_id is not null");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件相等:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffIdEqualTo(String value) {
+            addCriterion("staff_id =", value, "staffId");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不相等:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffIdNotEqualTo(String value) {
+            addCriterion("staff_id <>", value, "staffId");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件大于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffIdGreaterThan(String value) {
+            addCriterion("staff_id >", value, "staffId");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件大于等于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffIdGreaterThanOrEqualTo(String value) {
+            addCriterion("staff_id >=", value, "staffId");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件小于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffIdLessThan(String value) {
+            addCriterion("staff_id <", value, "staffId");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件小于等于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffIdLessThanOrEqualTo(String value) {
+            addCriterion("staff_id <=", value, "staffId");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件相似:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffIdLike(String value) {
+            addCriterion("staff_id like", value, "staffId");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不相似:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffIdNotLike(String value) {
+            addCriterion("staff_id not like", value, "staffId");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件在范围:
+         *
+         * @param values 
+         * @return 标准
+         */
+        public Criteria andStaffIdIn(List<String> values) {
+            addCriterion("staff_id in", values, "staffId");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不在范围:
+         *
+         * @param values 
+         * @return 标准
+         */
+        public Criteria andStaffIdNotIn(List<String> values) {
+            addCriterion("staff_id not in", values, "staffId");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件在区间:
+         *
+         * @param value1 起始值
+         * @param value2 结束值
+         * @return 标准
+         */
+        public Criteria andStaffIdBetween(String value1, String value2) {
+            addCriterion("staff_id between", value1, value2, "staffId");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不在区间:
+         *
+         * @param value1 起始值
+         * @param value2 结束值
+         * @return 标准
+         */
+        public Criteria andStaffIdNotBetween(String value1, String value2) {
+            addCriterion("staff_id not between", value1, value2, "staffId");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件为空:
+         * 
+         * @return 标准
+         */
+        public Criteria andStaffNameIsNull() {
+            addCriterion("staff_name is null");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不为空:
+         * 
+         * @return 标准
+         */
+        public Criteria andStaffNameIsNotNull() {
+            addCriterion("staff_name is not null");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件相等:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffNameEqualTo(String value) {
+            addCriterion("staff_name =", value, "staffName");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不相等:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffNameNotEqualTo(String value) {
+            addCriterion("staff_name <>", value, "staffName");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件大于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffNameGreaterThan(String value) {
+            addCriterion("staff_name >", value, "staffName");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件大于等于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffNameGreaterThanOrEqualTo(String value) {
+            addCriterion("staff_name >=", value, "staffName");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件小于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffNameLessThan(String value) {
+            addCriterion("staff_name <", value, "staffName");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件小于等于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffNameLessThanOrEqualTo(String value) {
+            addCriterion("staff_name <=", value, "staffName");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件相似:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffNameLike(String value) {
+            addCriterion("staff_name like", value, "staffName");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不相似:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andStaffNameNotLike(String value) {
+            addCriterion("staff_name not like", value, "staffName");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件在范围:
+         *
+         * @param values 
+         * @return 标准
+         */
+        public Criteria andStaffNameIn(List<String> values) {
+            addCriterion("staff_name in", values, "staffName");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不在范围:
+         *
+         * @param values 
+         * @return 标准
+         */
+        public Criteria andStaffNameNotIn(List<String> values) {
+            addCriterion("staff_name not in", values, "staffName");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件在区间:
+         *
+         * @param value1 起始值
+         * @param value2 结束值
+         * @return 标准
+         */
+        public Criteria andStaffNameBetween(String value1, String value2) {
+            addCriterion("staff_name between", value1, value2, "staffName");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不在区间:
+         *
+         * @param value1 起始值
+         * @param value2 结束值
+         * @return 标准
+         */
+        public Criteria andStaffNameNotBetween(String value1, String value2) {
+            addCriterion("staff_name not between", value1, value2, "staffName");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件为空:
+         * 
+         * @return 标准
+         */
+        public Criteria andDescriptionIsNull() {
+            addCriterion("description is null");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不为空:
+         * 
+         * @return 标准
+         */
+        public Criteria andDescriptionIsNotNull() {
+            addCriterion("description is not null");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件相等:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andDescriptionEqualTo(String value) {
+            addCriterion("description =", value, "description");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不相等:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andDescriptionNotEqualTo(String value) {
+            addCriterion("description <>", value, "description");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件大于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andDescriptionGreaterThan(String value) {
+            addCriterion("description >", value, "description");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件大于等于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andDescriptionGreaterThanOrEqualTo(String value) {
+            addCriterion("description >=", value, "description");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件小于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andDescriptionLessThan(String value) {
+            addCriterion("description <", value, "description");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件小于等于:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andDescriptionLessThanOrEqualTo(String value) {
+            addCriterion("description <=", value, "description");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件相似:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andDescriptionLike(String value) {
+            addCriterion("description like", value, "description");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不相似:
+         *
+         * @param value 值
+         * @return 标准
+         */
+        public Criteria andDescriptionNotLike(String value) {
+            addCriterion("description not like", value, "description");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件在范围:
+         *
+         * @param values 
+         * @return 标准
+         */
+        public Criteria andDescriptionIn(List<String> values) {
+            addCriterion("description in", values, "description");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不在范围:
+         *
+         * @param values 
+         * @return 标准
+         */
+        public Criteria andDescriptionNotIn(List<String> values) {
+            addCriterion("description not in", values, "description");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件在区间:
+         *
+         * @param value1 起始值
+         * @param value2 结束值
+         * @return 标准
+         */
+        public Criteria andDescriptionBetween(String value1, String value2) {
+            addCriterion("description between", value1, value2, "description");
+            return (Criteria) this;
+        }
+
+        /**
+         * 条件不在区间:
+         *
+         * @param value1 起始值
+         * @param value2 结束值
+         * @return 标准
+         */
+        public Criteria andDescriptionNotBetween(String value1, String value2) {
+            addCriterion("description not between", value1, value2, "description");
+            return (Criteria) this;
+        }
+    }
+
+    /**
+     * @Title staff表的创建标准内部类
+     * @Description 
+     */
+    public static class Criteria extends GeneratedCriteria {
+
+        /**
+         * 
+         */
+        protected Criteria() {
+            super();
+        }
+    }
+
+    /**
+     * @Title staff表的内部标准类
+     * @Description 
+     */
+    public static class Criterion {
+        /**
+         * condition 条件
+         */
+        private String condition;
+
+        /**
+         * value 值/起始值
+         */
+        private Object value;
+
+        /**
+         * secondValue 结束值
+         */
+        private Object secondValue;
+
+        /**
+         * noValue 空值
+         */
+        private boolean noValue;
+
+        /**
+         * singleValue 单一值
+         */
+        private boolean singleValue;
+
+        /**
+         * betweenValue 区间比较符
+         */
+        private boolean betweenValue;
+
+        /**
+         * listValue 数组值
+         */
+        private boolean listValue;
+
+        /**
+         * typeHandler 类型处理器
+         */
+        private String typeHandler;
+
+        /**
+         * 获取条件
+         * 
+         * @return String 条件
+         */
+        public String getCondition() {
+            return condition;
+        }
+
+        /**
+         * 获取值/起始值
+         * 
+         * @return Object 值/起始值
+         */
+        public Object getValue() {
+            return value;
+        }
+
+        /**
+         * 获取结束值
+         * 
+         * @return Object 结束值
+         */
+        public Object getSecondValue() {
+            return secondValue;
+        }
+
+        /**
+         * 是否空值
+         * 
+         * @return boolean 是否空值
+         */
+        public boolean isNoValue() {
+            return noValue;
+        }
+
+        /**
+         * 是否唯一值
+         * 
+         * @return boolean 是否唯一值
+         */
+        public boolean isSingleValue() {
+            return singleValue;
+        }
+
+        /**
+         * 是否区间值
+         * 
+         * @return boolean 是否区间值
+         */
+        public boolean isBetweenValue() {
+            return betweenValue;
+        }
+
+        /**
+         * 是否数组值
+         * 
+         * @return boolean 是否数组值
+         */
+        public boolean isListValue() {
+            return listValue;
+        }
+
+        /**
+         * 获取处理器
+         * 
+         * @return String 处理器
+         */
+        public String getTypeHandler() {
+            return typeHandler;
+        }
+
+        /**
+         * 标准条件类构造方法
+         *
+         * @param condition 条件
+         */
+        protected Criterion(String condition) {
+            super();
+            this.condition = condition;
+            this.typeHandler = null;
+            this.noValue = true;
+        }
+
+        /**
+         * 标准条件类构造方法
+         *
+         * @param condition   条件
+         * @param value       值
+         * @param typeHandler 处理器
+         */
+        protected Criterion(String condition, Object value, String typeHandler) {
+            super();
+            this.condition = condition;
+            this.value = value;
+            this.typeHandler = typeHandler;
+            if (value instanceof List<?>) {
+                this.listValue = true;
+            } else {
+                this.singleValue = true;
+            }
+        }
+
+        /**
+         * 标准条件类构造方法
+         *
+         * @param condition 条件
+         * @param value     值
+         */
+        protected Criterion(String condition, Object value) {
+            this(condition, value, null);
+        }
+
+        /**
+         * 标准条件类构造方法
+         *
+         * @param condition   条件
+         * @param value       值
+         * @param secondValue 结束值
+         * @param typeHandler 处理器
+         */
+        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
+            super();
+            this.condition = condition;
+            this.value = value;
+            this.secondValue = secondValue;
+            this.typeHandler = typeHandler;
+            this.betweenValue = true;
+        }
+
+        /**
+         * 标准条件类构造方法
+         *
+         * @param condition   条件
+         * @param value       值
+         * @param secondValue 结束值
+         */
+        protected Criterion(String condition, Object value, Object secondValue) {
+            this(condition, value, secondValue, null);
+        }
+    }
+}

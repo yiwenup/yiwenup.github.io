@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- 
+        context:生成一组对象的环境 
+        id:必选，上下文id，用于在生成错误时提示
+        defaultModelType:指定生成对象的样式
+          1，conditional：类似hierarchical；
+          2，flat：所有内容（主键，blob）等全部生成在一个对象中；
+          3，hierarchical：主键生成一个XXKey对象(key class)，Blob等单独生成一个对象，其他简单属性在一个对象中(record class)
+        targetRuntime:
+          1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample；
+          2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample；
+    -->
+    <context id="DB2Tables" defaultModelType="flat" targetRuntime="MyBatis3">
+        <!-- 指定生成的java文件的编码,没有直接生成到项目时中文可能会乱码 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 生成的Mapper文件合并还是覆盖 -->
+        <property name="isMergeable" value="false" />
+        <!--<plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>-->
+        <commentGenerator>
+            <!-- 是否禁止显示日期 true：是 ： false:否 -->
+            <property name="suppressDate" value="false" />
+            <!-- 是否去除自动生成的所有注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="false" />
+            <!-- 是否添加字段注释 true:是 false：否 -->
+            <property name="addRemarkComments" value="true" />
+            <!-- 自定义属性 作者名称 -->
+            <property name="author" value="tbsp" />
+        </commentGenerator>
+        <!-- oracle配置 -->
+        <!--<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+            connectionURL="jdbc:oracle:thin:@10.20.47.206:1521:orcl" userId="zhaokun" password="fujiangwei">
+            <property name="remarksReporting" value="true"></property>
+        </jdbcConnection>-->
+        <!-- mysql配置 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+            connectionURL="jdbc:mysql://124.223.155.114:3306/mybatis_learn?useUnicode=true&amp;useSSL=false&amp;allowPublicKeyRetrieval=true" userId="root" password="lottery">
+            <property name="remarksReporting" value="true"/>
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true" />
+        </javaTypeResolver>
+
+        <!-- do class -->
+        <javaModelGenerator targetPackage="cloud.yiwenup.sample.dao.entity" targetProject="./">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- xml file -->
+        <sqlMapGenerator targetPackage="cloud.yiwenup.sample.dao" targetProject="../resources/">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- mapper class -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cloud.yiwenup.sample.dao.inter" targetProject="./">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--不生成帮助类（Exmaples） -->
+        <!-- enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" -->
+
+
+        <!--基础平台 com.hundsun.tbsp.jnl.dao-->
+        <!--
+        <table tableName="Tbsp_Core_Jnl" />
+        <table tableName="Tbsp_Jnl" />
+        <table tableName="Tbsp_Mirrors" />
+        <table tableName="Tbsp_Requests" />
+        <table tableName="Tbsp_Responses" />
+        -->
+        <table tableName="STAFF" schema="zhaokun">
+            <property name="ignoreQualifiersAtRuntime" value="true" />
+        </table>
+
+
+
+    </context>
+</generatorConfiguration>

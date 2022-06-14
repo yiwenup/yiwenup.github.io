@@ -25,6 +25,12 @@ toc:
    docker-engine
    ```
 
+   或者
+
+   ```sh
+   yum remove docker*
+   ```
+
 2. 安装虚拟环境
 
    ```sh
@@ -41,13 +47,15 @@ toc:
 
 ## 二、安装 Docker 环境
 
-1. 下载并安装 Docker
+1. 下载并安装**最新版** Docker
 
    ```sh
    yum -y install docker-ce \
    docker-ce-cli \
    containerd.io
    ```
+
+   如需安装指定版本，可以`yum list docker-ce --showduplicates | sort -r`查找可用的 Docker 版本，之后替换版本号安装`sudo yum install docker-ce-<VERSION_STRING>.x86_64 docker-ce-cli- <VERSION_STRING>.x86_64 containerd.io`
 
 2. 启动 Docker
 
@@ -99,4 +107,12 @@ toc:
    docker info
    ```
 
-   
+
+## 四、安装可视化界面 Portainer
+
+```sh
+docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce
+```
+
+完成后直接访问 9000 端口即可
+
