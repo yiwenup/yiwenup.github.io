@@ -10,16 +10,17 @@ toc:
   enable: true
 ---
 
+- [ ] GitHub - idea -token：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
 - [x] [x-build](https://code-device.github.io/x-build)
-- [ ] [logo在线制作](https://www.designevo.com/)
+- [x] [logo在线制作](https://www.designevo.com/)
 - [ ] dapr
 - [ ] Jakarta
-- [ ] springboot 2.1.7 
-  - [ ] 2.1.x => 2.2.x：JMX默认禁用；Spring-dependiences第三方javax扩展jar更名为Jakarta；隐藏域请求参数_method默认禁用
-  - [ ] 2.2.x => 2.3.x：参数校验框架不再由web-starter依赖管理，要使用须要额外引入；应用服务器线程数可配置`server.tomcat.threads`；WebServerInitializedEvent提供一种优雅停机的思路；spring-maven插件支持使用goal`build-image`，将应用打包成镜像并推送至仓库；优雅停机支持`server.shutdown=graceful``spring.lifecycle.timeout-per-shutdown-phase`；
-  - [ ] 2.3.x => 2.4.x：`spring.config.import`不再需要填写文件拓展名，默认是补充`.yaml`；镜像打包优化；
-  - [ ] 2.4.x => 2.5.x：`tomcat`的`keep-alive`支持配置文件中配置超时时间以及最大请求数量；
-  - [ ] 2.5.x => 2.6.x：默认禁用循环依赖；移除依赖管理`JBoss`/`Prometheus`/`Mongo`/`Oracle`等；`spring-boot-configuration-processor`支持为`lombok`的`@Value`提供元数据
+- [x] springboot 2.1.7 
+  - [x] 2.1.x => 2.2.x：JMX默认禁用；Spring-dependiences第三方javax扩展jar更名为Jakarta；隐藏域请求参数_method默认禁用
+  - [x] 2.2.x => 2.3.x：参数校验框架不再由web-starter依赖管理，要使用须要额外引入；应用服务器线程数可配置`server.tomcat.threads`；WebServerInitializedEvent提供一种优雅停机的思路；spring-maven插件支持使用goal`build-image`，将应用打包成镜像并推送至仓库；优雅停机支持`server.shutdown=graceful``spring.lifecycle.timeout-per-shutdown-phase`；
+  - [x] 2.3.x => 2.4.x：`spring.config.import`不再需要填写文件拓展名，默认是补充`.yaml`；镜像打包优化；
+  - [x] 2.4.x => 2.5.x：`tomcat`的`keep-alive`支持配置文件中配置超时时间以及最大请求数量；
+  - [x] 2.5.x => 2.6.x：默认禁用循环依赖；移除依赖管理`JBoss`/`Prometheus`/`Mongo`/`Oracle`等；`spring-boot-configuration-processor`支持为`lombok`的`@Value`提供元数据
 - [ ] maven插件/web界面的代码生成
 - [ ] JVM
   - [ ] class 文件
@@ -75,3 +76,46 @@ toc:
     - [ ] 堆排序
   - [ ] 问题记录
     - [ ] 抽象父类动态代理
+
+
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: my-tomcat
+  name: my-tomcat
+spec:
+  containers:
+  - image: tomcat
+    name: my-tomcat
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+```
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-test
+  name: nginx-test-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-test
+  template:
+    metadata:
+      labels:
+        app: nginx-test
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+```
+
