@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>基于虚拟机搭建K8S集群（KubeAdm） - Yiwenup - 持续沉淀</title><meta name="Description" content="Yiwenup - 持续沉淀"><meta property="og:title" content="基于虚拟机搭建K8S集群（KubeAdm）" />
+<meta property="og:description" content="一、虚拟机应用选型 市面上存在许多优秀的虚拟机产品，比如VMware、Parallels、VirtualBox等。 由于本人操作系统是MacOS" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yiwenup.github.io/%E5%9F%BA%E4%BA%8E%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%90%AD%E5%BB%BAk8s%E9%9B%86%E7%BE%A4/" /><meta property="og:image" content="https://yiwenup.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-11-10T19:12:32+08:00" />
+<meta property="article:modified_time" content="2021-11-10T19:12:32+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yiwenup.github.io/logo.png"/>
+
+<meta name="twitter:title" content="基于虚拟机搭建K8S集群（KubeAdm）"/>
+<meta name="twitter:description" content="一、虚拟机应用选型 市面上存在许多优秀的虚拟机产品，比如VMware、Parallels、VirtualBox等。 由于本人操作系统是MacOS"/>
+<meta name="application-name" content="Yiwenup - 持续沉淀">
+<meta name="apple-mobile-web-app-title" content="Yiwenup - 持续沉淀"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://yiwenup.github.io/%E5%9F%BA%E4%BA%8E%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%90%AD%E5%BB%BAk8s%E9%9B%86%E7%BE%A4/" /><link rel="prev" href="https://yiwenup.github.io/webstorm%E7%8E%AF%E5%A2%83/" /><link rel="next" href="https://yiwenup.github.io/%E5%AE%89%E8%A3%85docker%E7%8E%AF%E5%A2%83/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "基于虚拟机搭建K8S集群（KubeAdm）",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yiwenup.github.io\/%E5%9F%BA%E4%BA%8E%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%90%AD%E5%BB%BAk8s%E9%9B%86%E7%BE%A4\/"
+        },"image": ["https:\/\/yiwenup.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "K8S, 云原生, PD17","wordcount":  2811 ,
+        "url": "https:\/\/yiwenup.github.io\/%E5%9F%BA%E4%BA%8E%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%90%AD%E5%BB%BAk8s%E9%9B%86%E7%BE%A4\/","datePublished": "2021-11-10T19:12:32+08:00","dateModified": "2021-11-10T19:12:32+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yiwenup.github.io\/images\/avatar.png",
+                    "width":  177 ,
+                    "height":  177 
+                }},"author": {
+                "@type": "Person",
+                "name": "yiwenup"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Yiwenup - 持续沉淀"><span class="header-title-pre"><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class="header-title-post"><i class='fas fa-leaf'></i></span></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/categories/"><i class='fas fa-folder-open'></i> 分类 </a><a class="menu-item" href="/tags/"><i class='fas fa-tags fa-fw'></i> 标签 </a><a class="menu-item" href="/posts/"><i class='fas fa-book'></i> 所有文章 </a><a class="menu-item" href="/">  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Yiwenup - 持续沉淀"><span class="header-title-pre"><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class="header-title-post"><i class='fas fa-leaf'></i></span></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/categories/" title=""><i class='fas fa-folder-open'></i>分类</a><a class="menu-item" href="/tags/" title=""><i class='fas fa-tags fa-fw'></i>标签</a><a class="menu-item" href="/posts/" title=""><i class='fas fa-book'></i>所有文章</a><a class="menu-item" href="/" title=""></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">基于虚拟机搭建K8S集群（KubeAdm）</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-feather-alt"></i></a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>K8S</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-11-10">2021-11-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2811 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一虚拟机应用选型">一、虚拟机应用选型</a></li>
+        <li><a href="#二操作系统选型">二、操作系统选型</a></li>
+        <li><a href="#三虚拟机安装操作系统">三、虚拟机安装操作系统</a></li>
+        <li><a href="#四系统环境预设置">四、系统环境预设置</a>
+          <ul>
+            <li><a href="#41-集群建议">4.1 集群建议</a></li>
+            <li><a href="#42-关闭防火墙">4.2 关闭防火墙</a></li>
+            <li><a href="#43-修改主机名称">4.3 修改主机名称</a></li>
+            <li><a href="#44-关闭内存交换">4.4 关闭内存交换</a></li>
+            <li><a href="#45-设置流量桥接">4.5 设置流量桥接</a></li>
+            <li><a href="#46-预装容器运行时">4.6 预装容器运行时</a></li>
+          </ul>
+        </li>
+        <li><a href="#五安装-kubernetes">五、安装 Kubernetes</a>
+          <ul>
+            <li><a href="#51-安装k8s核心">5.1 安装K8S核心</a></li>
+            <li><a href="#52-初始化-master-节点">5.2 初始化 Master 节点</a></li>
+            <li><a href="#53-加入-worker-节点">5.3 加入 Worker 节点</a></li>
+            <li><a href="#54-验证集群">5.4 验证集群</a></li>
+            <li><a href="#55-设置-ipvs">5.5 设置 IPVS</a></li>
+          </ul>
+        </li>
+        <li><a href="#六安装-dashboard">六、安装 Dashboard</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="一虚拟机应用选型">一、虚拟机应用选型</h2>
+<blockquote>
+<p>市面上存在许多优秀的虚拟机产品，比如<code>VMware</code>、<code>Parallels</code>、<code>VirtualBox</code>等。</p>
+<p>由于本人操作系统是<code>MacOS</code>，且是基于<code>arm</code>架构的<code>m1</code>芯片，所以可选条件显而易见，目前能够很好的支持<code>m1</code>的虚拟机只有<code>Parallels Desktop</code>了，故而笔者接下来使用的是<code>Parallels Desktop17</code>。</p>
+</blockquote>
+<h2 id="二操作系统选型">二、操作系统选型</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="../images/image-20220721135506725.png"
+        data-srcset="../images/image-20220721135506725.png, ../images/image-20220721135506725.png 1.5x, ../images/image-20220721135506725.png 2x"
+        data-sizes="auto"
+        alt="../images/image-20220721135506725.png"
+        title="image-20220721135506725" /></p>
+<blockquote>
+<p>本人惯用的<code>linux</code>发行版本是<code>CentOS7</code>，但是在<code>m1</code>的<code>Parallels</code>中安装经历了不少波折，大概的原因是<code>arm</code>架构的<code>CentOS7</code>内核系统页参数和宿主机的不兼容所致。加之<code>CentOS7</code>已经宣布停止维护了。</p>
+<p>所以基于以下需求：去图形化界面、操作系统最接近<code>CentOS7</code>、镜像是<code>arm</code>架构版本的。最终选择了<code>Rocky Linux 9.0</code>。</p>
+</blockquote>
+<h2 id="三虚拟机安装操作系统">三、虚拟机安装操作系统</h2>
+<blockquote>
+<p>虚拟安装跟着向导即可，只是<code>Parallels Desktop</code>是需要付费的，小伙伴们可以自行想办法🤫</p>
+<p><code>Rocky Linux</code>操作系统的安装也是有图形化界面指引的</p>
+</blockquote>
+<h2 id="四系统环境预设置">四、系统环境预设置</h2>
+<h3 id="41-集群建议">4.1 集群建议</h3>
+<ol>
+<li>使用<code>PD</code>准备三台<code>Linux</code>，每台操作系统的配置建议至少是 <strong>2C4G</strong></li>
+<li>正常情况下，我们基于<code>PD</code>准备的三台机器应该都是可以互相<code>ping</code>通的</li>
+</ol>
+<h3 id="42-关闭防火墙">4.2 关闭防火墙</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 禁用防火墙</span>
+systemctl stop firewalld
+systemctl disable firewalld
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 禁用安全策略</span>
+sed -i <span class="s1">&#39;s/enforcing/disabled/&#39;</span> /etc/selinux/config
+setenforce <span class="m">0</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="43-修改主机名称">4.3 修改主机名称</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 设置主机名</span>
+hostnamectl set-hostname &lt;主机名称：建议k8s-master/k8s-worker1/k8s-worker2&gt;
+<span class="c1"># 查看主机名</span>
+hostnamectl
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 设置主机名解析</span>
+<span class="nb">echo</span> <span class="s2">&#34;127.0.0.1   </span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">&#34;</span> &gt;&gt; /etc/hosts
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 这里建议最好再修改一遍 /etc/hosts 文件</span>
+vim /etc/hosts
+<span class="c1"># 追加其余两台机器的 ip 和主机名的映射</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="44-关闭内存交换">4.4 关闭内存交换</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">swapoff -a  
+sed -ri <span class="s1">&#39;s/.*swap.*/#&amp;/&#39;</span> /etc/fstab
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="45-设置流量桥接">4.5 设置流量桥接</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1">## 开启br_netfilter</span>
+modprobe br_netfilter
+<span class="c1">## 确认修改</span>
+lsmod <span class="p">|</span> grep br_netfilter
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 将桥接的 IPv4 流量传递到 iptables 的链：</span>
+<span class="c1"># 修改 /etc/sysctl.conf</span>
+<span class="c1"># 如果有配置，则修改</span>
+sed -i <span class="s2">&#34;s#^net.ipv4.ip_forward.*#net.ipv4.ip_forward=1#g&#34;</span>  /etc/sysctl.conf
+sed -i <span class="s2">&#34;s#^net.bridge.bridge-nf-call-ip6tables.*#net.bridge.bridge-nf-call-ip6tables=1#g&#34;</span>  /etc/sysctl.conf
+sed -i <span class="s2">&#34;s#^net.bridge.bridge-nf-call-iptables.*#net.bridge.bridge-nf-call-iptables=1#g&#34;</span>  /etc/sysctl.conf
+sed -i <span class="s2">&#34;s#^net.ipv6.conf.all.disable_ipv6.*#net.ipv6.conf.all.disable_ipv6=1#g&#34;</span>  /etc/sysctl.conf
+sed -i <span class="s2">&#34;s#^net.ipv6.conf.default.disable_ipv6.*#net.ipv6.conf.default.disable_ipv6=1#g&#34;</span>  /etc/sysctl.conf
+sed -i <span class="s2">&#34;s#^net.ipv6.conf.lo.disable_ipv6.*#net.ipv6.conf.lo.disable_ipv6=1#g&#34;</span>  /etc/sysctl.conf
+sed -i <span class="s2">&#34;s#^net.ipv6.conf.all.forwarding.*#net.ipv6.conf.all.forwarding=1#g&#34;</span>  /etc/sysctl.conf
+<span class="c1"># 可能没有，没有则追加</span>
+<span class="nb">echo</span> <span class="s2">&#34;net.ipv4.ip_forward = 1&#34;</span> &gt;&gt; /etc/sysctl.conf
+<span class="nb">echo</span> <span class="s2">&#34;net.bridge.bridge-nf-call-ip6tables = 1&#34;</span> &gt;&gt; /etc/sysctl.conf
+<span class="nb">echo</span> <span class="s2">&#34;net.bridge.bridge-nf-call-iptables = 1&#34;</span> &gt;&gt; /etc/sysctl.conf
+<span class="nb">echo</span> <span class="s2">&#34;net.ipv6.conf.all.disable_ipv6 = 1&#34;</span> &gt;&gt; /etc/sysctl.conf
+<span class="nb">echo</span> <span class="s2">&#34;net.ipv6.conf.default.disable_ipv6 = 1&#34;</span> &gt;&gt; /etc/sysctl.conf
+<span class="nb">echo</span> <span class="s2">&#34;net.ipv6.conf.lo.disable_ipv6 = 1&#34;</span> &gt;&gt; /etc/sysctl.conf
+<span class="nb">echo</span> <span class="s2">&#34;net.ipv6.conf.all.forwarding = 1&#34;</span>  &gt;&gt; /etc/sysctl.conf
+<span class="c1"># 执行命令以应用</span>
+sysctl -p
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="46-预装容器运行时">4.6 预装容器运行时</h3>
+<blockquote>
+<p>本次采用<code>Docker</code>，选择的版本是<code>20.10.15</code></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 卸载旧版本的 docker</span>
+sudo yum remove docker*
+
+<span class="c1"># 配置 docker yum 源</span>
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+
+<span class="c1"># 查询可用的 docker 版本</span>
+yum list docker-ce --showduplicates <span class="p">|</span> sort -r
+
+<span class="c1"># 安装 docker </span>
+yum install -y docker-ce-20.10.15 docker-ce-cli-20.10.15 containerd.io
+
+<span class="c1"># 启动 docker</span>
+systemctl start docker
+<span class="c1"># 设置为开机启动</span>
+systemctl <span class="nb">enable</span> docker
+
+<span class="c1"># 配置阿里云镜像服务加速</span>
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <span class="s">&lt;&lt;-&#39;EOF&#39;
+</span><span class="s">{
+</span><span class="s">  &#34;registry-mirrors&#34;: [&#34;https://82m9ar63.mirror.aliyuncs.com&#34;]
+</span><span class="s">}
+</span><span class="s">EOF</span>
+
+<span class="c1"># 重启 docker</span>
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="五安装-kubernetes">五、安装 Kubernetes</h2>
+<h3 id="51-安装k8s核心">5.1 安装K8S核心</h3>
+<blockquote>
+<p>❗️该步骤所有的机器节点都需要执行。</p>
+<p>此处<code>k8s</code>版本选型建议是<code>1.23.x</code>及以下的，因为在<code>1.24.x</code>之后，<code>k8s</code>移除了<code>dockershim</code>，也不是说<code>docker</code>就不能用了，但是需要根据官方的方案进行配置，过程繁琐，这次集群搭建选用版本<code>1.23.9</code>，是<code>1.23.x</code>的最后一个版本，相对稳定一些。</p>
+<p>本次在本地环境模拟集群，通过<code>kubeadm</code>方式引导式安装，所以希望的是快速简单的构建出集群。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 配置K8S的yum源</span>
+cat <span class="s">&lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo
+</span><span class="s">[kubernetes]
+</span><span class="s">name=Kubernetes
+</span><span class="s"># 该url是intel版本的，arm架构需替换 baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
+</span><span class="s">baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-aarch64
+</span><span class="s">enabled=1
+</span><span class="s">gpgcheck=0
+</span><span class="s">repo_gpgcheck=0
+</span><span class="s">gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
+</span><span class="s">       http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+</span><span class="s">EOF</span>
+
+<span class="c1"># 检查文件是否写入</span>
+cat /etc/yum.repos.d/kubernetes.repo
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 卸载旧版本</span>
+yum remove -y kubelet kubeadm kubectl
+
+<span class="c1"># 查看可以安装的版本</span>
+yum list kubelet --showduplicates <span class="p">|</span> sort -r
+
+<span class="c1"># 安装指定版本的 k8s 核心组件：kubelet kubeadm kubectl</span>
+yum install -y kubelet-1.23.9 kubeadm-1.23.9 kubectl-1.23.9
+
+<span class="c1"># 开机启动 kubelet</span>
+systemctl <span class="nb">enable</span> kubelet <span class="o">&amp;&amp;</span> systemctl start kubelet
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="52-初始化-master-节点">5.2 初始化 Master 节点</h3>
+<blockquote>
+<p>以下操作在<code>k8s-master</code>节点执行</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 查看当前 kubeadm 需求的核心组件版本，接下来是安装他们</span>
+kubeadm config images list
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 如果能访问外网的话，则用 google 官方的镜像，否则只能去 dockerhub 搜集，或者去阿里云镜像仓库里面找找</span>
+k8s.gcr.io/kube-apiserver:v1.23.9
+k8s.gcr.io/kube-controller-manager:v1.23.9
+k8s.gcr.io/kube-scheduler:v1.23.9
+k8s.gcr.io/kube-proxy:v1.23.9
+k8s.gcr.io/pause:3.6
+k8s.gcr.io/etcd:3.5.1-0
+k8s.gcr.io/coredns/coredns:v1.8.6
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 本人之前下载了 google 的官方镜像，已经 push 到阿里云了，可以按如下步骤使用我上传阿里云的镜像</span>
+
+<span class="c1"># 封装成images.sh文件</span>
+<span class="c1">#!/bin/bash</span>
+<span class="nv">images</span><span class="o">=(</span>
+  kube-apiserver:v1.23.9
+  kube-proxy:v1.23.9
+  kube-controller-manager:v1.23.9
+  kube-scheduler:v1.23.9
+  coredns:v1.8.6
+  etcd:3.5.1-0
+  pause:3.6
+<span class="o">)</span>
+<span class="k">for</span> imageName in <span class="si">${</span><span class="nv">images</span><span class="p">[@]</span><span class="si">}</span> <span class="p">;</span> <span class="k">do</span>
+    docker pull registry.cn-hangzhou.aliyuncs.com/yiwenup/<span class="nv">$imageName</span>
+<span class="k">done</span>
+<span class="c1"># 封装结束</span>
+
+<span class="c1"># 执行 images.sh</span>
+chmod +x images.sh <span class="o">&amp;&amp;</span> ./images.sh
+
+<span class="c1"># 需要注意的是 coredns 镜像，通过阿里云方式的情况下，下载到本地之后需要重新打 tag</span>
+docker tag registry.cn-hangzhou.aliyuncs.com/yiwenup/coredns:v1.8.6 registry.cn-hangzhou.aliyuncs.com/yiwenup/coredns/coredns:v1.8.6
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># init 一个 master 节点</span>
+kubeadm init <span class="se">\
+</span><span class="se"></span>--kubernetes-version v1.23.9 <span class="se">\
+</span><span class="se"></span>--apiserver-advertise-address<span class="o">=</span>10.211.55.8 <span class="se">\
+</span><span class="se"></span>--service-cidr<span class="o">=</span>11.11.0.0/16 <span class="se">\
+</span><span class="se"></span>--pod-network-cidr<span class="o">=</span>192.168.0.0/16 <span class="se">\
+</span><span class="se"></span>--image-repository registry.cn-hangzhou.aliyuncs.com/yiwenup <span class="se">\
+</span><span class="se"></span>--ignore-preflight-errors<span class="o">=</span>all
+
+<span class="c1"># kubernetes-version：写 k8s 安装的版本</span>
+<span class="c1"># apiserver-advertise-address：写 master 节点的 ip</span>
+<span class="c1"># service-cidr：划定 service 负载均衡网络的子网范围，注意：不能和 apiserver-advertise-address\pod-network-cidr 重合</span>
+<span class="c1"># pod-network-cidr：划定 pod 集群内子网范围，注意：不能和 apiserver-advertise-address\service-cidr 重合</span>
+<span class="c1"># image-repository：如果使用阿里云方式，则需要制定一下镜像仓库</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 注意，在 kubeadm 引导安装下，我们需要关注初始化成功之后打印的信息，根据提示完成接下来的步骤</span>
+
+<span class="c1"># 复制相关文件夹</span>
+mkdir -p <span class="nv">$HOME</span>/.kube
+sudo cp -i /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
+
+<span class="c1"># 导出环境变量</span>
+<span class="nb">export</span> <span class="nv">KUBECONFIG</span><span class="o">=</span>/etc/kubernetes/admin.conf
+
+<span class="c1"># 部署一个网络组件：这里选用 calico</span>
+kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+
+<span class="c1"># 检查一下集群中的节点，目前只初始化了 master，所以应该只有 master 一个节点</span>
+kubectl get nodes
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="53-加入-worker-节点">5.3 加入 Worker 节点</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 同样使用 master 节点初始化成功之后打印的内容，其中有 worker 节点加入 master 的方式</span>
+kubeadm join 172.24.80.222:6443 --token nz9azl.9bl27pyr4exy2wz4 <span class="se">\
+</span><span class="se"></span>	--discovery-token-ca-cert-hash sha256:4bdc81a83b80f6bdd30bb56225f9013006a45ed423f131ac256ffe16bae73a20
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 只是 token 会过期，对于过期的情况下，我们想加入新的 worker，可以重新生成 token，尤其可以设置为不不过期</span>
+kubeadm token create --ttl <span class="m">0</span> --print-join-command
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="54-验证集群">5.4 验证集群</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1">#获取所有节点</span>
+kubectl get nodes
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="55-设置-ipvs">5.5 设置 IPVS</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">kubectl edit cm kube-proxy -n kube-system
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="c"># 找到 ipvs ，并设置 mode 为 ipvs</span><span class="w">
+</span><span class="w"></span><span class="nt">ipvs</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">excludeCIDRs</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="w">    </span><span class="nt">minSyncPeriod</span><span class="p">:</span><span class="w"> </span><span class="l">0s</span><span class="w">
+</span><span class="w">    </span><span class="nt">scheduler</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;&#34;</span><span class="w">
+</span><span class="w">    </span><span class="nt">strictARP</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w">    </span><span class="nt">syncPeriod</span><span class="p">:</span><span class="w"> </span><span class="l">30s</span><span class="w">
+</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">KubeProxyConfiguration</span><span class="w">
+</span><span class="w"></span><span class="nt">metricsBindAddress</span><span class="p">:</span><span class="w"> </span><span class="m">127.0.0.1</span><span class="p">:</span><span class="m">10249</span><span class="w">
+</span><span class="w"></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;ipvs&#34;</span><span class="w"> </span><span class="c"># 修改此处</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 重启 kube-proxy = 删除 kube-proxy 的 pod + k8s 自愈能力</span>
+kubectl get pod -A<span class="p">|</span>grep kube-proxy
+kubectl delete pod &lt;pod 名称&gt; -n kube-system
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="六安装-dashboard">六、安装 Dashboard</h2>
+<blockquote>
+<p>安装参考地址：https://github.com/kubernetes/dashboard</p>
+<p>版本选型参考地址：https://github.com/kubernetes/dashboard/releases</p>
+</blockquote>
+<p>由于我们的<code>k8s</code>版本选择的是<code>1.23.9</code>，所以根据官方指导，<code>dashboard</code>的版本选择为<code>v2.5.1</code></p>
+<p>下载部署的描述文件：https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.1/aio/deploy/recommended.yaml</p>
+<p>修改<code>Service</code>类目，补充<code>type: NodePort</code></p>
+<p>执行部署<code>kubectl apply -f ./recommended.yaml</code></p>
+<p>之后在访问之前，需要做好权限控制，根据官方指导：https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/README.md，创建<code>dashboard-admin.yaml</code>，补充以下内容之后，执行<code>kubectl apply -f dashboard-admin.yaml</code>，如果有报错的话，先执行<code>kubectl delete -f dashboard-admin.yaml</code>后再执行<code>kubectl apply -f dashboard-admin.yaml</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
+</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRoleBinding</span><span class="w">
+</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard</span><span class="w">
+</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard</span><span class="w">
+</span><span class="w"></span><span class="nt">roleRef</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io</span><span class="w">
+</span><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRole</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">cluster-admin</span><span class="w">
+</span><span class="w"></span><span class="nt">subjects</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ServiceAccount</span><span class="w">
+</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard</span><span class="w">
+</span><span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>最后在访问的时候需要输入令牌，令牌的查询使用如下命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">kubectl -n kubernetes-dashboard describe secret <span class="k">$(</span>kubectl -n kubernetes-dashboard get secret <span class="p">|</span> grep admin-user <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span><span class="k">)</span>
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-11-10</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/k8s/">K8S</a>,&nbsp;<a href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>,&nbsp;<a href="/tags/pd17/">PD17</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/webstorm%E7%8E%AF%E5%A2%83/" class="prev" rel="prev" title="WebStorm 环境"><i class="fas fa-angle-left fa-fw"></i>WebStorm 环境</a>
+            <a href="/%E5%AE%89%E8%A3%85docker%E7%8E%AF%E5%A2%83/" class="next" rel="next" title="01_安装 Docker 环境">01_安装 Docker 环境<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">yiwenup</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":0},"comment":{},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"PASDMWALPK","algoliaIndex":"index.zh-cn","algoliaSearchKey":"b42948e51daaa93df92381c8e2ac0f93","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"twemoji":true};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>02_Redis 高可用 - Yiwenup - 持续沉淀</title><meta name="Description" content="Yiwenup - 持续沉淀"><meta property="og:title" content="02_Redis 高可用" />
+<meta property="og:description" content="一、Redis 主从 1. 原理描述 当从节点 slave 启动的时候，slave 会读取配置，获取 master 的连接信息 slave 内部会起一个定时任务，检查是否有 master 可以连接，如果有" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yiwenup.github.io/redis%E9%AB%98%E5%8F%AF%E7%94%A8/" /><meta property="og:image" content="https://yiwenup.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-02-23T19:12:32+08:00" />
+<meta property="article:modified_time" content="2022-02-23T19:12:32+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://yiwenup.github.io/logo.png"/>
+
+<meta name="twitter:title" content="02_Redis 高可用"/>
+<meta name="twitter:description" content="一、Redis 主从 1. 原理描述 当从节点 slave 启动的时候，slave 会读取配置，获取 master 的连接信息 slave 内部会起一个定时任务，检查是否有 master 可以连接，如果有"/>
+<meta name="application-name" content="Yiwenup - 持续沉淀">
+<meta name="apple-mobile-web-app-title" content="Yiwenup - 持续沉淀"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://yiwenup.github.io/redis%E9%AB%98%E5%8F%AF%E7%94%A8/" /><link rel="prev" href="https://yiwenup.github.io/redis%E5%9F%BA%E7%A1%80/" /><link rel="next" href="https://yiwenup.github.io/docker%E5%AE%89%E8%A3%85rabbitmq/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "02_Redis 高可用",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/yiwenup.github.io\/redis%E9%AB%98%E5%8F%AF%E7%94%A8\/"
+        },"image": ["https:\/\/yiwenup.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "缓存, 中间件, 分布式系统","wordcount":  1650 ,
+        "url": "https:\/\/yiwenup.github.io\/redis%E9%AB%98%E5%8F%AF%E7%94%A8\/","datePublished": "2022-02-23T19:12:32+08:00","dateModified": "2022-02-23T19:12:32+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/yiwenup.github.io\/images\/avatar.png",
+                    "width":  177 ,
+                    "height":  177 
+                }},"author": {
+                "@type": "Person",
+                "name": "yiwenup"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Yiwenup - 持续沉淀"><span class="header-title-pre"><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class="header-title-post"><i class='fas fa-leaf'></i></span></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/categories/"><i class='fas fa-folder-open'></i> 分类 </a><a class="menu-item" href="/tags/"><i class='fas fa-tags fa-fw'></i> 标签 </a><a class="menu-item" href="/posts/"><i class='fas fa-book'></i> 所有文章 </a><a class="menu-item" href="/">  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Yiwenup - 持续沉淀"><span class="header-title-pre"><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class="header-title-post"><i class='fas fa-leaf'></i></span></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/categories/" title=""><i class='fas fa-folder-open'></i>分类</a><a class="menu-item" href="/tags/" title=""><i class='fas fa-tags fa-fw'></i>标签</a><a class="menu-item" href="/posts/" title=""><i class='fas fa-book'></i>所有文章</a><a class="menu-item" href="/" title=""></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">02_Redis 高可用</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-feather-alt"></i></a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/redis/"><i class="far fa-folder fa-fw"></i>Redis</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-02-23">2022-02-23</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1650 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一redis-主从">一、Redis 主从</a>
+          <ul>
+            <li><a href="#1-原理描述">1. 原理描述</a></li>
+            <li><a href="#2-复制原理">2. 复制原理</a></li>
+            <li><a href="#3-复制的机制">3. 复制的机制</a></li>
+          </ul>
+        </li>
+        <li><a href="#二redis-主从--哨兵">二、Redis 主从 + 哨兵</a>
+          <ul>
+            <li><a href="#1-sentinel-选举的过程">1. Sentinel 选举的过程</a></li>
+            <li><a href="#2-主从哨兵的问题">2. 主从+哨兵的问题</a></li>
+          </ul>
+        </li>
+        <li><a href="#三redis-cluster">三、Redis Cluster</a>
+          <ul>
+            <li><a href="#1-分布数据的算法">1. 分布数据的算法</a></li>
+            <li><a href="#2-集群节点通信">2. 集群节点通信</a></li>
+            <li><a href="#3-集群的故障选举">3. 集群的故障选举</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="一redis-主从">一、Redis 主从</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="../images/image-20220326133542692.png"
+        data-srcset="../images/image-20220326133542692.png, ../images/image-20220326133542692.png 1.5x, ../images/image-20220326133542692.png 2x"
+        data-sizes="auto"
+        alt="../images/image-20220326133542692.png"
+        title="image-20220326133542692" /></p>
+<h3 id="1-原理描述">1. 原理描述</h3>
+<ol>
+<li>当从节点 slave 启动的时候，slave 会读取配置，获取 master 的连接信息</li>
+<li>slave 内部会起一个定时任务，检查是否有 master 可以连接，如果有，则发送 <strong>PSYNC</strong> 尝试建立 socket 连接</li>
+<li>如果 master 配置了 requirepass，则 slave 需要发送 masterauth 进行认证</li>
+<li>当 salve 和 master 建立起 socket 连接的时候，如果是第一次建立连接，则会触发 master 的全量复制<code>full resynchornization</code>，如果是已经建立过连接的，则 master 会异步地将数据同步给 slave</li>
+</ol>
+<h3 id="2-复制原理">2. 复制原理</h3>
+<ul>
+<li>如果是第一次建立连接 master 会在后台起一个线程，生成一份 RDB 文件，并将其发送个 slave，salve 收到文件后，将其保存在本地磁盘后，把文件内容载入内存</li>
+<li>如果之前建立过连接，则 master 会异步地将缓存数据同步给 slave</li>
+</ul>
+<h3 id="3-复制的机制">3. 复制的机制</h3>
+<ul>
+<li><strong>offset</strong>：master 和 slave 都会维护一份自己的 offset，master 和 slave 都会累加自己的 offset，salve 每秒会上报 offset 给 master，master 将 slave 的 offset 进行保存</li>
+<li><strong>backlog</strong>：master 给 slave 复制数据的时候，也会将该数据在 backlog 中写一份</li>
+<li><strong>master 的 run_id</strong>：master 的 host+ip 不一定靠谱，master 在重启之后，他的 id 会发生变化， slave 会感知到变化进行全量复制</li>
+</ul>
+<h2 id="二redis-主从--哨兵">二、Redis 主从 + 哨兵</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="../images/image-20220326152946184.png"
+        data-srcset="../images/image-20220326152946184.png, ../images/image-20220326152946184.png 1.5x, ../images/image-20220326152946184.png 2x"
+        data-sizes="auto"
+        alt="../images/image-20220326152946184.png"
+        title="image-20220326152946184" /></p>
+<blockquote>
+<p><strong>哨兵的作用</strong></p>
+<ul>
+<li>**集群监控：**监控 master 和 slave 是否正常工作</li>
+<li><strong>消息通知</strong></li>
+<li><strong>故障转移</strong>（<strong>failover</strong>）**：**如果 master 节点宕机了，则会自动选举出新的 master 节点</li>
+<li>**配置中心：**如果选举了新的 master 节点，则会通知客户端新的 master 节点的信息</li>
+</ul>
+</blockquote>
+<h3 id="1-sentinel-选举的过程">1. Sentinel 选举的过程</h3>
+<ol>
+<li>如果在<code>is_master_down_after_milliseconds</code>之后，哨兵仍然 ping 不通 master 节点，则进入 <strong>sdown</strong>，为主观宕机</li>
+<li>如果有 <strong>quorum</strong> 个哨兵认为 master 宕机了，那么就会进入 <strong>odown</strong>，为客观宕机</li>
+<li>哨兵集群间进行投票，选举出某一个哨兵执行主备切换，如果当前某个哨兵得到了 <strong>majority</strong> 个哨兵的授权，则选举成功</li>
+<li>执行主备切换的哨兵会根据 slave 与 master 断开连接的时长、优先级、offset、run_id 等进行<strong>综合考量</strong>，选举出新的 master 节点</li>
+<li>如果哨兵主备切换执行失败了，则会有下一个哨兵接替执行并完成，<strong>之后再将新的 master 的信息在哨兵集群传播</strong></li>
+</ol>
+<h3 id="2-主从哨兵的问题">2. 主从+哨兵的问题</h3>
+<blockquote>
+<p><strong>主从 + 哨兵的模式只能保证集群的高可用，却无法保证数据零丢失</strong></p>
+</blockquote>
+<ul>
+<li>在主从复制的过程中，如果 master 节点宕机了，那么这部分数据就丢失了</li>
+<li>集群脑裂问题：由于网络分区原因，导致 master 节点和 slave、sentinel 失去联系，那么 sentinel 就会认为 master 宕机了，从而选举出新的 master 节点，此时实际上就出现了多个 master 节点的情况</li>
+</ul>
+<h2 id="三redis-cluster">三、Redis Cluster</h2>
+<blockquote>
+<p>Redis Cluster 可以构造出多个主节点，每个主节点下再挂一个从节点，保证集群的高可用的同时也尽量避免数据丢失问题</p>
+</blockquote>
+<h3 id="1-分布数据的算法">1. 分布数据的算法</h3>
+<blockquote>
+<p>由于 Redis Cluster 模式下，会出现多个 master 节点，每个 master 节点都会承担数据读写的职责，所以如何保证数据的读写能够尽可能的合理分布在每一个 master 节点上，这就需要考量一些分布数据的算法</p>
+</blockquote>
+<ul>
+<li>**hash 算法：**对 key 进行 hash，之后与 master 的节点数量取模运算。但是这种方法不支持 master 的动态横向扩容，master 节点数量的改变会影响数据落的节点位置，会造成偏差</li>
+<li>**一致性 hash 算法：**假想出一个圆圈，上面每个点都会对应一个 hash 值，master 节点落在这个圈上。某个 key 计算了 hash 值，之后该 hash 值将对应落在这个圈的一个点上，从该点出发顺时针找到最近的一个节点，即为所要找的 master 节点。但是这种方式需要考虑每个 master 节点的数据间隔，不合理的情况下会造成数据倾斜，即某个节点会承担大量数据</li>
+<li>**redis cluster-hash slot：**将 16384 个槽点分配到 Redis 集群上，根据 key 计算 CRC16 的值，然后对 16384 取模，定位到 redis solt</li>
+</ul>
+<h3 id="2-集群节点通信">2. 集群节点通信</h3>
+<ul>
+<li><strong>使用 ZK 维护集群间的元数据</strong></li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="../images/image-20220326163604016.png"
+        data-srcset="../images/image-20220326163604016.png, ../images/image-20220326163604016.png 1.5x, ../images/image-20220326163604016.png 2x"
+        data-sizes="auto"
+        alt="../images/image-20220326163604016.png"
+        title="image-20220326163604016" /></p>
+<ul>
+<li><strong>每个节点维护一份集群元数据，如果某个节点发生了数据变更，则会通过 gossip 协议发送给其余节点通知对应变更</strong></li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="../images/image-20220326164023916.png"
+        data-srcset="../images/image-20220326164023916.png, ../images/image-20220326164023916.png 1.5x, ../images/image-20220326164023916.png 2x"
+        data-sizes="auto"
+        alt="../images/image-20220326164023916.png"
+        title="image-20220326164023916" /></p>
+<h3 id="3-集群的故障选举">3. 集群的故障选举</h3>
+<ol>
+<li>如果某个节点在某次 <strong>gossip ping</strong> 之后的一段时间内没有收到 <strong>gossip pong</strong> 消息，则会进入 <strong>pfail</strong>，认为该节点主观宕机</li>
+<li>如果多数节点在 gossip ping 时都认为 pfail，则会进入 <strong>fail</strong>，认为该节点客观宕机</li>
+<li>此时需要其余 master 节点进行选举，将宕机 master 的从节点升为主节点。与 master 节点断开时间较长的 slave 无法参加选举，每个 slave 根据自己对 master 节点的 offset 进行排名，排名靠前的优先参与选举</li>
+</ol>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-02-23</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E7%BC%93%E5%AD%98/">缓存</a>,&nbsp;<a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a>,&nbsp;<a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">分布式系统</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/redis%E5%9F%BA%E7%A1%80/" class="prev" rel="prev" title="01_Redis 基础"><i class="fas fa-angle-left fa-fw"></i>01_Redis 基础</a>
+            <a href="/docker%E5%AE%89%E8%A3%85rabbitmq/" class="next" rel="next" title="04_Docker 安装 RabbitMQ">04_Docker 安装 RabbitMQ<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">yiwenup</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":0},"comment":{},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"PASDMWALPK","algoliaIndex":"index.zh-cn","algoliaSearchKey":"b42948e51daaa93df92381c8e2ac0f93","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"twemoji":true};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
