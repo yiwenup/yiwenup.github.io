@@ -1,4 +1,5 @@
-baseURL = "http://www.yiwenup.cloud/"
+# baseURL = "http://www.yiwenup.cloud/"
+baseURL = "https://yiwenup.github.io/"
 # [en, zh-cn, fr, pl, ...] determines default content language
 # [en, zh-cn, fr, pl, ...] 设置默认的语言
 defaultContentLanguage = "zh-cn"
