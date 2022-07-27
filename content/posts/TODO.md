@@ -10,7 +10,8 @@ toc:
   enable: true
 ---
 
-- [ ] GitHub - idea -token：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
+- [x] GitHub - idea -token：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
+- [x] Github - forever：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
 - [x] [x-build](https://code-device.github.io/x-build)
 - [x] [logo在线制作](https://www.designevo.com/)
 - [ ] dapr
@@ -78,44 +79,4 @@ toc:
     - [ ] 抽象父类动态代理
 
 
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  creationTimestamp: null
-  labels:
-    run: my-tomcat
-  name: my-tomcat
-spec:
-  containers:
-  - image: tomcat
-    name: my-tomcat
-    resources: {}
-  dnsPolicy: ClusterFirst
-  restartPolicy: Always
-status: {}
-```
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: nginx-test
-  name: nginx-test-deployment
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: nginx-test
-  template:
-    metadata:
-      labels:
-        app: nginx-test
-    spec:
-      containers:
-      - image: nginx
-        name: nginx
-```
 
