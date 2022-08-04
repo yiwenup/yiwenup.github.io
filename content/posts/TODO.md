@@ -15,6 +15,7 @@ toc:
 - [x] [x-build](https://code-device.github.io/x-build)
 - [x] [logo在线制作](https://www.designevo.com/)
 - [ ] dapr
+- [ ] 腾讯云服务其：5RQJK1xj8sAxxNYN
 - [ ] Jakarta
 - [x] springboot 2.1.7 
   - [x] 2.1.x => 2.2.x：JMX默认禁用；Spring-dependiences第三方javax扩展jar更名为Jakarta；隐藏域请求参数_method默认禁用
