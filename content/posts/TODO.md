@@ -15,7 +15,7 @@ toc:
 - [x] [x-build](https://code-device.github.io/x-build)
 - [x] [logo在线制作](https://www.designevo.com/)
 - [ ] dapr
-- [ ] 腾讯云服务其：5RQJK1xj8sAxxNYN
+- [x] 腾讯云服务其：5RQJK1xj8sAxxNYN
 - [ ] Jakarta
 - [x] springboot 2.1.7 
   - [x] 2.1.x => 2.2.x：JMX默认禁用；Spring-dependiences第三方javax扩展jar更名为Jakarta；隐藏域请求参数_method默认禁用
@@ -23,7 +23,7 @@ toc:
   - [x] 2.3.x => 2.4.x：`spring.config.import`不再需要填写文件拓展名，默认是补充`.yaml`；镜像打包优化；
   - [x] 2.4.x => 2.5.x：`tomcat`的`keep-alive`支持配置文件中配置超时时间以及最大请求数量；
   - [x] 2.5.x => 2.6.x：默认禁用循环依赖；移除依赖管理`JBoss`/`Prometheus`/`Mongo`/`Oracle`等；`spring-boot-configuration-processor`支持为`lombok`的`@Value`提供元数据
-- [ ] maven插件/web界面的代码生成
+- [x] maven插件/web界面的代码生成
 - [ ] JVM
   - [ ] class 文件
   - [ ] 双亲委派
