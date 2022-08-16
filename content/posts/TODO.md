@@ -12,6 +12,7 @@ toc:
 
 - [x] GitHub - idea -token：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
 - [x] Github - forever：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
+- [ ] Google - Zyw142701
 - [x] [x-build](https://code-device.github.io/x-build)
 - [x] [logo在线制作](https://www.designevo.com/)
 - [ ] dapr
