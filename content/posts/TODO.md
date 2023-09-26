@@ -12,8 +12,8 @@ toc:
 
 - [x] GitHub - idea -token：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
 - [x] Github - forever：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
-- [ ] Github - blog-token：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
-- [ ] Google - Zyw142701
+- [x] Github - blog-token：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
+- [x] Google - Zyw142701
 - [ ] MongoDB
   - [ ] 内存映射
   - [ ] Page Cache
@@ -44,8 +44,8 @@ toc:
   - [ ] cas
   - [ ] lock
 - [ ] 开发框架
-  - [ ] Spring
-  - [ ] Spring MVC
+  - [x] Spring
+  - [x] Spring MVC
   - [ ] Spring Boot
   - [x] Mybatis
   - [ ] Apache Dubbo
@@ -121,5 +121,13 @@ toc:
 
 ---
 
-
+- [x] CTP组件作为扩展模块接入到低代码平台 - 按需引入
+- [x] 独立部署手册，验证IE11兼容性
+- [ ] 存量应用与制品应用权限打通 - 还没开始
+- [x] 完成远程调用文档
+- [x] decimal类型使用上最大值最小值有歧义
+- [x] 数据类型修改，弹窗类型会缺失，偶发。11月14日出现两起
+- [x] 字段命名不符合行内规范，已将改需求提给网易产品，联系人：文晓、雯燕、家珂
+- [x] 扩展模块暴露接口，但是路径不匹配问题，已反馈，联系人：沈余锋
+- [x] ~~前端逻辑能调用后端扩展模块暴露的方法，需要加过滤，已将问题提供给网易，联系人：程义~~
 
