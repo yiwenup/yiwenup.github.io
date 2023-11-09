@@ -1,4 +1,5 @@
-<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>00. Spring Framework - 基础 - Yiwenup - 持续沉淀</title><meta name=Description content="Yiwenup - 持续沉淀"><meta property="og:title" content="00. Spring Framework - 基础"><meta property="og:description" content="一、Spring 概览 1.1 Spring Data Access/Integration JDBC：提供了一个 JDBC 抽象层，它可以消除冗长的 JDBC 编码和解析数据库厂商特有的错误代码。 这个模块包含了 Spring 对 JDBC 数据访问"><meta property="og:type" content="article"><meta property="og:url" content="http://www.yiwenup.cloud/spring%E5%9F%BA%E7%A1%80/"><meta property="og:image" content="http://www.yiwenup.cloud/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-06-14T19:12:32+08:00"><meta property="article:modified_time" content="2022-06-14T19:12:32+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://www.yiwenup.cloud/logo.png"><meta name=twitter:title content="00. Spring Framework - 基础"><meta name=twitter:description content="一、Spring 概览 1.1 Spring Data Access/Integration JDBC：提供了一个 JDBC 抽象层，它可以消除冗长的 JDBC 编码和解析数据库厂商特有的错误代码。 这个模块包含了 Spring 对 JDBC 数据访问"><meta name=application-name content="Yiwenup - 持续沉淀"><meta name=apple-mobile-web-app-title content="Yiwenup - 持续沉淀"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://www.yiwenup.cloud/spring%E5%9F%BA%E7%A1%80/><link rel=prev href=http://www.yiwenup.cloud/01_ddd%E7%90%86%E8%AE%BA/><link rel=next href=http://www.yiwenup.cloud/spring%E6%8E%A2%E7%B4%A2-ioc/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"00. Spring Framework - 基础","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/www.yiwenup.cloud\/spring%E5%9F%BA%E7%A1%80\/"},"image":["http:\/\/www.yiwenup.cloud\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Spring生态, IOC, AOP","wordcount":4162,"url":"http:\/\/www.yiwenup.cloud\/spring%E5%9F%BA%E7%A1%80\/","datePublished":"2022-06-14T19:12:32+08:00","dateModified":"2022-06-14T19:12:32+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":{"@type":"ImageObject","url":"http:\/\/www.yiwenup.cloud\/images\/avatar.png","width":320,"height":320}},"author":{"@type":"Person","name":"yiwenup"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/categories/><i class='fas fa-folder-open'></i> 分类 </a><a class=menu-item href=/tags/><i class='fas fa-tags fa-fw'></i> 标签 </a><a class=menu-item href=/posts/><i class='fas fa-book'></i> 所有文章 </a><a class=menu-item href=/></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=X-UA-Compatible content="IE=edge, chrome=1"><title>00. Spring Framework - 基础 - Yiwenup - 持续沉淀</title><meta name=Description content="Yiwenup - 持续沉淀"><meta property="og:title" content="00. Spring Framework - 基础">
+<meta property="og:description" content="一、Spring 概览 1.1 Spring Data Access/Integration JDBC：提供了一个 JDBC 抽象层，它可以消除冗长的 JDBC 编码和解析数据库厂商特有的错误代码。 这个模块包含了 Spring 对 JDBC 数据访问"><meta property="og:type" content="article"><meta property="og:url" content="http://www.yiwenup.cloud/spring%E5%9F%BA%E7%A1%80/"><meta property="og:image" content="http://www.yiwenup.cloud/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-06-14T19:12:32+08:00"><meta property="article:modified_time" content="2022-06-14T19:12:32+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://www.yiwenup.cloud/logo.png"><meta name=twitter:title content="00. Spring Framework - 基础"><meta name=twitter:description content="一、Spring 概览 1.1 Spring Data Access/Integration JDBC：提供了一个 JDBC 抽象层，它可以消除冗长的 JDBC 编码和解析数据库厂商特有的错误代码。 这个模块包含了 Spring 对 JDBC 数据访问"><meta name=application-name content="Yiwenup - 持续沉淀"><meta name=apple-mobile-web-app-title content="Yiwenup - 持续沉淀"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://www.yiwenup.cloud/spring%E5%9F%BA%E7%A1%80/><link rel=prev href=http://www.yiwenup.cloud/01_ddd%E7%90%86%E8%AE%BA/><link rel=next href=http://www.yiwenup.cloud/spring%E6%8E%A2%E7%B4%A2-ioc/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"00. Spring Framework - 基础","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/www.yiwenup.cloud\/spring%E5%9F%BA%E7%A1%80\/"},"image":["http:\/\/www.yiwenup.cloud\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Spring生态, IOC, AOP","wordcount":4162,"url":"http:\/\/www.yiwenup.cloud\/spring%E5%9F%BA%E7%A1%80\/","datePublished":"2022-06-14T19:12:32+08:00","dateModified":"2022-06-14T19:12:32+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":{"@type":"ImageObject","url":"http:\/\/www.yiwenup.cloud\/images\/avatar.png","width":320,"height":320}},"author":{"@type":"Person","name":"yiwenup"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/categories/><i class='fas fa-folder-open'></i> 分类 </a><a class=menu-item href=/tags/><i class='fas fa-tags fa-fw'></i> 标签 </a><a class=menu-item href=/posts/><i class='fas fa-book'></i> 所有文章 </a><a class=menu-item href=/></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
 <i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/categories/ title><i class='fas fa-folder-open'></i>分类</a><a class=menu-item href=/tags/ title><i class='fas fa-tags fa-fw'></i>标签</a><a class=menu-item href=/posts/ title><i class='fas fa-book'></i>所有文章</a><a class=menu-item href=/ title></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
 <i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">00. Spring Framework - 基础</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-feather-alt"></i></a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/spring/><i class="far fa-folder fa-fw"></i>Spring</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2022-06-14>2022-06-14</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 4162 字&nbsp;
 <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 9 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
@@ -27,10 +28,10 @@
 </span></span></code></pre></td></tr></table></div></div></li><li><p>读取配置文件<code>beans.xml</code>，测试获取容器中的<code>Bean</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>BeanFactory</span> <span class=n>context</span> <span class=o>=</span> <span class=k>new</span> <span class=n>ClassPathXmlApplicationContext</span><span class=o>(</span><span class=s>&#34;beans.xml&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl><span class=n>User</span> <span class=n>user</span> <span class=o>=</span> <span class=n>context</span><span class=o>.</span><span class=na>getBean</span><span class=o>(</span><span class=n>User</span><span class=o>.</span><span class=na>class</span><span class=o>);</span>
-</span></span><span class=line><span class=cl><span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=n>user</span><span class=o>);</span>
-</span></span></code></pre></td></tr></table></div></div></li></ol><h3 id=22-注解式>2.2 注解式</h3><ol><li><p>定义配置类，配置<code>Bean</code>注入容器</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>BeanFactory</span><span class=w> </span><span class=n>context</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ClassPathXmlApplicationContext</span><span class=p>(</span><span class=s>&#34;beans.xml&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>User</span><span class=w> </span><span class=n>user</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>context</span><span class=p>.</span><span class=na>getBean</span><span class=p>(</span><span class=n>User</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>user</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li></ol><h3 id=22-注解式>2.2 注解式</h3><ol><li><p>定义配置类，配置<code>Bean</code>注入容器</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -57,18 +58,18 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-14 17:14:28
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=nd>@Configuration</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>User4AnnoConfig</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>User4Anno</span> <span class=nf>user4Anno</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>User4Anno</span> <span class=n>user4Anno</span> <span class=o>=</span> <span class=k>new</span> <span class=n>User4Anno</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=n>user4Anno</span><span class=o>.</span><span class=na>setUsername</span><span class=o>(</span><span class=s>&#34;李四&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=n>user4Anno</span><span class=o>.</span><span class=na>setPassword</span><span class=o>(</span><span class=s>&#34;456&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>user4Anno</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>User4AnnoConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>User4Anno</span><span class=w> </span><span class=nf>user4Anno</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>User4Anno</span><span class=w> </span><span class=n>user4Anno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>User4Anno</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>user4Anno</span><span class=p>.</span><span class=na>setUsername</span><span class=p>(</span><span class=s>&#34;李四&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>user4Anno</span><span class=p>.</span><span class=na>setPassword</span><span class=p>(</span><span class=s>&#34;456&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>user4Anno</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -90,19 +91,19 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-14 17:06:15
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>User4Anno</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=kd>private</span> <span class=n>String</span> <span class=n>username</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=kd>private</span> <span class=n>String</span> <span class=n>password</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=c1>// 省略 get/set/toString
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li><li><p>加载配置类，获取<code>Bean</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>User4Anno</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>username</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>password</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 省略 get/set/toString</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>加载配置类，获取<code>Bean</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>BeanFactory</span> <span class=n>context</span> <span class=o>=</span> <span class=k>new</span> <span class=n>AnnotationConfigApplicationContext</span><span class=o>(</span><span class=n>User4AnnoConfig</span><span class=o>.</span><span class=na>class</span><span class=o>);</span>
-</span></span><span class=line><span class=cl><span class=n>User4Anno</span> <span class=n>user</span> <span class=o>=</span> <span class=n>context</span><span class=o>.</span><span class=na>getBean</span><span class=o>(</span><span class=n>User4Anno</span><span class=o>.</span><span class=na>class</span><span class=o>);</span>
-</span></span><span class=line><span class=cl><span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=n>user</span><span class=o>);</span>
-</span></span></code></pre></td></tr></table></div></div></li></ol><h3 id=23-包扫描>2.3 包扫描</h3><blockquote><p>比如现在引入了某个外部的功能，但是并没有声明将注入<code>IOC</code>中，可以配置扫描规则，将其扫入<code>IOC</code>中</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>BeanFactory</span><span class=w> </span><span class=n>context</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>AnnotationConfigApplicationContext</span><span class=p>(</span><span class=n>User4AnnoConfig</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>User4Anno</span><span class=w> </span><span class=n>user</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>context</span><span class=p>.</span><span class=na>getBean</span><span class=p>(</span><span class=n>User4Anno</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>user</span><span class=p>);</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li></ol><h3 id=23-包扫描>2.3 包扫描</h3><blockquote><p>比如现在引入了某个外部的功能，但是并没有声明将注入<code>IOC</code>中，可以配置扫描规则，将其扫入<code>IOC</code>中</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -127,16 +128,16 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-14 17:14:28
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description 假设现在要扫 Spring 包里面的 ClassPathXmlApplicationContext 类
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=nd>@Configuration</span>
-</span></span><span class=line><span class=cl><span class=nd>@ComponentScan</span><span class=o>(</span>
-</span></span><span class=line><span class=cl>        <span class=n>basePackages</span> <span class=o>=</span> <span class=o>{</span><span class=s>&#34;org.springframework.context.support&#34;</span><span class=o>},</span>
-</span></span><span class=line><span class=cl>        <span class=n>includeFilters</span> <span class=o>=</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>                <span class=nd>@ComponentScan.Filter</span><span class=o>(</span><span class=n>type</span> <span class=o>=</span> <span class=n>FilterType</span><span class=o>.</span><span class=na>ASSIGNABLE_TYPE</span><span class=o>,</span> <span class=n>classes</span> <span class=o>=</span> <span class=o>{</span><span class=n>ClassPathXmlApplicationContext</span><span class=o>.</span><span class=na>class</span><span class=o>})</span>
-</span></span><span class=line><span class=cl>        <span class=o>},</span> <span class=n>useDefaultFilters</span> <span class=o>=</span> <span class=kc>false</span><span class=o>)</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>User4AnnoConfig</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@ComponentScan</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>basePackages</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=s>&#34;org.springframework.context.support&#34;</span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>includeFilters</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nd>@ComponentScan.Filter</span><span class=p>(</span><span class=n>type</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>FilterType</span><span class=p>.</span><span class=na>ASSIGNABLE_TYPE</span><span class=p>,</span><span class=w> </span><span class=n>classes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=n>ClassPathXmlApplicationContext</span><span class=p>.</span><span class=na>class</span><span class=p>})</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>},</span><span class=w> </span><span class=n>useDefaultFilters</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>false</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>User4AnnoConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -153,24 +154,24 @@
 </span><span class=lnt>15
 </span><span class=lnt>16
 </span><span class=lnt>17
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span> <span class=nn>org.springframework.context.annotation</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>enum</span> <span class=n>FilterType</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=c1>// 注解
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>ANNOTATION</span><span class=o>,</span>
-</span></span><span class=line><span class=cl>    <span class=c1>// 指定的类
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>ASSIGNABLE_TYPE</span><span class=o>,</span>
-</span></span><span class=line><span class=cl>    <span class=c1>// ASPECTJ
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>ASPECTJ</span><span class=o>,</span>
-</span></span><span class=line><span class=cl>    <span class=c1>// 正则
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>REGEX</span><span class=o>,</span>
-</span></span><span class=line><span class=cl>    <span class=c1>// 自定义
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>CUSTOM</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=kd>private</span> <span class=nf>FilterType</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><blockquote><p>设置可以通过自定义规则来进行包扫描</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>org.springframework.context.annotation</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>enum</span><span class=w> </span><span class=n>FilterType</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 注解</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>ANNOTATION</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 指定的类</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>ASSIGNABLE_TYPE</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// ASPECTJ</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>ASPECTJ</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 正则</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>REGEX</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 自定义</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>CUSTOM</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=nf>FilterType</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><blockquote><p>设置可以通过自定义规则来进行包扫描</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -200,21 +201,21 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-14 17:37:18
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>CustomFilter</span> <span class=kd>implements</span> <span class=n>TypeFilter</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>boolean</span> <span class=nf>match</span><span class=o>(</span><span class=n>MetadataReader</span> <span class=n>metadataReader</span><span class=o>,</span> <span class=n>MetadataReaderFactory</span> <span class=n>metadataReaderFactory</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>IOException</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 获取类的元信息
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>ClassMetadata</span> <span class=n>classMetadata</span> <span class=o>=</span> <span class=n>metadataReader</span><span class=o>.</span><span class=na>getClassMetadata</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 获取注解的元信息
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>AnnotationMetadata</span> <span class=n>annotationMetadata</span> <span class=o>=</span> <span class=n>metadataReader</span><span class=o>.</span><span class=na>getAnnotationMetadata</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 获取资源的元信息
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Resource</span> <span class=n>resource</span> <span class=o>=</span> <span class=n>metadataReader</span><span class=o>.</span><span class=na>getResource</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=s>&#34;org.springframework.context.support.ClassPathXmlApplicationContext&#34;</span><span class=o>.</span><span class=na>equals</span><span class=o>(</span><span class=n>classMetadata</span><span class=o>.</span><span class=na>getClassName</span><span class=o>());</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>CustomFilter</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>TypeFilter</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>match</span><span class=p>(</span><span class=n>MetadataReader</span><span class=w> </span><span class=n>metadataReader</span><span class=p>,</span><span class=w> </span><span class=n>MetadataReaderFactory</span><span class=w> </span><span class=n>metadataReaderFactory</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 获取类的元信息</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ClassMetadata</span><span class=w> </span><span class=n>classMetadata</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>metadataReader</span><span class=p>.</span><span class=na>getClassMetadata</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 获取注解的元信息</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>AnnotationMetadata</span><span class=w> </span><span class=n>annotationMetadata</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>metadataReader</span><span class=p>.</span><span class=na>getAnnotationMetadata</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 获取资源的元信息</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Resource</span><span class=w> </span><span class=n>resource</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>metadataReader</span><span class=p>.</span><span class=na>getResource</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;org.springframework.context.support.ClassPathXmlApplicationContext&#34;</span><span class=p>.</span><span class=na>equals</span><span class=p>(</span><span class=n>classMetadata</span><span class=p>.</span><span class=na>getClassName</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -239,44 +240,44 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-14 17:14:28
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description 假设现在要扫 Spring 包里面的 ClassPathXmlApplicationContext 类
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=nd>@Configuration</span>
-</span></span><span class=line><span class=cl><span class=nd>@ComponentScan</span><span class=o>(</span>
-</span></span><span class=line><span class=cl>        <span class=n>basePackages</span> <span class=o>=</span> <span class=o>{</span><span class=s>&#34;org.springframework.context.support&#34;</span><span class=o>},</span>
-</span></span><span class=line><span class=cl>        <span class=n>includeFilters</span> <span class=o>=</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>                <span class=nd>@ComponentScan.Filter</span><span class=o>(</span><span class=n>type</span> <span class=o>=</span> <span class=n>FilterType</span><span class=o>.</span><span class=na>CUSTOM</span><span class=o>,</span> <span class=n>classes</span> <span class=o>=</span> <span class=o>{</span><span class=n>CustomFilter</span><span class=o>.</span><span class=na>class</span><span class=o>})</span>
-</span></span><span class=line><span class=cl>        <span class=o>},</span> <span class=n>useDefaultFilters</span> <span class=o>=</span> <span class=kc>false</span><span class=o>)</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>User4AnnoConfig</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><h3 id=24-导入-bean-的方式>2.4 导入 Bean 的方式</h3><ul><li><p>@Import</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@ComponentScan</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>basePackages</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=s>&#34;org.springframework.context.support&#34;</span><span class=p>},</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>includeFilters</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nd>@ComponentScan.Filter</span><span class=p>(</span><span class=n>type</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>FilterType</span><span class=p>.</span><span class=na>CUSTOM</span><span class=p>,</span><span class=w> </span><span class=n>classes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=n>CustomFilter</span><span class=p>.</span><span class=na>class</span><span class=p>})</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>},</span><span class=w> </span><span class=n>useDefaultFilters</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>false</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>User4AnnoConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=24-导入-bean-的方式>2.4 导入 Bean 的方式</h3><ul><li><p>@Import</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span>
-</span></span><span class=line><span class=cl><span class=nd>@Import</span><span class=o>(</span><span class=n>value</span> <span class=o>=</span> <span class=o>{</span><span class=n>User4Scan</span><span class=o>.</span><span class=na>class</span><span class=o>})</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>User4AnnoConfig</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li><li><p>实现<code>ImportSeletor</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Import</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=n>User4Scan</span><span class=p>.</span><span class=na>class</span><span class=p>})</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>User4AnnoConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>实现<code>ImportSeletor</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
 </span><span class=lnt>6
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>BeanImporter</span> <span class=kd>implements</span> <span class=n>ImportSelector</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>String</span><span class=o>[]</span> <span class=nf>selectImports</span><span class=o>(</span><span class=n>AnnotationMetadata</span> <span class=n>importingClassMetadata</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=k>new</span> <span class=n>String</span><span class=o>[]{</span><span class=n>User4Scan</span><span class=o>.</span><span class=na>class</span><span class=o>.</span><span class=na>getName</span><span class=o>()};</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>BeanImporter</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>ImportSelector</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=nf>selectImports</span><span class=p>(</span><span class=n>AnnotationMetadata</span><span class=w> </span><span class=n>importingClassMetadata</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>String</span><span class=o>[]</span><span class=p>{</span><span class=n>User4Scan</span><span class=p>.</span><span class=na>class</span><span class=p>.</span><span class=na>getName</span><span class=p>()};</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span>
-</span></span><span class=line><span class=cl><span class=nd>@Import</span><span class=o>(</span><span class=n>value</span> <span class=o>=</span> <span class=o>{</span><span class=n>BeanImporter</span><span class=o>.</span><span class=na>class</span><span class=o>})</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>User4AnnoConfig</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li><li><p>实现<code>ImportBeanDefinitionRegister</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Import</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=n>BeanImporter</span><span class=p>.</span><span class=na>class</span><span class=p>})</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>User4AnnoConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>实现<code>ImportBeanDefinitionRegister</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
@@ -284,23 +285,23 @@
 </span><span class=lnt>6
 </span><span class=lnt>7
 </span><span class=lnt>8
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>BeanImporter2</span> <span class=kd>implements</span> <span class=n>ImportBeanDefinitionRegistrar</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>void</span> <span class=nf>registerBeanDefinitions</span><span class=o>(</span><span class=n>AnnotationMetadata</span> <span class=n>importingClassMetadata</span><span class=o>,</span> <span class=n>BeanDefinitionRegistry</span> <span class=n>registry</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>BeanDefinition</span> <span class=n>beanDefinition</span> <span class=o>=</span> <span class=k>new</span> <span class=n>RootBeanDefinition</span><span class=o>(</span><span class=n>User4Scan</span><span class=o>.</span><span class=na>class</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=n>registry</span><span class=o>.</span><span class=na>registerBeanDefinition</span><span class=o>(</span><span class=s>&#34;user4Scan&#34;</span><span class=o>,</span> <span class=n>beanDefinition</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>BeanImporter2</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>ImportBeanDefinitionRegistrar</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>registerBeanDefinitions</span><span class=p>(</span><span class=n>AnnotationMetadata</span><span class=w> </span><span class=n>importingClassMetadata</span><span class=p>,</span><span class=w> </span><span class=n>BeanDefinitionRegistry</span><span class=w> </span><span class=n>registry</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>BeanDefinition</span><span class=w> </span><span class=n>beanDefinition</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>RootBeanDefinition</span><span class=p>(</span><span class=n>User4Scan</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>registry</span><span class=p>.</span><span class=na>registerBeanDefinition</span><span class=p>(</span><span class=s>&#34;user4Scan&#34;</span><span class=p>,</span><span class=w> </span><span class=n>beanDefinition</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span>
-</span></span><span class=line><span class=cl><span class=nd>@Import</span><span class=o>(</span><span class=n>value</span> <span class=o>=</span> <span class=o>{</span><span class=n>BeanImporter2</span><span class=o>.</span><span class=na>class</span><span class=o>})</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>User4AnnoConfig</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li><li><p><code>FacotryBean</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Import</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=n>BeanImporter2</span><span class=p>.</span><span class=na>class</span><span class=p>})</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>User4AnnoConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p><code>FacotryBean</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -320,35 +321,35 @@
 </span><span class=lnt>18
 </span><span class=lnt>19
 </span><span class=lnt>20
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>BeanImporter3</span> <span class=kd>implements</span> <span class=n>FactoryBean</span><span class=o>&lt;</span><span class=n>User4Scan</span><span class=o>&gt;</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>User4Scan</span> <span class=nf>getObject</span><span class=o>()</span> <span class=kd>throws</span> <span class=n>Exception</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>User4Scan</span> <span class=n>user4Scan</span> <span class=o>=</span> <span class=k>new</span> <span class=n>User4Scan</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=n>user4Scan</span><span class=o>.</span><span class=na>setUsername</span><span class=o>(</span><span class=s>&#34;王五&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=n>user4Scan</span><span class=o>.</span><span class=na>setPassword</span><span class=o>(</span><span class=s>&#34;789&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>user4Scan</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>Class</span><span class=o>&lt;?&gt;</span> <span class=n>getObjectType</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>User4Scan</span><span class=o>.</span><span class=na>class</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>boolean</span> <span class=nf>isSingleton</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=kc>true</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>BeanImporter3</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>FactoryBean</span><span class=o>&lt;</span><span class=n>User4Scan</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>User4Scan</span><span class=w> </span><span class=nf>getObject</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>User4Scan</span><span class=w> </span><span class=n>user4Scan</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>User4Scan</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>user4Scan</span><span class=p>.</span><span class=na>setUsername</span><span class=p>(</span><span class=s>&#34;王五&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>user4Scan</span><span class=p>.</span><span class=na>setPassword</span><span class=p>(</span><span class=s>&#34;789&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>user4Scan</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Class</span><span class=o>&lt;?&gt;</span><span class=w> </span><span class=n>getObjectType</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>User4Scan</span><span class=p>.</span><span class=na>class</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>isSingleton</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=kc>true</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span>
-</span></span><span class=line><span class=cl><span class=nd>@Import</span><span class=o>(</span><span class=n>value</span> <span class=o>=</span> <span class=o>{</span><span class=n>BeanImporter3</span><span class=o>.</span><span class=na>class</span><span class=o>})</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>User4AnnoConfig</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li></ul><h2 id=四spring-aop-使用>四、Spring AOP 使用</h2><blockquote><p>AOP 面向切面编程，要实现的是在我们原来写的代码的基础上，进行一定的包装，如在方法执行前、方法返回后、方法抛出异常后等地方进行一定的拦截处理或者叫增强处理。</p><p>AspectJ 是 AOP 编程的完全解决方案，它能做许多AOP实现不了的事情。Spring AOP 致力于解决的是企业级开发中最普遍的 AOP 需求（方法织入）</p><p>Spring AOP 中的 @Aspect、@PointCut、@Before、@After、@Around 都来自 AspectJ，但功能都由 SpringAOP 自己实现</p></blockquote><h3 id=41-接口式---advice-系>4.1 接口式 - Advice 系</h3><blockquote><ul><li>拦截器的粒度只控制到了类级别，类中所有的方法都进行了拦截</li></ul></blockquote><ol><li><p>测试功能类</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Import</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=n>BeanImporter3</span><span class=p>.</span><span class=na>class</span><span class=p>})</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>User4AnnoConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li></ul><h2 id=四spring-aop-使用>四、Spring AOP 使用</h2><blockquote><p>AOP 面向切面编程，要实现的是在我们原来写的代码的基础上，进行一定的包装，如在方法执行前、方法返回后、方法抛出异常后等地方进行一定的拦截处理或者叫增强处理。</p><p>AspectJ 是 AOP 编程的完全解决方案，它能做许多AOP实现不了的事情。Spring AOP 致力于解决的是企业级开发中最普遍的 AOP 需求（方法织入）</p><p>Spring AOP 中的 @Aspect、@PointCut、@Before、@After、@Around 都来自 AspectJ，但功能都由 SpringAOP 自己实现</p></blockquote><h3 id=41-接口式---advice-系>4.1 接口式 - Advice 系</h3><blockquote><ul><li>拦截器的粒度只控制到了类级别，类中所有的方法都进行了拦截</li></ul></blockquote><ol><li><p>测试功能类</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -371,14 +372,14 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-15 09:35:01
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>interface</span> <span class=nc>AopInter</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>add</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>sub</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>multi</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>div</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>);</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>AopInter</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>add</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>sub</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>multi</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>div</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -416,29 +417,29 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-15 09:36:46
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>AopImpl</span> <span class=kd>implements</span> <span class=n>AopInter</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>add</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>numA</span> <span class=o>+</span> <span class=n>numB</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>sub</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>numA</span> <span class=o>-</span> <span class=n>numB</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>multi</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>numA</span> <span class=o>*</span> <span class=n>numB</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>div</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>numA</span> <span class=o>/</span> <span class=n>numB</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li><li><p>切面</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>AopImpl</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>AopInter</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>add</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>numA</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>numB</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>sub</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>numA</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>numB</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>multi</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>numA</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>numB</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>div</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>numA</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=n>numB</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>切面</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -461,14 +462,14 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-15 09:49:45
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>BeforeMethod</span> <span class=kd>implements</span> <span class=n>MethodBeforeAdvice</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>void</span> <span class=nf>before</span><span class=o>(</span><span class=n>Method</span> <span class=n>method</span><span class=o>,</span> <span class=n>Object</span><span class=o>[]</span> <span class=n>args</span><span class=o>,</span> <span class=n>Object</span> <span class=n>target</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>Throwable</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=s>&#34;MethodBeforeAdvice =&gt; 方法：&#34;</span> <span class=o>+</span> <span class=n>method</span><span class=o>.</span><span class=na>getName</span><span class=o>()</span> <span class=o>+</span> <span class=s>&#34; 参数：&#34;</span> <span class=o>+</span> <span class=n>Arrays</span><span class=o>.</span><span class=na>asList</span><span class=o>(</span><span class=n>args</span><span class=o>));</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>BeforeMethod</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>MethodBeforeAdvice</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>before</span><span class=p>(</span><span class=n>Method</span><span class=w> </span><span class=n>method</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=n>target</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Throwable</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;MethodBeforeAdvice =&gt; 方法：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; 参数：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>Arrays</span><span class=p>.</span><span class=na>asList</span><span class=p>(</span><span class=n>args</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -507,30 +508,30 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-15 10:51:54
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>AroundMethod</span> <span class=kd>implements</span> <span class=n>MethodInterceptor</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>Object</span> <span class=nf>invoke</span><span class=o>(</span><span class=n>MethodInvocation</span> <span class=n>invocation</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>Throwable</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 方法信息
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Method</span> <span class=n>method</span> <span class=o>=</span> <span class=n>invocation</span><span class=o>.</span><span class=na>getMethod</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 方法名
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>String</span> <span class=n>methodName</span> <span class=o>=</span> <span class=n>method</span><span class=o>.</span><span class=na>getName</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 参数数量
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kt>int</span> <span class=n>parameterCount</span> <span class=o>=</span> <span class=n>method</span><span class=o>.</span><span class=na>getParameterCount</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 参数类型
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Class</span><span class=o>&lt;?&gt;[]</span> <span class=n>parameterTypes</span> <span class=o>=</span> <span class=n>method</span><span class=o>.</span><span class=na>getParameterTypes</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 返回值类型
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Class</span><span class=o>&lt;?&gt;</span> <span class=n>returnType</span> <span class=o>=</span> <span class=n>method</span><span class=o>.</span><span class=na>getReturnType</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>        <span class=c1>// 参数
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Object</span><span class=o>[]</span> <span class=n>arguments</span> <span class=o>=</span> <span class=n>invocation</span><span class=o>.</span><span class=na>getArguments</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=s>&#34;MethodInterceptor =&gt; 方法：&#34;</span> <span class=o>+</span> <span class=n>methodName</span> <span class=o>+</span> <span class=s>&#34; 执行前，参数：&#34;</span> <span class=o>+</span> <span class=n>Arrays</span><span class=o>.</span><span class=na>asList</span><span class=o>(</span><span class=n>arguments</span><span class=o>));</span>
-</span></span><span class=line><span class=cl>        <span class=n>Object</span> <span class=n>ret</span> <span class=o>=</span> <span class=n>invocation</span><span class=o>.</span><span class=na>proceed</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=s>&#34;MethodInterceptor =&gt; 方法：&#34;</span> <span class=o>+</span> <span class=n>methodName</span> <span class=o>+</span> <span class=s>&#34; 执行后，返回值：&#34;</span> <span class=o>+</span> <span class=n>ret</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>ret</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li><li><p>动态代理（有接口的用<code>Jdk动态代理</code>，无接口的用<code>Cglib动态代理</code>）</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>AroundMethod</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>MethodInterceptor</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=nf>invoke</span><span class=p>(</span><span class=n>MethodInvocation</span><span class=w> </span><span class=n>invocation</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Throwable</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 方法信息</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Method</span><span class=w> </span><span class=n>method</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>invocation</span><span class=p>.</span><span class=na>getMethod</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 方法名</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>methodName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getName</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 参数数量</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kt>int</span><span class=w> </span><span class=n>parameterCount</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getParameterCount</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 参数类型</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Class</span><span class=o>&lt;?&gt;[]</span><span class=w> </span><span class=n>parameterTypes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getParameterTypes</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 返回值类型</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Class</span><span class=o>&lt;?&gt;</span><span class=w> </span><span class=n>returnType</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getReturnType</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 参数</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Object</span><span class=o>[]</span><span class=w> </span><span class=n>arguments</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>invocation</span><span class=p>.</span><span class=na>getArguments</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;MethodInterceptor =&gt; 方法：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>methodName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; 执行前，参数：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>Arrays</span><span class=p>.</span><span class=na>asList</span><span class=p>(</span><span class=n>arguments</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Object</span><span class=w> </span><span class=n>ret</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>invocation</span><span class=p>.</span><span class=na>proceed</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;MethodInterceptor =&gt; 方法：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>methodName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; 执行后，返回值：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>ret</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>ret</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>动态代理（有接口的用<code>Jdk动态代理</code>，无接口的用<code>Cglib动态代理</code>）</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -569,30 +570,30 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-14 17:14:28
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=nd>@Configuration</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>User4AnnoConfig</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>MethodBeforeAdvice</span> <span class=nf>methodBeforeAdvice</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=k>new</span> <span class=n>BeforeMethod</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>MethodInterceptor</span> <span class=nf>methodInterceptor</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=k>new</span> <span class=n>AroundMethod</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>ProxyFactoryBean</span> <span class=nf>proxyFactoryBean</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>ProxyFactoryBean</span> <span class=n>proxyFactoryBean</span> <span class=o>=</span> <span class=k>new</span> <span class=n>ProxyFactoryBean</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 编排切面，有顺序的
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>proxyFactoryBean</span><span class=o>.</span><span class=na>setInterceptorNames</span><span class=o>(</span><span class=s>&#34;methodInterceptor&#34;</span><span class=o>,</span> <span class=s>&#34;methodBeforeAdvice&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=n>proxyFactoryBean</span><span class=o>.</span><span class=na>setTarget</span><span class=o>(</span><span class=k>new</span> <span class=n>AopImpl</span><span class=o>());</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>proxyFactoryBean</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li></ol><h3 id=42-接口式---advisor-系>4.2 接口式 - Advisor 系</h3><blockquote><ul><li>Advisor = Advice + PointCut</li><li>这种方式基于上面的好处在于：可以更加细粒度的控制需要拦截待处理的方法，做到了期望方法级别的增强</li></ul></blockquote><ol><li><p>测试功能类</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>User4AnnoConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>MethodBeforeAdvice</span><span class=w> </span><span class=nf>methodBeforeAdvice</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>BeforeMethod</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>MethodInterceptor</span><span class=w> </span><span class=nf>methodInterceptor</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>AroundMethod</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>ProxyFactoryBean</span><span class=w> </span><span class=nf>proxyFactoryBean</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ProxyFactoryBean</span><span class=w> </span><span class=n>proxyFactoryBean</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ProxyFactoryBean</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 编排切面，有顺序的</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>proxyFactoryBean</span><span class=p>.</span><span class=na>setInterceptorNames</span><span class=p>(</span><span class=s>&#34;methodInterceptor&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;methodBeforeAdvice&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>proxyFactoryBean</span><span class=p>.</span><span class=na>setTarget</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>AopImpl</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>proxyFactoryBean</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li></ol><h3 id=42-接口式---advisor-系>4.2 接口式 - Advisor 系</h3><blockquote><ul><li>Advisor = Advice + PointCut</li><li>这种方式基于上面的好处在于：可以更加细粒度的控制需要拦截待处理的方法，做到了期望方法级别的增强</li></ul></blockquote><ol><li><p>测试功能类</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -615,14 +616,14 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-15 09:35:01
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>interface</span> <span class=nc>AopInter</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>add</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>sub</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>multi</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>div</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>);</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>AopInter</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>add</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>sub</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>multi</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>div</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -660,29 +661,29 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-15 09:36:46
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>AopImpl</span> <span class=kd>implements</span> <span class=n>AopInter</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>add</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>numA</span> <span class=o>+</span> <span class=n>numB</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>sub</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>numA</span> <span class=o>-</span> <span class=n>numB</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>multi</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>numA</span> <span class=o>*</span> <span class=n>numB</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>div</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>numA</span> <span class=o>/</span> <span class=n>numB</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li><li><p>切面</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>AopImpl</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>AopInter</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>add</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>numA</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>numB</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>sub</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>numA</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>numB</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>multi</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>numA</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>numB</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>div</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>numA</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=n>numB</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>切面</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -721,30 +722,30 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-15 10:51:54
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>AroundMethod</span> <span class=kd>implements</span> <span class=n>MethodInterceptor</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>Object</span> <span class=nf>invoke</span><span class=o>(</span><span class=n>MethodInvocation</span> <span class=n>invocation</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>Throwable</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 方法信息
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Method</span> <span class=n>method</span> <span class=o>=</span> <span class=n>invocation</span><span class=o>.</span><span class=na>getMethod</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 方法名
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>String</span> <span class=n>methodName</span> <span class=o>=</span> <span class=n>method</span><span class=o>.</span><span class=na>getName</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 参数数量
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kt>int</span> <span class=n>parameterCount</span> <span class=o>=</span> <span class=n>method</span><span class=o>.</span><span class=na>getParameterCount</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 参数类型
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Class</span><span class=o>&lt;?&gt;[]</span> <span class=n>parameterTypes</span> <span class=o>=</span> <span class=n>method</span><span class=o>.</span><span class=na>getParameterTypes</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 返回值类型
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Class</span><span class=o>&lt;?&gt;</span> <span class=n>returnType</span> <span class=o>=</span> <span class=n>method</span><span class=o>.</span><span class=na>getReturnType</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>        <span class=c1>// 参数
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Object</span><span class=o>[]</span> <span class=n>arguments</span> <span class=o>=</span> <span class=n>invocation</span><span class=o>.</span><span class=na>getArguments</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=s>&#34;MethodInterceptor =&gt; 方法：&#34;</span> <span class=o>+</span> <span class=n>methodName</span> <span class=o>+</span> <span class=s>&#34; 执行前，参数：&#34;</span> <span class=o>+</span> <span class=n>Arrays</span><span class=o>.</span><span class=na>asList</span><span class=o>(</span><span class=n>arguments</span><span class=o>));</span>
-</span></span><span class=line><span class=cl>        <span class=n>Object</span> <span class=n>ret</span> <span class=o>=</span> <span class=n>invocation</span><span class=o>.</span><span class=na>proceed</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=s>&#34;MethodInterceptor =&gt; 方法：&#34;</span> <span class=o>+</span> <span class=n>methodName</span> <span class=o>+</span> <span class=s>&#34; 执行后，返回值：&#34;</span> <span class=o>+</span> <span class=n>ret</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>ret</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li><li><p>动态代理</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>AroundMethod</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>MethodInterceptor</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=nf>invoke</span><span class=p>(</span><span class=n>MethodInvocation</span><span class=w> </span><span class=n>invocation</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Throwable</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 方法信息</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Method</span><span class=w> </span><span class=n>method</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>invocation</span><span class=p>.</span><span class=na>getMethod</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 方法名</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>methodName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getName</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 参数数量</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kt>int</span><span class=w> </span><span class=n>parameterCount</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getParameterCount</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 参数类型</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Class</span><span class=o>&lt;?&gt;[]</span><span class=w> </span><span class=n>parameterTypes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getParameterTypes</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 返回值类型</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Class</span><span class=o>&lt;?&gt;</span><span class=w> </span><span class=n>returnType</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getReturnType</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 参数</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Object</span><span class=o>[]</span><span class=w> </span><span class=n>arguments</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>invocation</span><span class=p>.</span><span class=na>getArguments</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;MethodInterceptor =&gt; 方法：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>methodName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; 执行前，参数：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>Arrays</span><span class=p>.</span><span class=na>asList</span><span class=p>(</span><span class=n>arguments</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Object</span><span class=w> </span><span class=n>ret</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>invocation</span><span class=p>.</span><span class=na>proceed</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;MethodInterceptor =&gt; 方法：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>methodName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; 执行后，返回值：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>ret</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>ret</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>动态代理</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -791,38 +792,38 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-14 17:14:28
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description 
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=nd>@Configuration</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>User4AnnoConfig</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>User4AnnoConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
 </span></span></span><span class=line><span class=cl><span class=cm>     * Advisor = Advice + PonitCut
-</span></span></span><span class=line><span class=cl><span class=cm>     */</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>NameMatchMethodPointcutAdvisor</span> <span class=nf>nameMatchMethodPointcutAdvisor</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>NameMatchMethodPointcutAdvisor</span> <span class=n>nameMatchMethodPointcutAdvisor</span> <span class=o>=</span> <span class=k>new</span> <span class=n>NameMatchMethodPointcutAdvisor</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 设置 Advice
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>nameMatchMethodPointcutAdvisor</span><span class=o>.</span><span class=na>setAdvice</span><span class=o>(</span><span class=n>methodInterceptor</span><span class=o>());</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 设置待拦截的方法
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>nameMatchMethodPointcutAdvisor</span><span class=o>.</span><span class=na>setMappedNames</span><span class=o>(</span><span class=s>&#34;sub&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>nameMatchMethodPointcutAdvisor</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>MethodInterceptor</span> <span class=nf>methodInterceptor</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=k>new</span> <span class=n>AroundMethod</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>ProxyFactoryBean</span> <span class=nf>proxyFactoryBean</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>ProxyFactoryBean</span> <span class=n>proxyFactoryBean</span> <span class=o>=</span> <span class=k>new</span> <span class=n>ProxyFactoryBean</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 将 Advisor 设置进来
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>proxyFactoryBean</span><span class=o>.</span><span class=na>setInterceptorNames</span><span class=o>(</span><span class=s>&#34;nameMatchMethodPointcutAdvisor&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=n>proxyFactoryBean</span><span class=o>.</span><span class=na>setTarget</span><span class=o>(</span><span class=k>new</span> <span class=n>AopImpl</span><span class=o>());</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>proxyFactoryBean</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li></ol><h3 id=43-接口式---autoproxy>4.3 接口式 - AutoProxy</h3><blockquote><p>上述方式，只能针对某个类做代理增强，存在<code>ProxyFactoryBean</code>和具体类的耦合，每增加一个待增强的类，就需要一个<code>FactoryBean</code>，为此，<code>AutoProxy</code>提供了一种全局代理生效的方式</p></blockquote><ol><li><p>测试功能类</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>NameMatchMethodPointcutAdvisor</span><span class=w> </span><span class=nf>nameMatchMethodPointcutAdvisor</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>NameMatchMethodPointcutAdvisor</span><span class=w> </span><span class=n>nameMatchMethodPointcutAdvisor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>NameMatchMethodPointcutAdvisor</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 设置 Advice</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>nameMatchMethodPointcutAdvisor</span><span class=p>.</span><span class=na>setAdvice</span><span class=p>(</span><span class=n>methodInterceptor</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 设置待拦截的方法</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>nameMatchMethodPointcutAdvisor</span><span class=p>.</span><span class=na>setMappedNames</span><span class=p>(</span><span class=s>&#34;sub&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>nameMatchMethodPointcutAdvisor</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>MethodInterceptor</span><span class=w> </span><span class=nf>methodInterceptor</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>AroundMethod</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>ProxyFactoryBean</span><span class=w> </span><span class=nf>proxyFactoryBean</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ProxyFactoryBean</span><span class=w> </span><span class=n>proxyFactoryBean</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ProxyFactoryBean</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 将 Advisor 设置进来</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>proxyFactoryBean</span><span class=p>.</span><span class=na>setInterceptorNames</span><span class=p>(</span><span class=s>&#34;nameMatchMethodPointcutAdvisor&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>proxyFactoryBean</span><span class=p>.</span><span class=na>setTarget</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>AopImpl</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>proxyFactoryBean</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li></ol><h3 id=43-接口式---autoproxy>4.3 接口式 - AutoProxy</h3><blockquote><p>上述方式，只能针对某个类做代理增强，存在<code>ProxyFactoryBean</code>和具体类的耦合，每增加一个待增强的类，就需要一个<code>FactoryBean</code>，为此，<code>AutoProxy</code>提供了一种全局代理生效的方式</p></blockquote><ol><li><p>测试功能类</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -845,14 +846,14 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-15 09:35:01
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>interface</span> <span class=nc>AopInter</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>add</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>sub</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>multi</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=nf>div</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>);</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>AopInter</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>add</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>sub</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>multi</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=nf>div</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -890,29 +891,29 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-15 09:36:46
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>AopImpl</span> <span class=kd>implements</span> <span class=n>AopInter</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>add</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>numA</span> <span class=o>+</span> <span class=n>numB</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>sub</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>numA</span> <span class=o>-</span> <span class=n>numB</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>multi</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>numA</span> <span class=o>*</span> <span class=n>numB</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=kt>int</span> <span class=nf>div</span><span class=o>(</span><span class=kt>int</span> <span class=n>numA</span><span class=o>,</span> <span class=kt>int</span> <span class=n>numB</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>numA</span> <span class=o>/</span> <span class=n>numB</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li><li><p>切面</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>AopImpl</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>AopInter</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>add</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>numA</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>numB</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>sub</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>numA</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>numB</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>multi</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>numA</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>numB</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>div</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>numA</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>numB</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>numA</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=n>numB</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>切面</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -951,30 +952,30 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-15 10:51:54
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>AroundMethod</span> <span class=kd>implements</span> <span class=n>MethodInterceptor</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Override</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>Object</span> <span class=nf>invoke</span><span class=o>(</span><span class=n>MethodInvocation</span> <span class=n>invocation</span><span class=o>)</span> <span class=kd>throws</span> <span class=n>Throwable</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 方法信息
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Method</span> <span class=n>method</span> <span class=o>=</span> <span class=n>invocation</span><span class=o>.</span><span class=na>getMethod</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 方法名
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>String</span> <span class=n>methodName</span> <span class=o>=</span> <span class=n>method</span><span class=o>.</span><span class=na>getName</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 参数数量
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kt>int</span> <span class=n>parameterCount</span> <span class=o>=</span> <span class=n>method</span><span class=o>.</span><span class=na>getParameterCount</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 参数类型
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Class</span><span class=o>&lt;?&gt;[]</span> <span class=n>parameterTypes</span> <span class=o>=</span> <span class=n>method</span><span class=o>.</span><span class=na>getParameterTypes</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 返回值类型
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Class</span><span class=o>&lt;?&gt;</span> <span class=n>returnType</span> <span class=o>=</span> <span class=n>method</span><span class=o>.</span><span class=na>getReturnType</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>        <span class=c1>// 参数
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>Object</span><span class=o>[]</span> <span class=n>arguments</span> <span class=o>=</span> <span class=n>invocation</span><span class=o>.</span><span class=na>getArguments</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=s>&#34;MethodInterceptor =&gt; 方法：&#34;</span> <span class=o>+</span> <span class=n>methodName</span> <span class=o>+</span> <span class=s>&#34; 执行前，参数：&#34;</span> <span class=o>+</span> <span class=n>Arrays</span><span class=o>.</span><span class=na>asList</span><span class=o>(</span><span class=n>arguments</span><span class=o>));</span>
-</span></span><span class=line><span class=cl>        <span class=n>Object</span> <span class=n>ret</span> <span class=o>=</span> <span class=n>invocation</span><span class=o>.</span><span class=na>proceed</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=n>System</span><span class=o>.</span><span class=na>out</span><span class=o>.</span><span class=na>println</span><span class=o>(</span><span class=s>&#34;MethodInterceptor =&gt; 方法：&#34;</span> <span class=o>+</span> <span class=n>methodName</span> <span class=o>+</span> <span class=s>&#34; 执行后，返回值：&#34;</span> <span class=o>+</span> <span class=n>ret</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>ret</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li><li><p>动态代理</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>AroundMethod</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>MethodInterceptor</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=nf>invoke</span><span class=p>(</span><span class=n>MethodInvocation</span><span class=w> </span><span class=n>invocation</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Throwable</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 方法信息</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Method</span><span class=w> </span><span class=n>method</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>invocation</span><span class=p>.</span><span class=na>getMethod</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 方法名</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>methodName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getName</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 参数数量</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=kt>int</span><span class=w> </span><span class=n>parameterCount</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getParameterCount</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 参数类型</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Class</span><span class=o>&lt;?&gt;[]</span><span class=w> </span><span class=n>parameterTypes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getParameterTypes</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 返回值类型</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Class</span><span class=o>&lt;?&gt;</span><span class=w> </span><span class=n>returnType</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>method</span><span class=p>.</span><span class=na>getReturnType</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 参数</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Object</span><span class=o>[]</span><span class=w> </span><span class=n>arguments</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>invocation</span><span class=p>.</span><span class=na>getArguments</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;MethodInterceptor =&gt; 方法：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>methodName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; 执行前，参数：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>Arrays</span><span class=p>.</span><span class=na>asList</span><span class=p>(</span><span class=n>arguments</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Object</span><span class=w> </span><span class=n>ret</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>invocation</span><span class=p>.</span><span class=na>proceed</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;MethodInterceptor =&gt; 方法：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>methodName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; 执行后，返回值：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>ret</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>ret</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>动态代理</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -1020,37 +1021,37 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-14 17:14:28
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description 假设现在要扫 Spring 包里面的 ClassPathXmlApplicationContext 类
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=nd>@Configuration</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>User4AnnoConfig</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span><span class=o>(</span><span class=n>value</span> <span class=o>=</span> <span class=s>&#34;testAop&#34;</span><span class=o>)</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>AopInter</span> <span class=nf>aopInter</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=k>new</span> <span class=n>AopImpl</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>NameMatchMethodPointcutAdvisor</span> <span class=nf>nameMatchMethodPointcutAdvisor</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>NameMatchMethodPointcutAdvisor</span> <span class=n>nameMatchMethodPointcutAdvisor</span> <span class=o>=</span> <span class=k>new</span> <span class=n>NameMatchMethodPointcutAdvisor</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=n>nameMatchMethodPointcutAdvisor</span><span class=o>.</span><span class=na>setAdvice</span><span class=o>(</span><span class=n>methodInterceptor</span><span class=o>());</span>
-</span></span><span class=line><span class=cl>        <span class=n>nameMatchMethodPointcutAdvisor</span><span class=o>.</span><span class=na>setMappedNames</span><span class=o>(</span><span class=s>&#34;add&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>nameMatchMethodPointcutAdvisor</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>MethodInterceptor</span> <span class=nf>methodInterceptor</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=k>new</span> <span class=n>AroundMethod</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>BeanNameAutoProxyCreator</span> <span class=nf>beanNameAutoProxyCreator</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>BeanNameAutoProxyCreator</span> <span class=n>beanNameAutoProxyCreator</span> <span class=o>=</span> <span class=k>new</span> <span class=n>BeanNameAutoProxyCreator</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=c1>// 配置拦截的 Advisor/Intercepter/Advice
-</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>beanNameAutoProxyCreator</span><span class=o>.</span><span class=na>setInterceptorNames</span><span class=o>(</span><span class=s>&#34;nameMatchMethodPointcutAdvisor&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=n>beanNameAutoProxyCreator</span><span class=o>.</span><span class=na>setBeanNames</span><span class=o>(</span><span class=s>&#34;test*&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>beanNameAutoProxyCreator</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li><li><p>设置还可以使用默认实现<code>DefaultAdvisorAutoProxyCreator</code>，来让所有的<code>Advisor</code>自动生效</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>User4AnnoConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;testAop&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>AopInter</span><span class=w> </span><span class=nf>aopInter</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>AopImpl</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>NameMatchMethodPointcutAdvisor</span><span class=w> </span><span class=nf>nameMatchMethodPointcutAdvisor</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>NameMatchMethodPointcutAdvisor</span><span class=w> </span><span class=n>nameMatchMethodPointcutAdvisor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>NameMatchMethodPointcutAdvisor</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>nameMatchMethodPointcutAdvisor</span><span class=p>.</span><span class=na>setAdvice</span><span class=p>(</span><span class=n>methodInterceptor</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>nameMatchMethodPointcutAdvisor</span><span class=p>.</span><span class=na>setMappedNames</span><span class=p>(</span><span class=s>&#34;add&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>nameMatchMethodPointcutAdvisor</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>MethodInterceptor</span><span class=w> </span><span class=nf>methodInterceptor</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>AroundMethod</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>BeanNameAutoProxyCreator</span><span class=w> </span><span class=nf>beanNameAutoProxyCreator</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>BeanNameAutoProxyCreator</span><span class=w> </span><span class=n>beanNameAutoProxyCreator</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>BeanNameAutoProxyCreator</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 配置拦截的 Advisor/Intercepter/Advice</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>beanNameAutoProxyCreator</span><span class=p>.</span><span class=na>setInterceptorNames</span><span class=p>(</span><span class=s>&#34;nameMatchMethodPointcutAdvisor&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>beanNameAutoProxyCreator</span><span class=p>.</span><span class=na>setBeanNames</span><span class=p>(</span><span class=s>&#34;test*&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>beanNameAutoProxyCreator</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>设置还可以使用默认实现<code>DefaultAdvisorAutoProxyCreator</code>，来让所有的<code>Advisor</code>自动生效</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -1101,41 +1102,41 @@
 </span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
 </span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-06-14 17:14:28
 </span></span></span><span class=line><span class=cl><span class=cm> * @Description 假设现在要扫 Spring 包里面的 ClassPathXmlApplicationContext 类
-</span></span></span><span class=line><span class=cl><span class=cm> */</span>
-</span></span><span class=line><span class=cl><span class=nd>@Configuration</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=kd>class</span> <span class=nc>User4AnnoConfig</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span><span class=o>(</span><span class=n>value</span> <span class=o>=</span> <span class=s>&#34;testAop&#34;</span><span class=o>)</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>AopInter</span> <span class=nf>aopInter</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=k>new</span> <span class=n>AopImpl</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>NameMatchMethodPointcutAdvisor</span> <span class=nf>nameMatchMethodPointcutAdvisor</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=n>NameMatchMethodPointcutAdvisor</span> <span class=n>nameMatchMethodPointcutAdvisor</span> <span class=o>=</span> <span class=k>new</span> <span class=n>NameMatchMethodPointcutAdvisor</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>        <span class=n>nameMatchMethodPointcutAdvisor</span><span class=o>.</span><span class=na>setAdvice</span><span class=o>(</span><span class=n>methodInterceptor</span><span class=o>());</span>
-</span></span><span class=line><span class=cl>        <span class=n>nameMatchMethodPointcutAdvisor</span><span class=o>.</span><span class=na>setMappedNames</span><span class=o>(</span><span class=s>&#34;add&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>nameMatchMethodPointcutAdvisor</span><span class=o>;</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>MethodInterceptor</span> <span class=nf>methodInterceptor</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=k>new</span> <span class=n>AroundMethod</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=c1>// @Bean
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// public BeanNameAutoProxyCreator beanNameAutoProxyCreator() {
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>//     BeanNameAutoProxyCreator beanNameAutoProxyCreator = new BeanNameAutoProxyCreator();
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>//     beanNameAutoProxyCreator.setInterceptorNames(&#34;nameMatchMethodPointcutAdvisor&#34;);
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>//     beanNameAutoProxyCreator.setBeanNames(&#34;test*&#34;);
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>//     return beanNameAutoProxyCreator;
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// }
-</span></span></span><span class=line><span class=cl><span class=c1></span>
-</span></span><span class=line><span class=cl>    <span class=c1>// 上述 BeanNameAutoProxyCreator 还需要配置指定的 Advisor 定点生效，这种默认方式可以让全局 Advisor 都生效
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nd>@Bean</span>
-</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>DefaultAdvisorAutoProxyCreator</span> <span class=nf>beanNameAutoProxyCreator</span><span class=o>()</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=k>new</span> <span class=n>DefaultAdvisorAutoProxyCreator</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>    <span class=o>}</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></td></tr></table></div></div></li></ol><h3 id=44-注解式>4.4 注解式</h3><ul><li>@Pointcut</li><li>@Before</li><li>@After</li><li>@AfterReturning</li><li>@AfterThrowing</li></ul><hr><p><strong>BeanFactory 和 ApplactionContext 的区别</strong>：</p><ul><li>BeanFactory 是懒加载的，ApplactionContext 是非懒加载的（可以指定为懒加载）</li><li>BeanFactory 只有一个职责就是调用 getBean() 生产 Bean，而 ApplactionContext 是 BeanFactoy 的扩张，是面向用户的，有更多的实现（包括AOP、读取资源文件、国际化等）</li></ul></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2022-06-14</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/spring%E7%94%9F%E6%80%81/>Spring生态</a>,&nbsp;<a href=/tags/ioc/>IOC</a>,&nbsp;<a href=/tags/aop/>AOP</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/01_ddd%E7%90%86%E8%AE%BA/ class=prev rel=prev title="01_DDD 理论篇"><i class="fas fa-angle-left fa-fw"></i>01_DDD 理论篇</a>
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>User4AnnoConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;testAop&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>AopInter</span><span class=w> </span><span class=nf>aopInter</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>AopImpl</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>NameMatchMethodPointcutAdvisor</span><span class=w> </span><span class=nf>nameMatchMethodPointcutAdvisor</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>NameMatchMethodPointcutAdvisor</span><span class=w> </span><span class=n>nameMatchMethodPointcutAdvisor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>NameMatchMethodPointcutAdvisor</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>nameMatchMethodPointcutAdvisor</span><span class=p>.</span><span class=na>setAdvice</span><span class=p>(</span><span class=n>methodInterceptor</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>nameMatchMethodPointcutAdvisor</span><span class=p>.</span><span class=na>setMappedNames</span><span class=p>(</span><span class=s>&#34;add&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>nameMatchMethodPointcutAdvisor</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>MethodInterceptor</span><span class=w> </span><span class=nf>methodInterceptor</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>AroundMethod</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// @Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// public BeanNameAutoProxyCreator beanNameAutoProxyCreator() {</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//     BeanNameAutoProxyCreator beanNameAutoProxyCreator = new BeanNameAutoProxyCreator();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//     beanNameAutoProxyCreator.setInterceptorNames(&#34;nameMatchMethodPointcutAdvisor&#34;);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//     beanNameAutoProxyCreator.setBeanNames(&#34;test*&#34;);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//     return beanNameAutoProxyCreator;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// }</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 上述 BeanNameAutoProxyCreator 还需要配置指定的 Advisor 定点生效，这种默认方式可以让全局 Advisor 都生效</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>DefaultAdvisorAutoProxyCreator</span><span class=w> </span><span class=nf>beanNameAutoProxyCreator</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>DefaultAdvisorAutoProxyCreator</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li></ol><h3 id=44-注解式>4.4 注解式</h3><ul><li>@Pointcut</li><li>@Before</li><li>@After</li><li>@AfterReturning</li><li>@AfterThrowing</li></ul><hr><p><strong>BeanFactory 和 ApplactionContext 的区别</strong>：</p><ul><li>BeanFactory 是懒加载的，ApplactionContext 是非懒加载的（可以指定为懒加载）</li><li>BeanFactory 只有一个职责就是调用 getBean() 生产 Bean，而 ApplactionContext 是 BeanFactoy 的扩张，是面向用户的，有更多的实现（包括AOP、读取资源文件、国际化等）</li></ul></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2022-06-14</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/spring%E7%94%9F%E6%80%81/>Spring生态</a>,&nbsp;<a href=/tags/ioc/>IOC</a>,&nbsp;<a href=/tags/aop/>AOP</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/01_ddd%E7%90%86%E8%AE%BA/ class=prev rel=prev title="01_DDD 理论篇"><i class="fas fa-angle-left fa-fw"></i>01_DDD 理论篇</a>
 <a href=/spring%E6%8E%A2%E7%B4%A2-ioc/ class=next rel=next title="01. Spring Framework - IOC">01. Spring Framework - IOC<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>yiwenup</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
 </a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:0},comment:{},lightGallery:{actualSize:!1,exThumbImage:"data-thumbnail",hideBarsDelay:2e3,selector:".lightgallery",speed:400,thumbContHeight:80,thumbWidth:80,thumbnail:!0},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},twemoji:!0}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
