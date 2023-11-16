@@ -1,0 +1,322 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=X-UA-Compatible content="IE=edge, chrome=1"><title>02_Spring MVC 高级应用 - Yiwenup - 持续沉淀</title><meta name=Description content="Yiwenup - 持续沉淀"><meta property="og:title" content="02_Spring MVC 高级应用">
+<meta property="og:description" content="Spring MVC 高级应用 一、监听器、过滤器和拦截器 1.1 监听器 监听器具体表现为实现了**javax.servlet.ServletContextListen"><meta property="og:type" content="article"><meta property="og:url" content="http://www.yiwenup.cloud/springmvc%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/"><meta property="og:image" content="http://www.yiwenup.cloud/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-08-08T19:12:32+08:00"><meta property="article:modified_time" content="2022-08-08T19:12:32+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://www.yiwenup.cloud/logo.png"><meta name=twitter:title content="02_Spring MVC 高级应用"><meta name=twitter:description content="Spring MVC 高级应用 一、监听器、过滤器和拦截器 1.1 监听器 监听器具体表现为实现了**javax.servlet.ServletContextListen"><meta name=application-name content="Yiwenup - 持续沉淀"><meta name=apple-mobile-web-app-title content="Yiwenup - 持续沉淀"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://www.yiwenup.cloud/springmvc%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/><link rel=prev href=http://www.yiwenup.cloud/mybatisgenerator/><link rel=next href=http://www.yiwenup.cloud/k8s%E5%AE%B9%E5%99%A8/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"02_Spring MVC 高级应用","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/www.yiwenup.cloud\/springmvc%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8\/"},"image":["http:\/\/www.yiwenup.cloud\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Spring生态, MVC","wordcount":2757,"url":"http:\/\/www.yiwenup.cloud\/springmvc%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8\/","datePublished":"2022-08-08T19:12:32+08:00","dateModified":"2022-08-08T19:12:32+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":{"@type":"ImageObject","url":"http:\/\/www.yiwenup.cloud\/images\/avatar.png","width":320,"height":320}},"author":{"@type":"Person","name":"yiwenup"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/categories/><i class='fas fa-folder-open'></i> 分类 </a><a class=menu-item href=/tags/><i class='fas fa-tags fa-fw'></i> 标签 </a><a class=menu-item href=/posts/><i class='fas fa-book'></i> 所有文章 </a><a class=menu-item href=/></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/categories/ title><i class='fas fa-folder-open'></i>分类</a><a class=menu-item href=/tags/ title><i class='fas fa-tags fa-fw'></i>标签</a><a class=menu-item href=/posts/ title><i class='fas fa-book'></i>所有文章</a><a class=menu-item href=/ title></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">02_Spring MVC 高级应用</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-feather-alt"></i></a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/springmvc/><i class="far fa-folder fa-fw"></i>SpringMVC</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2022-08-08>2022-08-08</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2757 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#spring-mvc-高级应用>Spring MVC 高级应用</a><ul><li><a href=#一监听器过滤器和拦截器>一、监听器、过滤器和拦截器</a><ul><li><a href=#11-监听器>1.1 监听器</a></li><li><a href=#12-过滤器>1.2 过滤器</a></li><li><a href=#13-拦截器>1.3 拦截器</a></li><li><a href=#14-三者关系>1.4 三者关系</a></li></ul></li><li><a href=#二multipart-文件上传>二、Multipart 文件上传</a></li><li><a href=#三异常处理>三、异常处理</a></li><li><a href=#四转发与重定向>四、转发与重定向</a></li></ul></li></ul></li></ul></nav></div></div><div class=content id=content><h2 id=spring-mvc-高级应用>Spring MVC 高级应用</h2><h3 id=一监听器过滤器和拦截器>一、监听器、过滤器和拦截器</h3><h4 id=11-监听器>1.1 监听器</h4><blockquote><p>监听器具体表现为实现了**<code>javax.servlet.ServletContextListener</code><strong>接口的组件，这是一个</strong><code>JavaEE</code>的标准接口**，因此需要<strong>配置在<code>web.xml</code>中</strong>。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>ServletContextListener</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>EventListener</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>	 ** 用于 web 容器初始化扩展
+</span></span></span><span class=line><span class=cl><span class=cm>	 ** 比如用于在容器启动的时候，完成 Spring 上下文初始化工作（org.springframework.web.context.ContextLoaderListener）
+</span></span></span><span class=line><span class=cl><span class=cm>	 */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>contextInitialized</span><span class=w> </span><span class=p>(</span><span class=w> </span><span class=n>ServletContextEvent</span><span class=w> </span><span class=n>sce</span><span class=w> </span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>	 ** 用于 web 容器销毁扩展
+</span></span></span><span class=line><span class=cl><span class=cm>	 */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>contextDestroyed</span><span class=w> </span><span class=p>(</span><span class=w> </span><span class=n>ServletContextEvent</span><span class=w> </span><span class=n>sce</span><span class=w> </span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=12-过滤器>1.2 过滤器</h4><blockquote><p>过滤器具体表现为实现了**<code>javax.servlet.Filter</code><strong>接口的组件，这是一个</strong><code>JavaEE</code><strong>的标准接口，因此需要</strong>配置在<code>web.xml</code>中**。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>Filter</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=cm>/** 
+</span></span></span><span class=line><span class=cl><span class=cm>	* 此处扩展 Filter 初始化的配置
+</span></span></span><span class=line><span class=cl><span class=cm>	*/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>init</span><span class=p>(</span><span class=n>FilterConfig</span><span class=w> </span><span class=n>filterConfig</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>ServletException</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>	* 此处在请求进入 Servlet 之前，对配置的匹配路径的资源进行处理，包括：Servlet、js/html等静态资源。
+</span></span></span><span class=line><span class=cl><span class=cm>	**/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doFilter</span><span class=w> </span><span class=p>(</span><span class=w> </span><span class=n>ServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>ServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>FilterChain</span><span class=w> </span><span class=n>chain</span><span class=w> </span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=p>,</span><span class=w> </span><span class=n>ServletException</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>	* 此处在请求走出 Servlet 之后，做一些销毁的扩展
+</span></span></span><span class=line><span class=cl><span class=cm>	*/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>destroy</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=13-拦截器>1.3 拦截器</h4><blockquote><p>拦截器具体表现为实现了**<code>org.springframework.web.servlet.HandlerInterceptor</code><strong>接口的组件，这是一个</strong><code>Spring MVC</code>提供的接口**，因此<strong>不在<code>web.xml</code>中配置</strong>，而是在<code>Spring MVC</code>上下文中配置。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>HandlerInterceptor</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>	 * 在 HandlerAdapter 执行请求逻辑之前执行
+</span></span></span><span class=line><span class=cl><span class=cm>	 * 此处扩展点通常用于做权限校验，返回为 true 代表放行逻辑，返回为 false 代表中止逻辑
+</span></span></span><span class=line><span class=cl><span class=cm>	 */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=k>default</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>preHandle</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=n>handler</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>		</span><span class=k>return</span><span class=w> </span><span class=kc>true</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>	 * 在 HandlerAdapter 执行请求逻辑之后执行
+</span></span></span><span class=line><span class=cl><span class=cm>	 */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=k>default</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>postHandle</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=n>handler</span><span class=p>,</span><span class=w> </span><span class=nd>@Nullable</span><span class=w> </span><span class=n>ModelAndView</span><span class=w> </span><span class=n>modelAndView</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>	 * 在 Servlet 完成视图渲染之后执行
+</span></span></span><span class=line><span class=cl><span class=cm>	 */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=k>default</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>afterCompletion</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=n>handler</span><span class=p>,</span><span class=w> </span><span class=nd>@Nullable</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>	</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>拦截器使用只需要实现<code>HandlerInterceptor</code>这个接口，之后在<code>Spring MVC</code>上下文中对拦截器进行注册，此外还可以添加拦截规则灵活实现请求拦截处理。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>TestInterceptor01</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>HandlerInterceptor</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>boolean</span><span class=w> </span><span class=nf>preHandle</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=n>handler</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;TestInterceptor01 preHandle...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=kc>true</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>postHandle</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=n>handler</span><span class=p>,</span><span class=w> </span><span class=n>ModelAndView</span><span class=w> </span><span class=n>modelAndView</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;TestInterceptor01 postHandle...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>afterCompletion</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=n>handler</span><span class=p>,</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;TestInterceptor01 afterCompletion...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- 配置拦截器 --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;mvc:interceptors&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;mvc:interceptor&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;mvc:mapping</span> <span class=na>path=</span><span class=s>&#34;/demo/**&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;bean</span> <span class=na>class=</span><span class=s>&#34;cloud.yiwenup.sample.webmvc.interceptor.TestInterceptor01&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/mvc:interceptor&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;mvc:interceptor&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;mvc:mapping</span> <span class=na>path=</span><span class=s>&#34;/**&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;bean</span> <span class=na>class=</span><span class=s>&#34;cloud.yiwenup.sample.webmvc.interceptor.TestInterceptor02&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/mvc:interceptor&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/mvc:interceptors&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231114222738019.png data-srcset="../images/image-20231114222738019.png, ../images/image-20231114222738019.png 1.5x, ../images/image-20231114222738019.png 2x" data-sizes=auto alt=../images/image-20231114222738019.png title=image-20231114222738019></p><h4 id=14-三者关系>1.4 三者关系</h4><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231113223931579.png data-srcset="../images/image-20231113223931579.png, ../images/image-20231113223931579.png 1.5x, ../images/image-20231113223931579.png 2x" data-sizes=auto alt=../images/image-20231113223931579.png title=image-20231113223931579></p><p>如上图所示：</p><ul><li>首先请求进来会经过<code>Filter</code>过滤器，完成资源处理；</li><li>之后进入拦截器<code>HandlerInterceptor</code>的<code>preHandle</code>方法，执行逻辑前拦截处理；</li><li>当<code>preHandle</code>方法返回<code>true</code>，请求继续放行，由<code>HandlerAdapter</code>调度具体<code>XxxController</code>执行具体逻辑，并返回<code>ModelAndView</code>；</li><li>逻辑处理之后，调用链路继续来到<code>HandlerInterceptor</code>的<code>postHandle</code>方法；</li><li>接着<code>DispatcherServlet</code>执行页面渲染；</li><li>最终<code>HandlerInterceptor</code>的<code>afterCompletion</code>处理结束后，响应客户端；</li><li>整个过程，<code>ServletContextListener</code>会在容器初始化之初执行一次<code>contextInitialized</code>，在容器销毁执行一次<code>contextDestroyed</code>方法。</li><li>若有多个<code>HandlerInterceptor</code>，则按注册顺序，首先执行<code>HI1#preHandle</code>，再执行<code>HI2#preHandle</code>，先执行<code>HI2#postHandle</code>，再执行<code>HI1#postHandle</code>，先执行<code>HI2#afterCompletion</code>，再执行<code>HI1#afterCompletion</code>。</li></ul><h3 id=二multipart-文件上传>二、Multipart 文件上传</h3><ol><li><p>添加依赖<code>commons-fileupload</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- 文件上传 --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>commons-fileupload<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>commons-fileupload<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>1.5<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div></li><li><p>前端<code>form</code>表单实现文件上传，需要注意<strong>请求方式为<code>POST</code>，<code>enctype</code>为<code>multipart/form-data</code></strong></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>&lt;</span><span class=n>form</span> <span class=n>method</span><span class=o>=</span><span class=s2>&#34;post&#34;</span> <span class=n>enctype</span><span class=o>=</span><span class=s2>&#34;multipart/form-data&#34;</span> <span class=n>action</span><span class=o>=</span><span class=s2>&#34;${pageContext.request.contextPath}/demo/upload&#34;</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=o>&lt;</span><span class=n>input</span> <span class=n>type</span><span class=o>=</span><span class=s2>&#34;file&#34;</span> <span class=n>name</span><span class=o>=</span><span class=s2>&#34;uploadFile&#34;</span><span class=o>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=o>&lt;</span><span class=n>input</span> <span class=n>type</span><span class=o>=</span><span class=s2>&#34;submit&#34;</span> <span class=n>value</span><span class=o>=</span><span class=s2>&#34;上传&#34;</span><span class=o>/&gt;</span>
+</span></span><span class=line><span class=cl><span class=o>&lt;/</span><span class=n>form</span><span class=o>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div></li><li><p>后端参数接收使用<code>org.springframework.web.multipart.MultipartFile</code>类型</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@RequestMapping</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;/upload&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>upload</span><span class=p>(</span><span class=n>MultipartFile</span><span class=w> </span><span class=n>uploadFile</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>originalFilename</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>uploadFile</span><span class=p>.</span><span class=na>getOriginalFilename</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>assert</span><span class=w> </span><span class=n>originalFilename</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>suffix</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>originalFilename</span><span class=p>.</span><span class=na>substring</span><span class=p>(</span><span class=n>originalFilename</span><span class=p>.</span><span class=na>lastIndexOf</span><span class=p>(</span><span class=s>&#34;.&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>newName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>UUID</span><span class=p>.</span><span class=na>randomUUID</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>suffix</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>realPath</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getServletContext</span><span class=p>().</span><span class=na>getRealPath</span><span class=p>(</span><span class=s>&#34;/uploads&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>date</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>SimpleDateFormat</span><span class=p>(</span><span class=s>&#34;yyyy-MM-dd&#34;</span><span class=p>).</span><span class=na>format</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>Date</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>File</span><span class=w> </span><span class=n>dir</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>File</span><span class=p>(</span><span class=n>realPath</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;/&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>date</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>dir</span><span class=p>.</span><span class=na>exists</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>dir</span><span class=p>.</span><span class=na>mkdirs</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>uploadFile</span><span class=p>.</span><span class=na>transferTo</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>File</span><span class=p>(</span><span class=n>dir</span><span class=p>,</span><span class=w> </span><span class=n>newName</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=s>&#34;success&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>为<code>Spring MVC</code>上下文配置文件解析器<code>org.springframework.web.multipart.commons.CommonsMultipartResolver</code>，该类是<code>MultipartResolver</code>的实现，需要注意该**<code>bean</code>的<code>id</code>需要指定也只能是<code>multipartResolver</code>**。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- 配置文件解析器 --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;bean</span> <span class=na>id=</span><span class=s>&#34;multipartResolver&#34;</span> <span class=na>class=</span><span class=s>&#34;org.springframework.web.multipart.commons.CommonsMultipartResolver&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;maxUploadSize&#34;</span> <span class=na>value=</span><span class=s>&#34;500000&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/bean&gt;</span>
+</span></span></code></pre></td></tr></table></div></div></li></ol><h3 id=三异常处理>三、异常处理</h3><blockquote><p>对于<code>Controller</code>抛出的业务异常，可以使用<code>@ExceptionHandler</code>定义异常处理方法，用于接收并统一处理这些异常。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm> * 示例异常处理
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@ExceptionHandler</span><span class=p>(</span><span class=n>NullPointerException</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>exception</span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;error&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>ex</span><span class=p>.</span><span class=na>getMessage</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=s>&#34;error&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>若上述代码段定义在某个<code>Controller</code>中，则只能处理当前<code>Controller</code>中抛出的异常，对于其他的<code>Controller</code>方法抛出的异常则无法统一捕获处理，因此需要借助<code>@ControlelrAdvice</code>定义全局异常处理增强逻辑。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@ControllerAdvice</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>GlobalExceptionHandler</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@ExceptionHandler</span><span class=p>(</span><span class=n>Exception</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>exception</span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;error: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>ex</span><span class=p>.</span><span class=na>getMessage</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=s>&#34;error&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=四转发与重定向>四、转发与重定向</h3><blockquote><p><strong>转发与重定向都是<code>Servlet</code>实现页面跳转的方式。</strong></p></blockquote><ul><li>重定向：<ul><li>对于浏览器来说是<strong>两次请求</strong>，由第一次请求后服务器返回跳转规则，浏览器根据规则发起第二次请求；</li><li><strong>携带的参数将会丢失</strong>；</li><li>浏览器地址栏会发生变化。</li></ul></li><li>转发：<ul><li>对于浏览器来说是<strong>一次请求</strong>，由服务器内部处理跳转规则，浏览器并不知道内部的规则；</li><li><strong>携带的参数不会丢失</strong>；</li><li>浏览器的地址栏不会发生变化。</li></ul></li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@RequestMapping</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;/redirect&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>redirect</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 转发需要补充上下文根路径，否则浏览器请求404</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// response.sendRedirect(request.getContextPath() + &#34;/demo/receive&#34;);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 这种写法不需要补充上下文根路径</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=s>&#34;redirect:/demo/receive&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@RequestMapping</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;/forward&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>forward</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 转发不需要添加上下文根路径，因为此时是服务器内部行为</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>request</span><span class=p>.</span><span class=na>getRequestDispatcher</span><span class=p>(</span><span class=s>&#34;/demo/receive&#34;</span><span class=p>).</span><span class=na>forward</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=s>&#34;success&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@RequestMapping</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;/receive&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>receive</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>uname</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>uname</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=s>&#34;success&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>针对重定向会丢失参数这个问题，<strong>可以在重定向的路径上手动拼接上参数，但是存在安全性问题，并且也受浏览器参数长度限制</strong>。而<code>Spring MVC</code>提供的<code>RedirectAttributes</code>则帮助我们很好的解决了这个问题，<strong>原理是请求时会在上下文中添加<code>flashAttribute</code>，框架会在<code>session</code>中记录属性值，在成功跳转之后会自动删除该值</strong>。</p><p><code>RedirectAttributes</code>使用要特别注意：一是<strong>使用<code>redirect:/xxx</code>的方式跳转</strong>，不能返回视图名称；二是跳转目标<strong>接收参数只能使用<code>ModelMap</code>或者<code>@ModelAttribute</code></strong>。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@RequestMapping</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;/redirect&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>redirect</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>RedirectAttributes</span><span class=w> </span><span class=n>redirectAttributes</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>redirectAttributes</span><span class=p>.</span><span class=na>addFlashAttribute</span><span class=p>(</span><span class=s>&#34;uname&#34;</span><span class=p>,</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getParameter</span><span class=p>(</span><span class=s>&#34;uname&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=s>&#34;redirect:/demo/receive&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@RequestMapping</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;/receive&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>receive</span><span class=p>(</span><span class=n>ModelMap</span><span class=w> </span><span class=n>map</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>map</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=s>&#34;uname&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=s>&#34;success&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2022-08-08</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/spring%E7%94%9F%E6%80%81/>Spring生态</a>,&nbsp;<a href=/tags/mvc/>MVC</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/mybatisgenerator/ class=prev rel=prev title=MybatisGenerator><i class="fas fa-angle-left fa-fw"></i>MybatisGenerator</a>
+<a href=/k8s%E5%AE%B9%E5%99%A8/ class=next rel=next title=K8S容器>K8S容器<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>yiwenup</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:0},comment:{},lightGallery:{actualSize:!1,exThumbImage:"data-thumbnail",hideBarsDelay:2e3,selector:".lightgallery",speed:400,thumbContHeight:80,thumbWidth:80,thumbnail:!0},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},twemoji:!0}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
