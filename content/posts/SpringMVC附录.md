@@ -92,3 +92,17 @@ toc:
 
 ### 二、静态资源读取
 
+> 对于一些静态资源，比如`jquery-xx.js`，在`jsp`中要使用，但是放置的位置是有讲究的。
+>
+> 默认情况下，只有在`webapp`根目录下的静态资源才会被顺利加载，而此外的文件夹中则需要借助`Spring MVC`完成加载。
+
+核心配置在`src/main/resources/springmvc.xml`中，使用`<mvc:resources>`标签，`mapping`属性表示匹配规则，`location`属性表示实际映射的物理路径。
+
+```xml
+<!-- 以下配置表示当请求的静态资源路径为 /js 前缀，则 Spring MVC 会引导前往 /src/main/webapp/WEB-INF/js/ 目录下寻找静态资源-->
+<mvc:resources mapping="/js/**" location="/WEB-INF/js/" />
+
+<!-- 以下配置表示当请求的静态资源路径为 /js 前缀，则 Spring MVC 会引导前往 /src/main/resources/js/ 目录下寻找静态资源-->
+<mvc:resources mapping="/js/**" location="classpath: /js/" />
+```
+
