@@ -1,5 +1,5 @@
 ---
-title: "default-fake-certificate.pem: permission denied
+title: "default-fake-certificate.pem: permission denied"
 date: 2023-11-14T16:30:40+08:00
 categories: ["问题集"]
 tags: ["问题记录","ingress"]
