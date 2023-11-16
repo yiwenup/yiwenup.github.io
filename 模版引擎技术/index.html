@@ -1,0 +1,296 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=X-UA-Compatible content="IE=edge, chrome=1"><title>模版引擎技术 - Yiwenup - 持续沉淀</title><meta name=Description content="Yiwenup - 持续沉淀"><meta property="og:title" content="模版引擎技术">
+<meta property="og:description" content="模版引擎是一种基于模板和要改变的数据， 并用来生成输出文本的通用工具。 我们可以基于规范性，提取同类代码的公共内容进行抽象，而将可变的内容作为参"><meta property="og:type" content="article"><meta property="og:url" content="http://www.yiwenup.cloud/%E6%A8%A1%E7%89%88%E5%BC%95%E6%93%8E%E6%8A%80%E6%9C%AF/"><meta property="og:image" content="http://www.yiwenup.cloud/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-07-12T19:12:32+08:00"><meta property="article:modified_time" content="2022-07-12T19:12:32+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://www.yiwenup.cloud/logo.png"><meta name=twitter:title content="模版引擎技术"><meta name=twitter:description content="模版引擎是一种基于模板和要改变的数据， 并用来生成输出文本的通用工具。 我们可以基于规范性，提取同类代码的公共内容进行抽象，而将可变的内容作为参"><meta name=application-name content="Yiwenup - 持续沉淀"><meta name=apple-mobile-web-app-title content="Yiwenup - 持续沉淀"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://www.yiwenup.cloud/%E6%A8%A1%E7%89%88%E5%BC%95%E6%93%8E%E6%8A%80%E6%9C%AF/><link rel=prev href=http://www.yiwenup.cloud/spring%E6%8E%A2%E7%B4%A2-ioc/><link rel=next href=http://www.yiwenup.cloud/maven%E9%AA%A8%E6%9E%B6%E5%B7%A5%E7%A8%8B%E6%8A%80%E6%9C%AF/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"模版引擎技术","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/www.yiwenup.cloud\/%E6%A8%A1%E7%89%88%E5%BC%95%E6%93%8E%E6%8A%80%E6%9C%AF\/"},"image":["http:\/\/www.yiwenup.cloud\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Freemarker, 技巧","wordcount":1420,"url":"http:\/\/www.yiwenup.cloud\/%E6%A8%A1%E7%89%88%E5%BC%95%E6%93%8E%E6%8A%80%E6%9C%AF\/","datePublished":"2022-07-12T19:12:32+08:00","dateModified":"2022-07-12T19:12:32+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":{"@type":"ImageObject","url":"http:\/\/www.yiwenup.cloud\/images\/avatar.png","width":320,"height":320}},"author":{"@type":"Person","name":"yiwenup"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/categories/><i class='fas fa-folder-open'></i> 分类 </a><a class=menu-item href=/tags/><i class='fas fa-tags fa-fw'></i> 标签 </a><a class=menu-item href=/posts/><i class='fas fa-book'></i> 所有文章 </a><a class=menu-item href=/></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/categories/ title><i class='fas fa-folder-open'></i>分类</a><a class=menu-item href=/tags/ title><i class='fas fa-tags fa-fw'></i>标签</a><a class=menu-item href=/posts/ title><i class='fas fa-book'></i>所有文章</a><a class=menu-item href=/ title></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">模版引擎技术</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-feather-alt"></i></a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/%E6%8A%80%E5%B7%A7/><i class="far fa-folder fa-fw"></i>技巧</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2022-07-12>2022-07-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1420 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#一场景引入与示例代码>一、场景引入与示例代码</a><ul><li><a href=#11-场景引入>1.1 场景引入</a></li><li><a href=#12-示例代码>1.2 示例代码</a></li></ul></li><li><a href=#二模版抽象>二、模版抽象</a></li><li><a href=#三模板使用>三、模板使用</a></li></ul></li></ul></nav></div></div><div class=content id=content><blockquote><p>模版引擎是一种基于模板和要改变的数据， 并用来生成输出文本的通用工具。</p><p>我们可以基于规范性，提取同类代码的公共内容进行抽象，而将可变的内容作为参数输入，通过程序设计<strong>自动化</strong>地将动态的参数内容适宜地嵌入到模版中，进而形成文件输出。常见的比如：<code>mybatis-plus-generator</code>就是采用模版引擎技术实现的根据表结构一次性生成适用<code>MVC</code>的通用接口。</p><p>模版引擎的实现技术有很多：<code>freemarker</code>/<code>thymeleaf</code>/<code>velocity</code>/<code>jsp</code>/<code>beetl</code>，本文举例采用的是<code>freemarker</code>模版引擎。</p></blockquote><h2 id=一场景引入与示例代码>一、场景引入与示例代码</h2><h3 id=11-场景引入>1.1 场景引入</h3><p>举个场景，比如说对于一张新建的表，基于诸如<code>Mybatis</code>这样的<code>ORM</code>框架操作的时候需要做好映射关系，所以在项目中要再创建对应的实体，以及实体对完暴露的数据访问接口，这种操作在每新增了表的时候都需要重复进行。</p><h3 id=12-示例代码>1.2 示例代码</h3><p>示例实体代码：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>cloud.yiwenup.sample.freemarker.template.entity</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm> * 文件描述
+</span></span></span><span class=line><span class=cl><span class=cm> *
+</span></span></span><span class=line><span class=cl><span class=cm> * @Project yiwenup-sample
+</span></span></span><span class=line><span class=cl><span class=cm> * @Package cloud.yiwenup.sample.freemarker.template.entity
+</span></span></span><span class=line><span class=cl><span class=cm> * @Author yiwenup
+</span></span></span><span class=line><span class=cl><span class=cm> * @Date 2022-07-14 16:12:01
+</span></span></span><span class=line><span class=cl><span class=cm> * @Description 用户实体
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>UserEntity</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>username</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>password</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getId</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setId</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>id</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>id</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getUsername</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>username</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setUsername</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>username</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>username</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>username</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getPassword</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>password</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setPassword</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>password</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>password</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>password</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=二模版抽象>二、模版抽象</h2><p>一般而言，实体类中的属性都会是与数据库表列一一对应的，实体类的名称也是和数据库表有映射关系的（一般是驼峰和下划线映射），因此可以抽象实体类模块如下：</p><blockquote><p>模版中使用<code>${}</code>进行变量引用，这些变量都是可以配置的，通过外部对模版的使用，传入这些参数变量，以此来达到一份模版灵活产出多份代码文件</p><p>还可以通过声明的方式，从外部静态引入额外的功能，比如自定义静态工具方法以及常量，在模版中使用</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>package</span> <span class=err>$</span><span class=p>{</span><span class=nx>basePackage</span><span class=p>}.</span><span class=nx>entity</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>* 文件描述
+</span></span></span><span class=line><span class=cl><span class=cm>*
+</span></span></span><span class=line><span class=cl><span class=cm>* @Project yiwenup-sample
+</span></span></span><span class=line><span class=cl><span class=cm>* @Package ${basePackage}.entity
+</span></span></span><span class=line><span class=cl><span class=cm>* @Author yiwenup
+</span></span></span><span class=line><span class=cl><span class=cm>* @Date ${.now}
+</span></span></span><span class=line><span class=cl><span class=cm>* @Description ${tableComment}
+</span></span></span><span class=line><span class=cl><span class=cm>*/</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=err>#</span><span class=nx>assign</span> <span class=nx>StringUtil</span><span class=p>=</span><span class=nx>statics</span><span class=p>[</span><span class=err>&#39;</span><span class=nx>cloud</span><span class=p>.</span><span class=nx>yiwenup</span><span class=p>.</span><span class=nx>sample</span><span class=p>.</span><span class=nx>freemarker</span><span class=p>.</span><span class=nx>template</span><span class=p>.</span><span class=nx>util</span><span class=p>.</span><span class=nx>StringUtil</span><span class=err>&#39;</span><span class=p>]&gt;</span>
+</span></span><span class=line><span class=cl><span class=nx>public</span> <span class=nx>class</span> <span class=err>$</span><span class=p>{</span><span class=nx>className</span><span class=p>}</span><span class=nx>Entity</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=err>#</span><span class=nx>list</span> <span class=nx>props</span> <span class=nx>as</span> <span class=nx>prop</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * ${prop.remark}
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span>
+</span></span><span class=line><span class=cl>    <span class=nx>private</span> <span class=err>$</span><span class=p>{</span><span class=nx>prop</span><span class=p>.</span><span class=kd>type</span><span class=p>}</span> <span class=err>$</span><span class=p>{</span><span class=nx>prop</span><span class=p>.</span><span class=nx>field</span><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=o>/</span><span class=err>#</span><span class=nx>list</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=err>#</span><span class=nx>list</span> <span class=nx>props</span> <span class=nx>as</span> <span class=nx>prop</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=err>#</span><span class=nx>assign</span> <span class=nx>fieldUppCase</span><span class=p>=</span><span class=nx>StringUtil</span><span class=p>.</span><span class=nf>firstWord2UppCase</span><span class=p>(</span><span class=nx>prop</span><span class=p>.</span><span class=nx>field</span><span class=p>)&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * 获取${prop.remark}
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span>
+</span></span><span class=line><span class=cl>    <span class=nx>public</span> <span class=err>$</span><span class=p>{</span><span class=nx>prop</span><span class=p>.</span><span class=kd>type</span><span class=p>}</span> <span class=nx>get</span><span class=err>$</span><span class=p>{</span><span class=nx>fieldUppCase</span><span class=p>}()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=err>$</span><span class=p>{</span><span class=nx>prop</span><span class=p>.</span><span class=nx>field</span><span class=p>};</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * 设置${prop.remark}
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span>
+</span></span><span class=line><span class=cl>    <span class=nx>public</span> <span class=nx>void</span> <span class=nx>set</span><span class=err>$</span><span class=p>{</span><span class=nx>fieldUppCase</span><span class=p>}(</span><span class=err>$</span><span class=p>{</span><span class=nx>prop</span><span class=p>.</span><span class=kd>type</span><span class=p>}</span> <span class=err>$</span><span class=p>{</span><span class=nx>prop</span><span class=p>.</span><span class=nx>field</span><span class=p>})</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>this</span><span class=p>.</span><span class=err>$</span><span class=p>{</span><span class=nx>prop</span><span class=p>.</span><span class=nx>field</span><span class=p>}</span> <span class=p>=</span> <span class=err>$</span><span class=p>{</span><span class=nx>prop</span><span class=p>.</span><span class=nx>field</span><span class=p>};</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=o>/</span><span class=err>#</span><span class=nx>list</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=三模板使用>三、模板使用</h2><blockquote><p>接下来，我们通过编写程序，使用上述模板，构造出最开始的示例代码。需要注意的是，下面的代码仅作示例，动态的参数都是写死的，完全可以在配置文件、数据库或者接口暴露参数的形式动态配置；并且抽象的模型也是仅作示例，模型可以拓展更多的描述性参数。</p></blockquote><p>模型代码：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>class</span> <span class=nc>ORM</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>type</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>field</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>remark</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 省略get/set方法</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>文件生成代码：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 初始化模版配置信息</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Configuration</span><span class=w> </span><span class=n>configuration</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Configuration</span><span class=p>(</span><span class=n>Configuration</span><span class=p>.</span><span class=na>DEFAULT_INCOMPATIBLE_IMPROVEMENTS</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>configuration</span><span class=p>.</span><span class=na>setDefaultEncoding</span><span class=p>(</span><span class=n>StandardCharsets</span><span class=p>.</span><span class=na>UTF_8</span><span class=p>.</span><span class=na>name</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>configuration</span><span class=p>.</span><span class=na>setTemplateLoader</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>ClassTemplateLoader</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 设置使用何种模版文件</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Template</span><span class=w> </span><span class=n>template</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>configuration</span><span class=p>.</span><span class=na>getTemplate</span><span class=p>(</span><span class=s>&#34;templates/Entity.ftl&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 动态参数放在一个 map 数据结构中，之后的模板渲染过程就是取出这些参数做动态渲染</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>basePackage</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;cloud.yiwenup.sample.freemarker.template&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>className</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;User1&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>List</span><span class=o>&lt;</span><span class=n>ORM</span><span class=o>&gt;</span><span class=w> </span><span class=n>props</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ArrayList</span><span class=o>&lt;&gt;</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>props</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>ORM</span><span class=p>(</span><span class=s>&#34;String&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;id&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;用户ID&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>props</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>ORM</span><span class=p>(</span><span class=s>&#34;String&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;username&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;用户名&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>props</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>ORM</span><span class=p>(</span><span class=s>&#34;String&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;password&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;密码&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Map</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=n>map</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HashMap</span><span class=o>&lt;&gt;</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 这一步很重要，通过以下代码的配置，才可以在模板文件中使用外部自定义的静态工具类</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>map</span><span class=p>.</span><span class=na>put</span><span class=p>(</span><span class=s>&#34;statics&#34;</span><span class=p>,</span><span class=w> </span><span class=p>((</span><span class=n>BeansWrapper</span><span class=p>)</span><span class=n>configuration</span><span class=p>.</span><span class=na>getObjectWrapper</span><span class=p>()).</span><span class=na>getStaticModels</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>map</span><span class=p>.</span><span class=na>put</span><span class=p>(</span><span class=s>&#34;basePackage&#34;</span><span class=p>,</span><span class=w> </span><span class=n>basePackage</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>map</span><span class=p>.</span><span class=na>put</span><span class=p>(</span><span class=s>&#34;tableComment&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;用户信息表&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>map</span><span class=p>.</span><span class=na>put</span><span class=p>(</span><span class=s>&#34;className&#34;</span><span class=p>,</span><span class=w> </span><span class=n>className</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>map</span><span class=p>.</span><span class=na>put</span><span class=p>(</span><span class=s>&#34;props&#34;</span><span class=p>,</span><span class=w> </span><span class=n>props</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 渲染模板文件，并将文件输出到指定位置</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>try</span><span class=p>(</span><span class=n>OutputStream</span><span class=w> </span><span class=n>entityOut</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Files</span><span class=p>.</span><span class=na>newOutputStream</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>File</span><span class=p>(</span><span class=n>getEntityFilePath</span><span class=p>(</span><span class=n>basePackage</span><span class=p>),</span><span class=w> </span><span class=n>className</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;Entity.java&#34;</span><span class=p>).</span><span class=na>toPath</span><span class=p>()))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>template</span><span class=p>.</span><span class=na>process</span><span class=p>(</span><span class=n>map</span><span class=p>,</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>OutputStreamWriter</span><span class=p>(</span><span class=n>entityOut</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm> * 辅助工具，用于指定生成文件的位置
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>File</span><span class=w> </span><span class=nf>getEntityFilePath</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>basePackage</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>File</span><span class=w> </span><span class=n>file</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>File</span><span class=p>(</span><span class=s>&#34;/Users/yiwenup/resource/yiwenup-sample/yiwenup-sample-freemarker-template&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>files</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ArrayList</span><span class=o>&lt;&gt;</span><span class=p>(</span><span class=n>Arrays</span><span class=p>.</span><span class=na>asList</span><span class=p>(</span><span class=s>&#34;src&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;main&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;java&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>files</span><span class=p>.</span><span class=na>addAll</span><span class=p>(</span><span class=n>Arrays</span><span class=p>.</span><span class=na>asList</span><span class=p>(</span><span class=n>basePackage</span><span class=p>.</span><span class=na>split</span><span class=p>(</span><span class=s>&#34;\\.&#34;</span><span class=p>)));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>files</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=s>&#34;entity&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>File</span><span class=p>(</span><span class=n>file</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=p>.</span><span class=na>join</span><span class=p>(</span><span class=n>File</span><span class=p>.</span><span class=na>separator</span><span class=p>,</span><span class=w> </span><span class=n>files</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>自定义辅助工具类：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>StringUtil</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>firstWord2UppCase</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>arg</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>arg</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>arg</span><span class=p>.</span><span class=na>length</span><span class=p>()</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=s>&#34;&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>arg</span><span class=p>.</span><span class=na>length</span><span class=p>()</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>1</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>return</span><span class=w> </span><span class=n>arg</span><span class=p>.</span><span class=na>toUpperCase</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>arg</span><span class=p>.</span><span class=na>substring</span><span class=p>(</span><span class=n>0</span><span class=p>,</span><span class=w> </span><span class=n>1</span><span class=p>).</span><span class=na>toUpperCase</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>arg</span><span class=p>.</span><span class=na>substring</span><span class=p>(</span><span class=n>1</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2022-07-12</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/freemarker/>Freemarker</a>,&nbsp;<a href=/tags/%E6%8A%80%E5%B7%A7/>技巧</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/spring%E6%8E%A2%E7%B4%A2-ioc/ class=prev rel=prev title="01. Spring Framework - IOC"><i class="fas fa-angle-left fa-fw"></i>01. Spring Framework - IOC</a>
+<a href=/maven%E9%AA%A8%E6%9E%B6%E5%B7%A5%E7%A8%8B%E6%8A%80%E6%9C%AF/ class=next rel=next title=Maven骨架工程技术>Maven骨架工程技术<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>yiwenup</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:0},comment:{},lightGallery:{actualSize:!1,exThumbImage:"data-thumbnail",hideBarsDelay:2e3,selector:".lightgallery",speed:400,thumbContHeight:80,thumbWidth:80,thumbnail:!0},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},twemoji:!0}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
