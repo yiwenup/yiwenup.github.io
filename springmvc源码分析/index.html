@@ -1,0 +1,366 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=X-UA-Compatible content="IE=edge, chrome=1"><title>03_Spring MVC 源码分析 - Yiwenup - 持续沉淀</title><meta name=Description content="Yiwenup - 持续沉淀"><meta property="og:title" content="03_Spring MVC 源码分析">
+<meta property="og:description" content="Spring MVC 源码分析 一、主流程梳理 根据Spring MVC依然是针对JavaEE的封装这个思路，而传统JavaEE开发是通过实现javax.servl"><meta property="og:type" content="article"><meta property="og:url" content="http://www.yiwenup.cloud/springmvc%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"><meta property="og:image" content="http://www.yiwenup.cloud/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-10-07T19:12:32+08:00"><meta property="article:modified_time" content="2022-10-07T19:12:32+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://www.yiwenup.cloud/logo.png"><meta name=twitter:title content="03_Spring MVC 源码分析"><meta name=twitter:description content="Spring MVC 源码分析 一、主流程梳理 根据Spring MVC依然是针对JavaEE的封装这个思路，而传统JavaEE开发是通过实现javax.servl"><meta name=application-name content="Yiwenup - 持续沉淀"><meta name=apple-mobile-web-app-title content="Yiwenup - 持续沉淀"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://www.yiwenup.cloud/springmvc%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/><link rel=prev href=http://www.yiwenup.cloud/java%E8%BF%9C%E7%A8%8B%E6%96%AD%E7%82%B9/><link rel=next href=http://www.yiwenup.cloud/springmvc%E9%99%84%E5%BD%95/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"03_Spring MVC 源码分析","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/www.yiwenup.cloud\/springmvc%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90\/"},"image":["http:\/\/www.yiwenup.cloud\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Spring生态, MVC","wordcount":3602,"url":"http:\/\/www.yiwenup.cloud\/springmvc%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90\/","datePublished":"2022-10-07T19:12:32+08:00","dateModified":"2022-10-07T19:12:32+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":{"@type":"ImageObject","url":"http:\/\/www.yiwenup.cloud\/images\/avatar.png","width":320,"height":320}},"author":{"@type":"Person","name":"yiwenup"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/categories/><i class='fas fa-folder-open'></i> 分类 </a><a class=menu-item href=/tags/><i class='fas fa-tags fa-fw'></i> 标签 </a><a class=menu-item href=/posts/><i class='fas fa-book'></i> 所有文章 </a><a class=menu-item href=/></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/categories/ title><i class='fas fa-folder-open'></i>分类</a><a class=menu-item href=/tags/ title><i class='fas fa-tags fa-fw'></i>标签</a><a class=menu-item href=/posts/ title><i class='fas fa-book'></i>所有文章</a><a class=menu-item href=/ title></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">03_Spring MVC 源码分析</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-feather-alt"></i></a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/springmvc/><i class="far fa-folder fa-fw"></i>SpringMVC</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2022-10-07>2022-10-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3602 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 8 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#spring-mvc-源码分析>Spring MVC 源码分析</a><ul><li><a href=#一主流程梳理>一、主流程梳理</a></li><li><a href=#二核心位置---initstrategies>二、核心位置 - initStrategies</a></li><li><a href=#三核心位置---gethandler>三、核心位置 - getHandler</a></li><li><a href=#四核心位置---gethandleradapter>四、核心位置 - getHandlerAdapter</a></li><li><a href=#五核心位置---handle>五、核心位置 - handle</a></li><li><a href=#六核心位置---processdispatchresult>六、核心位置 - processDispatchResult</a></li></ul></li></ul></li></ul></nav></div></div><div class=content id=content><h2 id=spring-mvc-源码分析>Spring MVC 源码分析</h2><h3 id=一主流程梳理>一、主流程梳理</h3><blockquote><p>根据<code>Spring MVC</code>依然是针对<code>JavaEE</code>的封装这个思路，而传统<code>JavaEE</code>开发是通过实现<code>javax.servlet.http.HttpServlet</code>接口，并重写其中的<code>doGet</code>与<code>doPost</code>方法。</p><p>顺着<code>javax.servlet.http.HttpServlet</code>这个线索，可以继续深入探索<code>Spring MVC</code>到底为<code>web</code>层做了哪些事。</p></blockquote><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231121221436603.png data-srcset="../images/image-20231121221436603.png, ../images/image-20231121221436603.png 1.5x, ../images/image-20231121221436603.png 2x" data-sizes=auto alt=../images/image-20231121221436603.png title=image-20231121221436603></p><ul><li><p>实际上<code>javax.servlet.http.HttpServlet</code>的<code>doGet/doPost</code>方法是在<code>org.springframework.web.servlet.FrameworkServlet</code>中实现的，而<code>doGet/doPost</code>方法的实现中都仅调用了一个<code>processRequest</code>方法。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>protected</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doGet</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>ServletException</span><span class=p>,</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>processRequest</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>protected</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doPost</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>ServletException</span><span class=p>,</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>processRequest</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>接着<code>processRequest</code>方法的调用链路上有一处核心位置，即调用了<code>doService</code>方法，这个方法在当前类<code>org.springframework.web.servlet.FrameworkServlet</code>中是个抽象方法，需要子类实现。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>protected</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doService</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p><code>doService</code>在<code>org.springframework.web.servlet.DispatcherServlet</code>类中实现，调用链路上有一处核心位置，即调用了<code>doDispatch</code>方法，该方法承载了<code>Spring MVC</code>的关键逻辑。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doService</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>logRequest</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Keep a snapshot of the request attributes in case of an include,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// to be able to restore the original attributes after the include.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Map</span><span class=o>&lt;</span><span class=n>String</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=n>attributesSnapshot</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>null</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>WebUtils</span><span class=p>.</span><span class=na>isIncludeRequest</span><span class=p>(</span><span class=n>request</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>attributesSnapshot</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HashMap</span><span class=o>&lt;&gt;</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Enumeration</span><span class=o>&lt;?&gt;</span><span class=w> </span><span class=n>attrNames</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getAttributeNames</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>while</span><span class=w> </span><span class=p>(</span><span class=n>attrNames</span><span class=p>.</span><span class=na>hasMoreElements</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>String</span><span class=w> </span><span class=n>attrName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>String</span><span class=p>)</span><span class=w> </span><span class=n>attrNames</span><span class=p>.</span><span class=na>nextElement</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=na>cleanupAfterInclude</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>attrName</span><span class=p>.</span><span class=na>startsWith</span><span class=p>(</span><span class=n>DEFAULT_STRATEGIES_PREFIX</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>attributesSnapshot</span><span class=p>.</span><span class=na>put</span><span class=p>(</span><span class=n>attrName</span><span class=p>,</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getAttribute</span><span class=p>(</span><span class=n>attrName</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Make framework objects available to handlers and view objects.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>request</span><span class=p>.</span><span class=na>setAttribute</span><span class=p>(</span><span class=n>WEB_APPLICATION_CONTEXT_ATTRIBUTE</span><span class=p>,</span><span class=w> </span><span class=n>getWebApplicationContext</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>request</span><span class=p>.</span><span class=na>setAttribute</span><span class=p>(</span><span class=n>LOCALE_RESOLVER_ATTRIBUTE</span><span class=p>,</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>localeResolver</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>request</span><span class=p>.</span><span class=na>setAttribute</span><span class=p>(</span><span class=n>THEME_RESOLVER_ATTRIBUTE</span><span class=p>,</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>themeResolver</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>request</span><span class=p>.</span><span class=na>setAttribute</span><span class=p>(</span><span class=n>THEME_SOURCE_ATTRIBUTE</span><span class=p>,</span><span class=w> </span><span class=n>getThemeSource</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=na>flashMapManager</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>FlashMap</span><span class=w> </span><span class=n>inputFlashMap</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>flashMapManager</span><span class=p>.</span><span class=na>retrieveAndUpdate</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>inputFlashMap</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>request</span><span class=p>.</span><span class=na>setAttribute</span><span class=p>(</span><span class=n>INPUT_FLASH_MAP_ATTRIBUTE</span><span class=p>,</span><span class=w> </span><span class=n>Collections</span><span class=p>.</span><span class=na>unmodifiableMap</span><span class=p>(</span><span class=n>inputFlashMap</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>request</span><span class=p>.</span><span class=na>setAttribute</span><span class=p>(</span><span class=n>OUTPUT_FLASH_MAP_ATTRIBUTE</span><span class=p>,</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>FlashMap</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>request</span><span class=p>.</span><span class=na>setAttribute</span><span class=p>(</span><span class=n>FLASH_MAP_MANAGER_ATTRIBUTE</span><span class=p>,</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>flashMapManager</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>RequestPath</span><span class=w> </span><span class=n>previousRequestPath</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>null</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=na>parseRequestPath</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>previousRequestPath</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>RequestPath</span><span class=p>)</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getAttribute</span><span class=p>(</span><span class=n>ServletRequestPathUtils</span><span class=p>.</span><span class=na>PATH_ATTRIBUTE</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ServletRequestPathUtils</span><span class=p>.</span><span class=na>parseAndCache</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 核心位置，执行请求派发</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>doDispatch</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>finally</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>WebAsyncUtils</span><span class=p>.</span><span class=na>getAsyncManager</span><span class=p>(</span><span class=n>request</span><span class=p>).</span><span class=na>isConcurrentHandlingStarted</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// Restore the original attribute snapshot, in case of an include.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>attributesSnapshot</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>restoreAttributesAfterInclude</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>attributesSnapshot</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=na>parseRequestPath</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>ServletRequestPathUtils</span><span class=p>.</span><span class=na>setParsedRequestPath</span><span class=p>(</span><span class=n>previousRequestPath</span><span class=p>,</span><span class=w> </span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>doDispatch</span><span class=p>(</span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>HttpServletResponse</span><span class=w> </span><span class=n>response</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>HttpServletRequest</span><span class=w> </span><span class=n>processedRequest</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>request</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>HandlerExecutionChain</span><span class=w> </span><span class=n>mappedHandler</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>null</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>boolean</span><span class=w> </span><span class=n>multipartRequestParsed</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>false</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>WebAsyncManager</span><span class=w> </span><span class=n>asyncManager</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>WebAsyncUtils</span><span class=p>.</span><span class=na>getAsyncManager</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ModelAndView</span><span class=w> </span><span class=n>mv</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>null</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Exception</span><span class=w> </span><span class=n>dispatchException</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>null</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>try</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>processedRequest</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>checkMultipart</span><span class=p>(</span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>multipartRequestParsed</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>processedRequest</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>request</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// Determine handler for the current request.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 获取处理器映射器</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>mappedHandler</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>getHandler</span><span class=p>(</span><span class=n>processedRequest</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>mappedHandler</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>noHandlerFound</span><span class=p>(</span><span class=n>processedRequest</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// Determine handler adapter for the current request.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 获取处理器适配器</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>HandlerAdapter</span><span class=w> </span><span class=n>ha</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>getHandlerAdapter</span><span class=p>(</span><span class=n>mappedHandler</span><span class=p>.</span><span class=na>getHandler</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// Process last-modified header, if supported by the handler.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>String</span><span class=w> </span><span class=n>method</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>request</span><span class=p>.</span><span class=na>getMethod</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kt>boolean</span><span class=w> </span><span class=n>isGet</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>HttpMethod</span><span class=p>.</span><span class=na>GET</span><span class=p>.</span><span class=na>matches</span><span class=p>(</span><span class=n>method</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>isGet</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>HttpMethod</span><span class=p>.</span><span class=na>HEAD</span><span class=p>.</span><span class=na>matches</span><span class=p>(</span><span class=n>method</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=kt>long</span><span class=w> </span><span class=n>lastModified</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ha</span><span class=p>.</span><span class=na>getLastModified</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>mappedHandler</span><span class=p>.</span><span class=na>getHandler</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>ServletWebRequest</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>).</span><span class=na>checkNotModified</span><span class=p>(</span><span class=n>lastModified</span><span class=p>)</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=n>isGet</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=k>return</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 拦截器前置处理</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>mappedHandler</span><span class=p>.</span><span class=na>applyPreHandle</span><span class=p>(</span><span class=n>processedRequest</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// Actually invoke the handler.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 反射调用处理器</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>mv</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ha</span><span class=p>.</span><span class=na>handle</span><span class=p>(</span><span class=n>processedRequest</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>mappedHandler</span><span class=p>.</span><span class=na>getHandler</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>asyncManager</span><span class=p>.</span><span class=na>isConcurrentHandlingStarted</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=k>return</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>applyDefaultViewName</span><span class=p>(</span><span class=n>processedRequest</span><span class=p>,</span><span class=w> </span><span class=n>mv</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 拦截器后置处理</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>mappedHandler</span><span class=p>.</span><span class=na>applyPostHandle</span><span class=p>(</span><span class=n>processedRequest</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>mv</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>dispatchException</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ex</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>Throwable</span><span class=w> </span><span class=n>err</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// As of 4.3, we&#39;re processing Errors thrown from handler methods as well,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// making them available for @ExceptionHandler methods and other scenarios.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>dispatchException</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>NestedServletException</span><span class=p>(</span><span class=s>&#34;Handler dispatch failed&#34;</span><span class=p>,</span><span class=w> </span><span class=n>err</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 视图渲染</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>processDispatchResult</span><span class=p>(</span><span class=n>processedRequest</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>mappedHandler</span><span class=p>,</span><span class=w> </span><span class=n>mv</span><span class=p>,</span><span class=w> </span><span class=n>dispatchException</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>triggerAfterCompletion</span><span class=p>(</span><span class=n>processedRequest</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>mappedHandler</span><span class=p>,</span><span class=w> </span><span class=n>ex</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>catch</span><span class=w> </span><span class=p>(</span><span class=n>Throwable</span><span class=w> </span><span class=n>err</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>triggerAfterCompletion</span><span class=p>(</span><span class=n>processedRequest</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>,</span><span class=w> </span><span class=n>mappedHandler</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                               </span><span class=k>new</span><span class=w> </span><span class=n>NestedServletException</span><span class=p>(</span><span class=s>&#34;Handler processing failed&#34;</span><span class=p>,</span><span class=w> </span><span class=n>err</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>finally</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>asyncManager</span><span class=p>.</span><span class=na>isConcurrentHandlingStarted</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// Instead of postHandle and afterCompletion</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// 拦截器视图渲染后处理</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>mappedHandler</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=kc>null</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>mappedHandler</span><span class=p>.</span><span class=na>applyAfterConcurrentHandlingStarted</span><span class=p>(</span><span class=n>processedRequest</span><span class=p>,</span><span class=w> </span><span class=n>response</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>else</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// Clean up any resources used by a multipart request.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>multipartRequestParsed</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>cleanupMultipart</span><span class=p>(</span><span class=n>processedRequest</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li></ul><h3 id=二核心位置---initstrategies>二、核心位置 - initStrategies</h3><blockquote><p>之前一篇文章归集过<code>Spring MVC</code>的九大组件，那么这些组件是在何时何处初始化与管理的，答案就在<code>org.springframework.web.servlet.DispatcherServlet</code>中。</p></blockquote><ul><li><p>九大组件声明为<code>DispatcherServlet</code>的成员变量。</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122132452979.png data-srcset="../images/image-20231122132452979.png, ../images/image-20231122132452979.png 1.5x, ../images/image-20231122132452979.png 2x" data-sizes=auto alt=../images/image-20231122132452979.png title=image-20231122132452979></p></li><li><p>而该成员变量则在<code>org.springframework.web.servlet.DispatcherServlet#onRefresh</code>方法中，调用<code>initStrategies</code>引导完成初始化工作。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm> * This implementation calls {@link #initStrategies}.
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>onRefresh</span><span class=p>(</span><span class=n>ApplicationContext</span><span class=w> </span><span class=n>context</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>initStrategies</span><span class=p>(</span><span class=n>context</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm> * Initialize the strategy objects that this servlet uses.
+</span></span></span><span class=line><span class=cl><span class=cm> * &lt;p&gt;May be overridden in subclasses in order to initialize further strategy objects.
+</span></span></span><span class=line><span class=cl><span class=cm> */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>initStrategies</span><span class=p>(</span><span class=n>ApplicationContext</span><span class=w> </span><span class=n>context</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>initMultipartResolver</span><span class=p>(</span><span class=n>context</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>initLocaleResolver</span><span class=p>(</span><span class=n>context</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>initThemeResolver</span><span class=p>(</span><span class=n>context</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>initHandlerMappings</span><span class=p>(</span><span class=n>context</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>initHandlerAdapters</span><span class=p>(</span><span class=n>context</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>initHandlerExceptionResolvers</span><span class=p>(</span><span class=n>context</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>initRequestToViewNameTranslator</span><span class=p>(</span><span class=n>context</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>initViewResolvers</span><span class=p>(</span><span class=n>context</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>initFlashMapManager</span><span class=p>(</span><span class=n>context</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>initMultipartResolver：主要是去容器中获取名称为<code>multipartResolver</code>的<code>MultipartResolver</code>实现。</p></li><li><p>initLocaleResolver：主要是去容器中获取名称为<code>localeResolver</code>的<code>LocaleResolver</code>实现。</p></li><li><p>initThemeResolver：主要是去容器中获取名称为<code>themeResolver</code>的<code>ThemeResolver</code>实现。</p></li><li><p>initHandlerMappings：默认配置下，是去容器中获取所有<code>HandlerMapping</code>的实现，为了保证<code>HandlerMapping</code>能够注册成功，兜底方案是可以通过<code>getDefaultStrategies</code>方法，在<code>DispatcherServlet.properties</code>文件中加载类。</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122205759425.png data-srcset="../images/image-20231122205759425.png, ../images/image-20231122205759425.png 1.5x, ../images/image-20231122205759425.png 2x" data-sizes=auto alt=../images/image-20231122205759425.png title=image-20231122205759425></p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122205831603.png data-srcset="../images/image-20231122205831603.png, ../images/image-20231122205831603.png 1.5x, ../images/image-20231122205831603.png 2x" data-sizes=auto alt=../images/image-20231122205831603.png title=image-20231122205831603></p></li><li><p>initHandlerAdapters：默认配置下，是去容器中获取所有<code>HandlerAdapter</code>的实现，为了保证<code>HandlerAdapter</code>能够注册成功，兜底方案是可以通过<code>getDefaultStrategies</code>方法，在<code>DispatcherServlet.properties</code>文件中加载类。</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122210343376.png data-srcset="../images/image-20231122210343376.png, ../images/image-20231122210343376.png 1.5x, ../images/image-20231122210343376.png 2x" data-sizes=auto alt=../images/image-20231122210343376.png title=image-20231122210343376></p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122205831603.png data-srcset="../images/image-20231122205831603.png, ../images/image-20231122205831603.png 1.5x, ../images/image-20231122205831603.png 2x" data-sizes=auto alt=../images/image-20231122205831603.png title=image-20231122205831603></p></li><li><p>initHandlerExceptionResolvers：默认配置下，是去容器中获取所有<code>initHandlerExceptionResolvers</code>的实现，为了保证<code>initHandlerExceptionResolvers</code>能够注册成功，兜底方案是可以通过<code>getDefaultStrategies</code>方法，在<code>DispatcherServlet.properties</code>文件中加载类。</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122210931264.png data-srcset="../images/image-20231122210931264.png, ../images/image-20231122210931264.png 1.5x, ../images/image-20231122210931264.png 2x" data-sizes=auto alt=../images/image-20231122210931264.png title=image-20231122210931264></p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122205831603.png data-srcset="../images/image-20231122205831603.png, ../images/image-20231122205831603.png 1.5x, ../images/image-20231122205831603.png 2x" data-sizes=auto alt=../images/image-20231122205831603.png title=image-20231122205831603></p></li><li><p>initRequestToViewNameTranslator：主要是去容器中获取名称为<code>viewNameTranslator</code>的<code>RequestToViewNameTranslator</code>实现。</p></li><li><p>initViewResolvers：默认配置下，是去容器中获取所有<code>initViewResolvers</code>的实现，为了保证<code>initViewResolvers</code>能够注册成功，兜底方案是可以通过<code>getDefaultStrategies</code>方法，在<code>DispatcherServlet.properties</code>文件中加载类。</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122211314503.png data-srcset="../images/image-20231122211314503.png, ../images/image-20231122211314503.png 1.5x, ../images/image-20231122211314503.png 2x" data-sizes=auto alt=../images/image-20231122211314503.png title=image-20231122211314503></p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122205831603.png data-srcset="../images/image-20231122205831603.png, ../images/image-20231122205831603.png 1.5x, ../images/image-20231122205831603.png 2x" data-sizes=auto alt=../images/image-20231122205831603.png title=image-20231122205831603></p></li><li><p>initFlashMapManager：主要是去容器中获取名称为<code>flashMapManager</code>的<code>FlashMapManager</code>实现。</p></li></ul><h3 id=三核心位置---gethandler>三、核心位置 - getHandler</h3><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122222457030.png data-srcset="../images/image-20231122222457030.png, ../images/image-20231122222457030.png 1.5x, ../images/image-20231122222457030.png 2x" data-sizes=auto alt=../images/image-20231122222457030.png title=image-20231122222457030></p><ol><li><p>遍历注册的<code>HandlerMapping</code>，尝试获取<code>HandlerExecutionChain</code></p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122221149269.png data-srcset="../images/image-20231122221149269.png, ../images/image-20231122221149269.png 1.5x, ../images/image-20231122221149269.png 2x" data-sizes=auto alt=../images/image-20231122221149269.png title=image-20231122221149269></p></li><li><p><code>AbstractHandlerMapping#getHandler</code>主要做两件事：一是解析<code>Controller</code>及其对应的<code>Method</code>封装；二是解析拦截器<code>HandlerInterceptor</code>，将拦截器与上述对象进一步封装为<code>HandlerExecutionChain</code></p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122221228207.png data-srcset="../images/image-20231122221228207.png, ../images/image-20231122221228207.png 1.5x, ../images/image-20231122221228207.png 2x" data-sizes=auto alt=../images/image-20231122221228207.png title=image-20231122221228207></p><ul><li><p>解析请求的路径<code>lookupPath</code>，从<code>MappingRegistry</code>中获取最佳匹配</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122222144222.png data-srcset="../images/image-20231122222144222.png, ../images/image-20231122222144222.png 1.5x, ../images/image-20231122222144222.png 2x" data-sizes=auto alt=../images/image-20231122222144222.png title=image-20231122222144222></p></li><li><p>封装为<code>HandlerExecutionChain</code>，进一步解析匹配到的拦截器，将其塞进<code>HandlerExecutionChain</code></p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122222228482.png data-srcset="../images/image-20231122222228482.png, ../images/image-20231122222228482.png 1.5x, ../images/image-20231122222228482.png 2x" data-sizes=auto alt=../images/image-20231122222228482.png title=image-20231122222228482></p></li></ul></li></ol><h3 id=四核心位置---gethandleradapter>四、核心位置 - getHandlerAdapter</h3><p>遍历每个<code>HandlerAdapter</code>，尝试获取能支持当前<code>handler</code>的并返回</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231122222830474.png data-srcset="../images/image-20231122222830474.png, ../images/image-20231122222830474.png 1.5x, ../images/image-20231122222830474.png 2x" data-sizes=auto alt=../images/image-20231122222830474.png title=image-20231122222830474></p><h3 id=五核心位置---handle>五、核心位置 - handle</h3><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231123220944490.png data-srcset="../images/image-20231123220944490.png, ../images/image-20231123220944490.png 1.5x, ../images/image-20231123220944490.png 2x" data-sizes=auto alt=../images/image-20231123220944490.png title=image-20231123220944490></p><p><code>Spring MVC</code>通过处理器适配器<code>HandlerAdapter</code>的<code>handler</code>方法转发请求，返回<code>ModelAndView</code>。</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231123223526771.png data-srcset="../images/image-20231123223526771.png, ../images/image-20231123223526771.png 1.5x, ../images/image-20231123223526771.png 2x" data-sizes=auto alt=../images/image-20231123223526771.png title=image-20231123223526771></p><ol><li><code>HanlderAdaper</code>调用<code>AbstractHandlerMethodAdapter</code>的<code>handle</code>方法执行</li><li><code>AbstractHandlerMethodAdapter</code>调用内部的抽象方法<code>handleInternal</code>，该方法由<code>RequestMappingHandlerAdapter</code>实现</li><li><code>RequestMappingHandlerAdapter</code>调用内部的<code>invokeHandlerMethod</code>方法，此处会将<code>HandlerMethod</code>对象包装为<code>ServletInvocableHandlerMethod</code>对象以及封装<code>HttpServletRequest</code>和<code>HttpServletResponse</code>为一个<code>ServletWebRequest</code>对象，最终调用<code>ServletInvocableHandlerMethod</code>的<code>invokeAndHandle</code>方法</li><li><code>ServletInvocableHandlerMethod</code>调用<code>invokeAndHandle</code>方法，触发内部的<code>invokeForRequest</code>方法调用</li><li><code>InvocableHandlerMethod</code>调用<code>invokeForRequest</code>方法，解析即将要调用方法的形参列表，触发内部<code>doInvoke</code>方法调用</li><li><code>InvocableHandlerMethod</code>调用<code>doInvoke</code>方法最终通过反射方式<code>method.invoke(getBean(), args)</code>实现目标方法的反射调用</li></ol><h3 id=六核心位置---processdispatchresult>六、核心位置 - processDispatchResult</h3><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231124222811718.png data-srcset="../images/image-20231124222811718.png, ../images/image-20231124222811718.png 1.5x, ../images/image-20231124222811718.png 2x" data-sizes=auto alt=../images/image-20231124222811718.png title=image-20231124222811718></p><p><code>Spring MVC</code>处理请求从<code>org.springframework.web.servlet.DispatcherServlet#render</code>方法开始</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231124223055961.png data-srcset="../images/image-20231124223055961.png, ../images/image-20231124223055961.png 1.5x, ../images/image-20231124223055961.png 2x" data-sizes=auto alt=../images/image-20231124223055961.png title=image-20231124223055961></p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2022-10-07</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/spring%E7%94%9F%E6%80%81/>Spring生态</a>,&nbsp;<a href=/tags/mvc/>MVC</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/java%E8%BF%9C%E7%A8%8B%E6%96%AD%E7%82%B9/ class=prev rel=prev title=Java远程断点><i class="fas fa-angle-left fa-fw"></i>Java远程断点</a>
+<a href=/springmvc%E9%99%84%E5%BD%95/ class=next rel=next title="04_Spring MVC 附录">04_Spring MVC 附录<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>yiwenup</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:0},comment:{},lightGallery:{actualSize:!1,exThumbImage:"data-thumbnail",hideBarsDelay:2e3,selector:".lightgallery",speed:400,thumbContHeight:80,thumbWidth:80,thumbnail:!0},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},twemoji:!0}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
