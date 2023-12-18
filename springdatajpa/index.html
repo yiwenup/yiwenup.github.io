@@ -1,0 +1,407 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=X-UA-Compatible content="IE=edge, chrome=1"><title>Spring Data JPA - Yiwenup - 持续沉淀</title><meta name=Description content="Yiwenup - 持续沉淀"><meta property="og:title" content="Spring Data JPA">
+<meta property="og:description" content="一、Spring Data JPA 认识 Spring Data JPA是在JPA规范之上封装的一个DAO层的框架。 JPA是一个持久层的规范，全称为Java Persistent API，在这个规范之"><meta property="og:type" content="article"><meta property="og:url" content="http://www.yiwenup.cloud/springdatajpa/"><meta property="og:image" content="http://www.yiwenup.cloud/logo.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-10-20T13:45:20+08:00"><meta property="article:modified_time" content="2023-12-18T21:02:31+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://www.yiwenup.cloud/logo.png"><meta name=twitter:title content="Spring Data JPA"><meta name=twitter:description content="一、Spring Data JPA 认识 Spring Data JPA是在JPA规范之上封装的一个DAO层的框架。 JPA是一个持久层的规范，全称为Java Persistent API，在这个规范之"><meta name=application-name content="Yiwenup - 持续沉淀"><meta name=apple-mobile-web-app-title content="Yiwenup - 持续沉淀"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://www.yiwenup.cloud/springdatajpa/><link rel=prev href=http://www.yiwenup.cloud/springmvc%E9%99%84%E5%BD%95/><link rel=next href=http://www.yiwenup.cloud/%E6%95%B4%E5%90%88%E5%8E%9F%E7%94%9Fssm/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Spring Data JPA","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/www.yiwenup.cloud\/springdatajpa\/"},"image":["http:\/\/www.yiwenup.cloud\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Spring生态, JPA","wordcount":2997,"url":"http:\/\/www.yiwenup.cloud\/springdatajpa\/","datePublished":"2022-10-20T13:45:20+08:00","dateModified":"2023-12-18T21:02:31+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":{"@type":"ImageObject","url":"http:\/\/www.yiwenup.cloud\/images\/avatar.png","width":320,"height":320}},"author":{"@type":"Person","name":"yiwenup"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/categories/><i class='fas fa-folder-open'></i> 分类 </a><a class=menu-item href=/tags/><i class='fas fa-tags fa-fw'></i> 标签 </a><a class=menu-item href=/posts/><i class='fas fa-book'></i> 所有文章 </a><a class=menu-item href=/></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/categories/ title><i class='fas fa-folder-open'></i>分类</a><a class=menu-item href=/tags/ title><i class='fas fa-tags fa-fw'></i>标签</a><a class=menu-item href=/posts/ title><i class='fas fa-book'></i>所有文章</a><a class=menu-item href=/ title></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Spring Data JPA</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-feather-alt"></i></a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/jpa/><i class="far fa-folder fa-fw"></i>JPA</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2022-10-20>2022-10-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2997 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#一spring-data-jpa-认识>一、Spring Data JPA 认识</a></li><li><a href=#二spring-data--jpa-使用>二、Spring Data JPA 使用</a><ul><li><a href=#21-整合-spring>2.1 整合 Spring</a></li><li><a href=#22-简单-crud>2.2 简单 CRUD</a></li><li><a href=#23-特殊使用---jpql>2.3 特殊使用 - JPQL</a></li><li><a href=#24-特殊使用---原生sql>2.4 特殊使用 - 原生SQL</a></li><li><a href=#25-特殊使用---方法命名>2.5 特殊使用 - 方法命名</a></li></ul></li><li><a href=#三spring-data-jpa-原理>三、Spring Data JPA 原理</a></li></ul></li></ul></nav></div></div><div class=content id=content><h2 id=一spring-data-jpa-认识>一、Spring Data JPA 认识</h2><blockquote><p><code>Spring Data JPA</code>是在<code>JPA</code>规范之上封装的一个<code>DAO</code>层的框架。</p><p><code>JPA</code>是一个持久层的规范，全称为<code>Java Persistent API</code>，在这个规范之下又兼顾<code>ORM</code>思想，于是有了<code>Hibernate</code>框架。<code>Hibernate</code>是对<code>JPA</code>与<code>ORM</code>的一种实现。</p><p>因此，<code>Spring Data JPA</code>是封装了<code>JPA</code>规范，而底层运行时引擎是依赖了<code>Hibernate</code>框架。</p></blockquote><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231129212129534.png data-srcset="../images/image-20231129212129534.png, ../images/image-20231129212129534.png 1.5x, ../images/image-20231129212129534.png 2x" data-sizes=auto alt=../images/image-20231129212129534.png title=image-20231129212129534></p><h2 id=二spring-data--jpa-使用>二、Spring Data JPA 使用</h2><h3 id=21-整合-spring>2.1 整合 Spring</h3><ol><li><p>配置<code>resources/applicationContext.xml</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=cp>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;beans</span> <span class=na>xmlns=</span><span class=s>&#34;http://www.springframework.org/schema/beans&#34;</span>
+</span></span><span class=line><span class=cl>       <span class=na>xmlns:context=</span><span class=s>&#34;http://www.springframework.org/schema/context&#34;</span>
+</span></span><span class=line><span class=cl>       <span class=na>xmlns:jpa=</span><span class=s>&#34;http://www.springframework.org/schema/data/jpa&#34;</span>
+</span></span><span class=line><span class=cl>       <span class=na>xmlns:xsi=</span><span class=s>&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span class=line><span class=cl>       <span class=na>xsi:schemaLocation=</span><span class=s>&#34;
+</span></span></span><span class=line><span class=cl><span class=s>       http://www.springframework.org/schema/beans
+</span></span></span><span class=line><span class=cl><span class=s>       http://www.springframework.org/schema/beans/spring-beans.xsd
+</span></span></span><span class=line><span class=cl><span class=s>       http://www.springframework.org/schema/context
+</span></span></span><span class=line><span class=cl><span class=s>       http://www.springframework.org/schema/context/spring-context.xsd
+</span></span></span><span class=line><span class=cl><span class=s>       http://www.springframework.org/schema/data/jpa
+</span></span></span><span class=line><span class=cl><span class=s>       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+</span></span></span><span class=line><span class=cl><span class=s>&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- region 注入数据源 --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;context:property-placeholder</span> <span class=na>location=</span><span class=s>&#34;classpath*:jdbc.properties&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;bean</span> <span class=na>id=</span><span class=s>&#34;datasource&#34;</span> <span class=na>class=</span><span class=s>&#34;com.alibaba.druid.pool.DruidDataSource&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;driverClassName&#34;</span> <span class=na>value=</span><span class=s>&#34;${jdbc.driverName}&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;url&#34;</span> <span class=na>value=</span><span class=s>&#34;${jdbc.url}&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;username&#34;</span> <span class=na>value=</span><span class=s>&#34;${jdbc.username}&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;password&#34;</span> <span class=na>value=</span><span class=s>&#34;${jdbc.password}&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/bean&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- endregion --&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- region
+</span></span></span><span class=line><span class=cl><span class=c>    JPA 核心能力 EntityManager：
+</span></span></span><span class=line><span class=cl><span class=c>        Spring Data JPA             &lt;-&gt;    Mybatis
+</span></span></span><span class=line><span class=cl><span class=c>        EntityManager               &lt;-&gt;    SqlSession
+</span></span></span><span class=line><span class=cl><span class=c>        EntityManagerFactoryBean    &lt;-&gt;    SqlSessionFactory
+</span></span></span><span class=line><span class=cl><span class=c>     --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;bean</span> <span class=na>id=</span><span class=s>&#34;entityManager&#34;</span> <span class=na>class=</span><span class=s>&#34;org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- 实体包扫描路径 --&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;packagesToScan&#34;</span> <span class=na>value=</span><span class=s>&#34;cloud.yiwenup.sample.dao.entity&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;dataSource&#34;</span> <span class=na>ref=</span><span class=s>&#34;datasource&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- JPA：javax.persistence.spi.PersistenceProvider 的实现 --&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;persistenceProvider&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;bean</span> <span class=na>class=</span><span class=s>&#34;org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- 不同JPA实现，对连接操作的细节不同，此处使用Hibernate实现 --&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;jpaDialect&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;bean</span> <span class=na>class=</span><span class=s>&#34;org.springframework.orm.jpa.vendor.HibernateJpaDialect&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- 配置JPA实现细节，此处使用基于Hibernate的实现 --&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;jpaVendorAdapter&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;bean</span> <span class=na>class=</span><span class=s>&#34;org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=c>&lt;!-- 启动时不执行DDL --&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;generateDdl&#34;</span> <span class=na>value=</span><span class=s>&#34;false&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=c>&lt;!-- 运行时显示SQL --&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;showSql&#34;</span> <span class=na>value=</span><span class=s>&#34;true&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=c>&lt;!-- 数据库类型，此处使用 PostgresSQL --&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;database&#34;</span> <span class=na>value=</span><span class=s>&#34;POSTGRESQL&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=c>&lt;!-- 数据库平台，此处需要选用org.hibernate.dialect.Dialect的实现 --&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;databasePlatform&#34;</span> <span class=na>value=</span><span class=s>&#34;org.hibernate.dialect.PostgreSQL10Dialect&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;/bean&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/bean&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- endregion --&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- 
+</span></span></span><span class=line><span class=cl><span class=c>    注入事务管理器org.springframework.orm.jpa.JpaTransactionManager，
+</span></span></span><span class=line><span class=cl><span class=c>    对比Mybaits，使用的是org.springframework.jdbc.datasource.DataSourceTransactionManager实现
+</span></span></span><span class=line><span class=cl><span class=c>     --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;bean</span> <span class=na>id=</span><span class=s>&#34;transactionManager&#34;</span> <span class=na>class=</span><span class=s>&#34;org.springframework.orm.jpa.JpaTransactionManager&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;entityManagerFactory&#34;</span> <span class=na>ref=</span><span class=s>&#34;entityManager&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/bean&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- 为接口创建JPA代理，需要配置包扫描路径 --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;jpa:repositories</span> <span class=na>base-package=</span><span class=s>&#34;cloud.yiwenup.sample.dao.repo&#34;</span>
+</span></span><span class=line><span class=cl>                      <span class=na>entity-manager-factory-ref=</span><span class=s>&#34;entityManager&#34;</span>
+</span></span><span class=line><span class=cl>                      <span class=na>transaction-manager-ref=</span><span class=s>&#34;transactionManager&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/beans&gt;</span>
+</span></span></code></pre></td></tr></table></div></div></li><li><p>创建<code>POJO</code>，需要使用一系列注解完成实体与表的映射</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>cloud.yiwenup.sample.dao.entity</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>javax.persistence.Column</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>javax.persistence.Entity</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>javax.persistence.GeneratedValue</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>javax.persistence.Id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>javax.persistence.Table</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Entity</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Table</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;tb_resume&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Resume</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Id</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@GeneratedValue</span><span class=p>(</span><span class=n>strategy</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GenerationType</span><span class=p>.</span><span class=na>IDENTITY</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>Long</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Column</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;name&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Column</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;phone&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>phone</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>创建操作接口，需要继承<code>org.springframework.data.jpa.repository.JpaRepository</code>和<code>org.springframework.data.jpa.repository.JpaSpecificationExecutor</code>，前者提供基本增删改查方法，后者提供动态<code>SQL</code>能力</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nn>cloud.yiwenup.sample.dao.repo</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>cloud.yiwenup.sample.dao.entity.Resume</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.data.jpa.repository.JpaRepository</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>org.springframework.data.jpa.repository.JpaSpecificationExecutor</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>ResumeRepo</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>JpaRepository</span><span class=o>&lt;</span><span class=n>Resume</span><span class=p>,</span><span class=w> </span><span class=n>Long</span><span class=o>&gt;</span><span class=p>,</span><span class=w> </span><span class=n>JpaSpecificationExecutor</span><span class=o>&lt;</span><span class=n>Resume</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li></ol><h3 id=22-简单-crud>2.2 简单 CRUD</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>test_jpa_findAll</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>resumeRepo</span><span class=p>.</span><span class=na>findAll</span><span class=p>().</span><span class=na>forEach</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>::</span><span class=n>println</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>test_insert</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Resume</span><span class=w> </span><span class=n>entity</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Resume</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>entity</span><span class=p>.</span><span class=na>setId</span><span class=p>(</span><span class=n>4L</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>entity</span><span class=p>.</span><span class=na>setAddress</span><span class=p>(</span><span class=s>&#34;北京&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>entity</span><span class=p>.</span><span class=na>setName</span><span class=p>(</span><span class=s>&#34;李四&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>entity</span><span class=p>.</span><span class=na>setPhone</span><span class=p>(</span><span class=s>&#34;13100000000&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 新增和修改用的都是 save 方法，区别就是带了 ID 的是修改，没带的是新增</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Resume</span><span class=w> </span><span class=n>saved</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>resumeRepo</span><span class=p>.</span><span class=na>save</span><span class=p>(</span><span class=n>entity</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>saved</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>test_finById</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>resumeRepo</span><span class=p>.</span><span class=na>findById</span><span class=p>(</span><span class=n>4L</span><span class=p>).</span><span class=na>orElse</span><span class=p>(</span><span class=kc>null</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>test_findOne</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Resume</span><span class=w> </span><span class=n>probe</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Resume</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>probe</span><span class=p>.</span><span class=na>setId</span><span class=p>(</span><span class=n>4L</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>probe</span><span class=p>.</span><span class=na>setPhone</span><span class=p>(</span><span class=s>&#34;13100000000&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// findOne 要明确保证当前查询条件仅能返回一条记录</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>resumeRepo</span><span class=p>.</span><span class=na>findOne</span><span class=p>(</span><span class=n>Example</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=n>probe</span><span class=p>)).</span><span class=na>orElse</span><span class=p>(</span><span class=kc>null</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>test_findAll</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>resumeRepo</span><span class=p>.</span><span class=na>findAll</span><span class=p>().</span><span class=na>forEach</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>::</span><span class=n>println</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>test_sort</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>resumeRepo</span><span class=p>.</span><span class=na>findAll</span><span class=p>(</span><span class=n>Sort</span><span class=p>.</span><span class=na>by</span><span class=p>(</span><span class=n>Sort</span><span class=p>.</span><span class=na>Direction</span><span class=p>.</span><span class=na>ASC</span><span class=p>,</span><span class=w> </span><span class=s>&#34;phone&#34;</span><span class=p>)).</span><span class=na>forEach</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>::</span><span class=n>println</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>test_page</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 分页页码从0开始</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Page</span><span class=o>&lt;</span><span class=n>Resume</span><span class=o>&gt;</span><span class=w> </span><span class=n>page</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>resumeRepo</span><span class=p>.</span><span class=na>findAll</span><span class=p>(</span><span class=n>Pageable</span><span class=p>.</span><span class=na>ofSize</span><span class=p>(</span><span class=n>2</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>page</span><span class=p>.</span><span class=na>getNumber</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>page</span><span class=p>.</span><span class=na>getContent</span><span class=p>().</span><span class=na>forEach</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>::</span><span class=n>println</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 指定页码，也是从0开始的</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Page</span><span class=o>&lt;</span><span class=n>Resume</span><span class=o>&gt;</span><span class=w> </span><span class=n>page1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>resumeRepo</span><span class=p>.</span><span class=na>findAll</span><span class=p>(</span><span class=n>PageRequest</span><span class=p>.</span><span class=na>of</span><span class=p>(</span><span class=n>1</span><span class=p>,</span><span class=w> </span><span class=n>2</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>page1</span><span class=p>.</span><span class=na>getNumber</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>page1</span><span class=p>.</span><span class=na>getContent</span><span class=p>().</span><span class=na>forEach</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>::</span><span class=n>println</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=23-特殊使用---jpql>2.3 特殊使用 - JPQL</h3><blockquote><p><code>JPQL（Java Persistence Query Language）</code>是用于在 Java 持久化框架中执行查询的查询语言。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>ResumeRepo</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>JpaRepository</span><span class=o>&lt;</span><span class=n>Resume</span><span class=p>,</span><span class=w> </span><span class=n>Long</span><span class=o>&gt;</span><span class=p>,</span><span class=w> </span><span class=n>JpaSpecificationExecutor</span><span class=o>&lt;</span><span class=n>Resume</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * 根据地址查询
+</span></span></span><span class=line><span class=cl><span class=cm>     *
+</span></span></span><span class=line><span class=cl><span class=cm>     * @param address 地址
+</span></span></span><span class=line><span class=cl><span class=cm>     * @return 简历列表
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Query</span><span class=p>(</span><span class=s>&#34;from Resume where address = ?1&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Resume</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findResumesByAddress</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>address</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>test_jpql</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>resumeRepo</span><span class=p>.</span><span class=na>findResumesByAddress</span><span class=p>(</span><span class=s>&#34;上海&#34;</span><span class=p>).</span><span class=na>forEach</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>::</span><span class=n>println</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=24-特殊使用---原生sql>2.4 特殊使用 - 原生SQL</h3><blockquote><p>主要是在<code>@Query</code>注解上，开启<code>nativeQuery=true</code></p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>ResumeRepo</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>JpaRepository</span><span class=o>&lt;</span><span class=n>Resume</span><span class=p>,</span><span class=w> </span><span class=n>Long</span><span class=o>&gt;</span><span class=p>,</span><span class=w> </span><span class=n>JpaSpecificationExecutor</span><span class=o>&lt;</span><span class=n>Resume</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * 根据电话模糊查询
+</span></span></span><span class=line><span class=cl><span class=cm>     *
+</span></span></span><span class=line><span class=cl><span class=cm>     * @param phone 电话
+</span></span></span><span class=line><span class=cl><span class=cm>     * @return 简历列表
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Query</span><span class=p>(</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;select * from tb_resume where phone like ?1&#34;</span><span class=p>,</span><span class=w> </span><span class=n>nativeQuery</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=kc>true</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Resume</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findResumesLikePhone</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>phone</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>test_sql</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>resumeRepo</span><span class=p>.</span><span class=na>findResumesLikePhone</span><span class=p>(</span><span class=s>&#34;13%&#34;</span><span class=p>).</span><span class=na>forEach</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>::</span><span class=n>println</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=25-特殊使用---方法命名>2.5 特殊使用 - 方法命名</h3><blockquote><p><code>Spring Data JPA</code>提供了基于特殊规则的命名解析策略，只要按照其命名规则声明方法名称即可。</p></blockquote><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231205213412830.png data-srcset="../images/image-20231205213412830.png, ../images/image-20231205213412830.png 1.5x, ../images/image-20231205213412830.png 2x" data-sizes=auto alt=../images/image-20231205213412830.png title=image-20231205213412830></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>interface</span> <span class=nc>ResumeRepo</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>JpaRepository</span><span class=o>&lt;</span><span class=n>Resume</span><span class=p>,</span><span class=w> </span><span class=n>Long</span><span class=o>&gt;</span><span class=p>,</span><span class=w> </span><span class=n>JpaSpecificationExecutor</span><span class=o>&lt;</span><span class=n>Resume</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * 方法命名
+</span></span></span><span class=line><span class=cl><span class=cm>     *
+</span></span></span><span class=line><span class=cl><span class=cm>     * @param address 地址
+</span></span></span><span class=line><span class=cl><span class=cm>     * @param phone   电话
+</span></span></span><span class=line><span class=cl><span class=cm>     * @return 简历列表
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Resume</span><span class=o>&gt;</span><span class=w> </span><span class=nf>findResumesByAddressEqualsAndPhoneLike</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>address</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>phone</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>test_namedRules</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>resumeRepo</span><span class=p>.</span><span class=na>findResumesByAddressEqualsAndPhoneLike</span><span class=p>(</span><span class=s>&#34;北京&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;131%&#34;</span><span class=p>).</span><span class=na>forEach</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>::</span><span class=n>println</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=三spring-data-jpa-原理>三、Spring Data JPA 原理</h2><p>首先能确定的是，我们只写了接口，但是调用时却能实现相应的方法，那么这里面一定是有动态代理，并且是<strong>基于<code>JDK</code>的动态代理</strong>。</p><p>此外，我们的使用方式是将该接口注入使用，那么这里一定是将实例托管到了<code>Spring</code>容器中，存在一个单例<code>Bean</code>，而基于<code>Spring</code>源码的了解，在产生<code>Bean</code>之前，会有一个阶段，是构造<code>BeanDefinition</code>，因此可以将断点放置在<code>org.springframework.beans.factory.support.AbstractBeanFactory#getMergedLocalBeanDefinition</code>，看看其<code>BeanDefinition</code>是怎么构造的。</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231205224519516.png data-srcset="../images/image-20231205224519516.png, ../images/image-20231205224519516.png 1.5x, ../images/image-20231205224519516.png 2x" data-sizes=auto alt=../images/image-20231205224519516.png title=image-20231205224519516></p><p>主要是注意<code>BeanDefinition</code>中的<code>beanClass</code>属性，正常<code>Bean</code>的<code>beanClass</code>一般都是对应实现的类全路径，而通过<code>FactoryBean</code>代理出来的<code>Bean</code>，其<code>BeanDeinition</code>的<code>beanClass</code>是<code>XxxBeanFactory</code>，主要是看看在什么时候发生的改变。</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231207201022021.png data-srcset="../images/image-20231207201022021.png, ../images/image-20231207201022021.png 1.5x, ../images/image-20231207201022021.png 2x" data-sizes=auto alt=../images/image-20231207201022021.png title=image-20231207201022021></p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231207201212561.png data-srcset="../images/image-20231207201212561.png, ../images/image-20231207201212561.png 1.5x, ../images/image-20231207201212561.png 2x" data-sizes=auto alt=../images/image-20231207201212561.png title=image-20231207201212561></p><p>可以发现，代理接口实现的是<code>org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean</code>，是经过<code>org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension#getRepositoryFactoryBeanClassName</code>特殊指定的。</p><p>根据<code>FactoryBean</code>的特性，最终注入到容器中的<code>Bean</code>是通过<code>getObject</code>方法返回的，而<code>JpaRepositoryFactoryBean</code>的返回值如下图</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231218204538252.png data-srcset="../images/image-20231218204538252.png, ../images/image-20231218204538252.png 1.5x, ../images/image-20231218204538252.png 2x" data-sizes=auto alt=../images/image-20231218204538252.png title=image-20231218204538252></p><p>继续寻找<code>repository</code>是在何时被初始化的，于是找到了<code>org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport#afterPropertiesSet</code>方法</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231218204800432.png data-srcset="../images/image-20231218204800432.png, ../images/image-20231218204800432.png 1.5x, ../images/image-20231218204800432.png 2x" data-sizes=auto alt=../images/image-20231218204800432.png title=image-20231218204800432></p><p>最终来到了<code>org.springframework.data.repository.core.support.RepositoryFactorySupport#getRepository(java.lang.Class&lt;T>, org.springframework.data.repository.core.support.RepositoryComposition.RepositoryFragments)</code>方法，主要是通过<code>Spring</code>的<code>ProxyFactory</code>产生了代理对象。并且接口的实现最终是会代理给<code>org.springframework.data.jpa.repository.support.SimpleJpaRepository</code>完成实际底层的<code>EntityManager</code>调用。</p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231218205957585.png data-srcset="../images/image-20231218205957585.png, ../images/image-20231218205957585.png 1.5x, ../images/image-20231218205957585.png 2x" data-sizes=auto alt=../images/image-20231218205957585.png title=image-20231218205957585></p><p><img class=lazyload src=/svg/loading.min.svg data-src=../images/image-20231218205053904.png data-srcset="../images/image-20231218205053904.png, ../images/image-20231218205053904.png 1.5x, ../images/image-20231218205053904.png 2x" data-sizes=auto alt=../images/image-20231218205053904.png title=image-20231218205053904></p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2023-12-18&nbsp;<a class=git-hash href=https://github.com/dillonzq/LoveIt/commit/0a7ba3057947d5782eaf7961b5d3646f369026ab target=_blank title="commit by yiwenup(97035457@qq.com) 0a7ba3057947d5782eaf7961b5d3646f369026ab: feat: jpa">
+<i class="fas fa-hashtag fa-fw"></i>0a7ba30</a></span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/spring%E7%94%9F%E6%80%81/>Spring生态</a>,&nbsp;<a href=/tags/jpa/>JPA</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/springmvc%E9%99%84%E5%BD%95/ class=prev rel=prev title="04_Spring MVC 附录"><i class="fas fa-angle-left fa-fw"></i>04_Spring MVC 附录</a>
+<a href=/%E6%95%B4%E5%90%88%E5%8E%9F%E7%94%9Fssm/ class=next rel=next title="整合原生 SSM">整合原生 SSM<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>yiwenup</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:0},comment:{},lightGallery:{actualSize:!1,exThumbImage:"data-thumbnail",hideBarsDelay:2e3,selector:".lightgallery",speed:400,thumbContHeight:80,thumbWidth:80,thumbnail:!0},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},twemoji:!0}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
