@@ -46,7 +46,7 @@ toc:
 - [ ] 开发框架
   - [x] Spring
   - [x] Spring MVC
-  - [ ] Spring Boot
+  - [x] Spring Boot
   - [x] Mybatis
   - [ ] Apache Dubbo
   - [ ] Spring Cloud Gateway
@@ -62,9 +62,9 @@ toc:
   - [ ] Nginx
 - [ ] 设计
   - [ ] 单点登录
-  - [ ] 动态排序
+  - [x] 动态排序
   - [ ] DDD
-  - [ ] Side Car
+  - [x] Side Car
 - [ ] 数据结构与算法
   - [ ] 数据结构
     - [ ] 数组
@@ -83,8 +83,8 @@ toc:
     - [ ] 归并
     - [ ] 快排
     - [ ] 堆排序
-  - [ ] 问题记录
-    - [ ] 抽象父类动态代理
+  - [x] 问题记录
+    - [x] 抽象父类动态代理
 
 ```svg
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
@@ -119,16 +119,5 @@ toc:
 </svg>
 ```
 
----
 
-
-
-- [x] 独立部署手册，验证IE11兼容性
-- [ ] 存量应用与制品应用权限打通 - 还没开始
-- [x] 完成远程调用文档
-- [x] decimal类型使用上最大值最小值有歧义
-- [x] 数据类型修改，弹窗类型会缺失，偶发。11月14日出现两起
-- [x] 字段命名不符合行内规范，已将改需求提给网易产品，联系人：文晓、雯燕、家珂
-- [x] 扩展模块暴露接口，但是路径不匹配问题，已反馈，联系人：沈余锋
-- [x] ~~前端逻辑能调用后端扩展模块暴露的方法，需要加过滤，已将问题提供给网易，联系人：程义~~
 
