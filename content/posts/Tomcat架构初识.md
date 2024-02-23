@@ -139,8 +139,81 @@ toc:
 
 根据`Tomcat`源码包中默认的`server.xml`可以初步看出来：
 
-- 一个`Server`实例就代表这着一个`Tomcat`
+- 一个`Server`实例就代表着一个`Tomcat`
 - 一个`Server`实例中可以配置多个`Service`
 - 一个`Service`中可以配置多个`Connector`和一个`Engine`
 - 一个`Engine`可以配置一个`Host`
 
+## Tomcat核心配置
+
+> 顺着上面的`confg/server.xml`，进一步探索`Tomcat`在这个配置文件中的一些核心配置项。
+
+### Server
+
+```xml
+<!-- 
+  port: 监听关闭服务的端口
+  shutdown：关闭服务器的指令字符串
+-->
+<Server port="8005" shutdown="SHUTDOWN">
+  <!-- 以日志形式输出服务器、操作系统、JVM的版本信息 -->
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+  <!-- Security listener. Documentation at /docs/config/listeners.html
+  <Listener className="org.apache.catalina.security.SecurityListener" />
+  -->
+  <!-- 服务器启动时加载、服务器停止时销毁APR。如果找不到APR库，则会输出日志，并不影响Tomcat启动 -->
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+  <!-- 避免JRE内存泄漏 -->
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <!-- 服务器启动时加载、服务器停止时销毁全局命名服务 -->
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <!-- 在Context停止时重建Executor中的线程池，避免ThreadLocal相关的内存泄漏 -->
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+    
+  <!-- GlobalNamingResources定义全局命名服务 -->
+  <GlobalNamingResources>
+    <Resource name="UserDatabase" auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="conf/tomcat-users.xml" />
+  </GlobalNamingResources>
+    
+  <Service name="Catalina">
+    <!-- ... -->
+  </Service>
+</Server>
+```
+
+### Service
+
+```xml
+<!-- 
+该标签用于创建Service实例，默认使用org.apache.catalina.core.StandardService实现。
+Service的子标签有：Listener、Executor、Connector、Engine
+其中：
+Listener：用于为Service声明周期添加监听器
+Executor：用于配置Service共享线程池
+Connector：用于配置Service的连接器
+Engine：用于配置Service中连接器对应的Servlet容器引擎
+ -->
+<Service name="Catalina">
+  <Executor name="tomcatThreadPool" namePrefix="catalina-exec-" maxThreads="150" minSpareThreads="4"/>
+  
+  <Connector executor="tomcatThreadPool" port="8080" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8443" maxParameterCount="1000">
+    <!-- ... -->
+  </Connector>
+
+  <Engine name="Catalina" defaultHost="localhost">
+    <!-- ... -->
+  </Engine>
+</Service>
+```
+
+### Executor
+
+
+
+### Connector
+
+### Engine
