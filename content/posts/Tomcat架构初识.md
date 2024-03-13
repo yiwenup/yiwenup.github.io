@@ -212,8 +212,119 @@ Engine：用于配置Service中连接器对应的Servlet容器引擎
 
 ### Executor
 
-
+```xml
+<!--
+默认情况下，Service 并未添加共享线程池配置，如果需要使用到共享线程池，则可以使用该标签配置。
+name：线程池名称
+namePrefix：线程前缀，完整的线程名称则表现为 namePrefix + 线程编号
+maxThreads：最大线程数
+minSpareThreads：活跃线程数，即核心线程数，这部分线程不会被回收销毁
+maxIdleTime：线程空闲时间，超过该时间后，空闲线程将会被回收销毁，单位毫秒
+maxQueueSize：等待处理请求队列大小，默认为 Integer.MAX_VALUE，表示队列无限大。特殊情况外，该配置不需要更改，否则可能会导致部分请求不会被处理
+prestartminSpareThreads：线程池启动时是否启动核心线程，默认不启动
+threadPriority：线程池中的线程优先级，默认为 5，值从 1 到 10
+className：线程池实现策略，默认为 org.apache.catalina.core.StandardThreadExecutor，如有需要，可以自行基于 org.apache.catalina.Executor 扩展策略。
+-->
+<Executor name="tomcatThreadPool" 
+          namePrefix="catalina-exec-" 
+          maxThreads="150" 
+          minSpareThreads="4"
+          maxIdleTime="60000"
+          maxQueueSize="Integer.MAX_VALUE"
+          prestartminSpareThreads="false"
+          threadPriority="5"
+          className="org.apache.catalina.core.StandardThreadExecutor" />
+```
 
 ### Connector
 
+```xml
+<!-- 
+默认情况下，Tomcat 配置两个 Connector，一个用于支持 HTTP 协议，一个用于支持 AJP 协议。大多数情况下，这部分不需要再额外添加连接器了，根据需求优化配置即可。
+port：端口号。Connector 用于创建服务端 Socket 并进行监听，等待客户端请求连接。如果设置为 0，则 Tomcat 会随机选择一个端口号分配给当前的 Connector
+protocol：访问协议。默认为 HTTP/1.1
+connectionTimeout：Connector 接收连接后的等待超时时间，单位为毫秒， -1 表示不超时
+redirectPort：当前 Connector 不支持 SSL 请求，在接收到一个符合 security-constraint 的请求，则需要 SSL 传输，Catalina 会自动将请求重定向到指定端口
+executor：指定共享线程池的名称
+URIEncoding：用于指定 URI 的字符编码，Tomcat8.x 默认的编码为 UTF-8，Tomcat7.x 默认的编码为 ISO-8859-1
+-->
+<Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8443" maxParameterCount="1000"/>
+<Connector port="8009" protocol="AJP/1.3" address="::1" redirectPort="8443" maxParameterCount="1000"/>
+```
+
+```xml
+<!-- 使用共享线程池示例 -->
+<Connector port="8080" 
+               protocol="HTTP/1.1"
+               executor="commonExecutor"
+               maxThreads="1000"
+               minSpareThreads="100"
+               acceptCount="1000"
+               maxConnection="1000"
+               connectionTimeout="20000"
+               compression="on"
+               compressionMinSize="2048"
+               disableUploadTimeout="true"
+               redirectPort="8443"
+               URIEncoding="UTF-8"
+               />
+```
+
 ### Engine
+
+```xml
+<!-- 
+一个 Engine 表示一个 Servlet 引擎
+ 
+name：指定 Engine 名称，默认为 Catalina
+defaultHost：默认的虚拟主机名称，当客户端请求所指向的虚拟主机无效时，会交由默认虚拟主机处理，此处默认主机为 localhost
+-->
+<Engine name="Catalina" defaultHost="localhost">
+    <!-- ... -->
+</Engine>
+```
+
+### Realm
+
+```xml
+<!-- 
+位于 Engine 标签下，配置安全加密相关的 
+-->
+<Realm className="org.apache.catalina.realm.LockOutRealm">
+    <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
+</Realm>
+```
+
+### Host
+
+```xml
+<!-- 
+Host 用于配置一个虚拟主机，即一个网站站点
+name：虚拟主机名称
+appBase：站点程序的根目录
+unpackWARs：解压 WAR 包
+autoDeploy：热部署站点内容
+-->
+<Host name="localhost"  appBase="webapps" unpackWARs="true" autoDeploy="true">
+```
+
+### Valve
+
+```xml
+<!-- 
+位于 Host 标签下，配置处理过程（阀） 
+此处示例的作用是访问日志配置
+-->
+<Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" prefix="localhost_access_log" suffix=".txt" pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+```
+
+### Context
+
+```xml
+<!--
+位于 Host 标签下，配置一个上下文环境，即一个虚拟主机下可以部署多份 web 应用资源
+此处示例表示请求该虚拟主机下的 /web_demo 路径（localhost:8080/web_demo），则可以访问 /xxx/web_demo 部分的资源
+-->
+<Context docBase="/xxx/web_demo" path="/web_demo" />
+```
+
