@@ -14,7 +14,7 @@ toc:
 
 > 在 JVM 原本的类加载机制中，会有 BoostrapClassLoader、ExtClassLoader、AppClassLoader/SystemClassLoader 三种类加载器，他们之间是一种树形的关系，分别对应加载各自位置的类。
 
-![image-20240428215739785](D:\notes\yiwenup.github.io\content\images\image-20240428215739785.png)
+![image-20240428215739785](../images/image-20240428215739785.png)
 
 | 类加载器                                               | 功能描述                                                     |
 | ------------------------------------------------------ | ------------------------------------------------------------ |
@@ -26,7 +26,7 @@ toc:
 
 > 我们可以基于 JVM 提供的三种类加载，额外再扩展自定义的类加载器，用于加载自己所期望位置的类。那么对于三种类加载器以及开发者可能会自定义的类加载器，JVM 是通过**双亲委派机制**来编排不同的类对应于不同的类加载器完成类的加载。
 
-![image-20240428220640222](D:\notes\yiwenup.github.io\content\images\image-20240428220640222.png)
+![image-20240428220640222](../images/image-20240428220640222.png)
 
 双亲委派机制的主要工作流程描述如下：
 
@@ -47,7 +47,7 @@ toc:
 >
 > 为解决上述问题，打破双亲委派机制，**Tomcat 在 JVM 的类加载器基础之上，又新增了四种类加载器：CommonClassLoader、CatalinaClassLoader、SharedClassLoader、WebAppClassLoader**。
 
-![image-20240429121035425](D:\notes\yiwenup.github.io\content\images\image-20240429121035425.png)
+![image-20240429121035425](../images/image-20240429121035425.png)
 
 | 类加载器                         | 功能描述                                                     |
 | -------------------------------- | ------------------------------------------------------------ |
@@ -61,7 +61,7 @@ toc:
 
 在 Tomcat 8.5.x 已经不再严格遵从双亲委派机制了，主要流程如下描述：
 
-![image-20240429121702375](D:\notes\yiwenup.github.io\content\images\image-20240429121702375.png)
+![image-20240429121702375](../images/image-20240429121702375.png)
 
 1. 首先类加载请求还是保持和双亲委派机制下的一致，都是逐层向上委托类加载请求，直到 BootstrapClassLoader
 2. 由 BootstrapClassLoader 优先加载指定位置的类
