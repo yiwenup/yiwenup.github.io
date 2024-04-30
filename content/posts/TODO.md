@@ -23,7 +23,7 @@ toc:
 - [x] [logo在线制作](https://www.designevo.com/)
 - [ ] dapr
 - [x] 腾讯云服务其：5RQJK1xj8sAxxNYN
-- [ ] Jakarta
+- [x] Jakarta
 - [x] springboot 2.1.7 
   - [x] 2.1.x => 2.2.x：JMX默认禁用；Spring-dependiences第三方javax扩展jar更名为Jakarta；隐藏域请求参数_method默认禁用
   - [x] 2.2.x => 2.3.x：参数校验框架不再由web-starter依赖管理，要使用须要额外引入；应用服务器线程数可配置`server.tomcat.threads`；WebServerInitializedEvent提供一种优雅停机的思路；spring-maven插件支持使用goal`build-image`，将应用打包成镜像并推送至仓库；优雅停机支持`server.shutdown=graceful``spring.lifecycle.timeout-per-shutdown-phase`；
@@ -33,7 +33,7 @@ toc:
 - [x] maven插件/web界面的代码生成
 - [ ] JVM
   - [ ] class 文件
-  - [ ] 双亲委派
+  - [x] 双亲委派
   - [ ] GC
   - [ ] 内存模型
   - [ ] 调优
