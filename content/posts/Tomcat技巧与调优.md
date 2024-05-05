@@ -44,6 +44,8 @@ toc:
    keytool -genkey -alias yiwenup -keyalg RSA -keystore yiwenup.keystore
    ```
 
+   ![image-20240505205244542](../images/image-20240505205244542.png)
+
 2. 配置 conf/server.xml 文件
 
    ```xml
