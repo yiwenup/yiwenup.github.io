@@ -1,5 +1,5 @@
 ---
-title: "Nginx基础应用"
+title: "01 Nginx基础应用"
 date: 2023-04-30T14:30:33+08:00
 categories: ["Nginx"]
 tags: ["Nginx","应用服务器"]
