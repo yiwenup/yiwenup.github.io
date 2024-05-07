@@ -1,6 +1,6 @@
 ---
 title: "05 Nginx进程模型"
-date: 2023-05-25T14:30:33+08:00
+date: 2023-06-01T14:30:33+08:00
 categories: ["Nginx"]
 tags: ["Nginx","应用服务器"]
 draft: false
@@ -23,7 +23,6 @@ toc:
   3. 若成功应用，则新建`worker`进程；
   4. 新建`worker`进程成功之后，`master`进程向旧`worker`进程发送退出指令；
   5. 旧`worker`进程在完全处理完当前请求之后，才会执行退出动作
-
 - **`worker`进程处理`client`请求**的时候，多个`worker`之间的关系是同等的，会同时竞争请求处理，流程如下：
   1. `Nginx`在启动创建好`master`进程之后，会建立需要监听的`socket`；
   2. 之后所有的`worker`进程都会从`master`进程中`fork`出来。因此，所有的`worker`进程的监听描述符`listenfd`在新连接到来时都会变为可读；
@@ -32,3 +31,4 @@ toc:
 - `Nginx`设计多进程模型的好处：
   1. 每个`worker`进程都是独立的，进程在处理请求的时候不需要加锁，减少开销；
   2. 每个`worker`进程都是独立的，一个`worker`进程异常退出，不影响整体正常提供服务
+- 知识点：在反向代理应用场景下，`Nginx`实际最大处理请求数应为：worker_processor * worker_connnections / **4**
