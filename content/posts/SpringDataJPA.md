@@ -1,5 +1,5 @@
 ---
-title: "Spring Data JPA"
+title: "01 Spring Data JPA"
 date: 2022-10-20T13:45:20+08:00
 categories: ["JPA"]
 tags: ["Spring生态","JPA"]
