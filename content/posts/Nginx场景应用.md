@@ -92,8 +92,9 @@ toc:
            proxy_pass http://tomcat-cluster/;
        }
    }
+   ```
 
-![image-20240506215338012](../images/image-20240506215338012.png)
+   ![image-20240506215338012](../images/image-20240506215338012.png)
 
 ## 三、动静分离
 
