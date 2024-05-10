@@ -62,14 +62,118 @@ toc:
 > 因此为了保证在分布式场景下，对于节点的动态扩缩容对 hash 值的计算产生影响降至最低，于是需要使用到一致性 Hash算法
 
 - 针对一致性 Hash 算法，我们可以构想出一个**哈希环**的概念，它是一个顺时针有指向性的环状结构，长度为 2的32次方减1，大致处理逻辑如下：
+  
+  ![image-20240510103310152](../images/image-20240510103310152.png)
+  
   1. 先对服务节点计算 hash 值，可以是按找 ip，也可以是其他方式。将其分布在哈希环之上
   2. 在对客户端路由的过程中，计算客户端的 hash 值，将其落在哈希环的某个位置上
   3. 选取哈希环顺时针方向距离客户端位置最近的一个服务端节点进行路由即可
+  
 - 在上述的方案中，在服务节点扩缩容的情况下，都能够避免大量路由产生迁移。尤其是**在服务节点足够多且分布足够均匀的情况下，路由的迁移成本会更低。但是与此相对的情况，当服务节点偏少（极端情况为2个节点）或者分布不均匀的时候，则很容易造成路由倾斜，导致某一个节点超负载。**
+
+  ![image-20240510110009691](../images/image-20240510110009691.png)
+
 - 对于上面可能出现的问题，哈希环提供了一种带**虚拟节点的哈希环**的解决方案来解决倾斜问题，大致处理逻辑如下：
+  
+  ![image-20240510110158372](../images/image-20240510110158372.png)
+  
   1. 对服务节点取多次 hash 值（可以按不同维度：ip/uri/...），再让其分布在哈希环上
   2. 在对客户端路由的过程中，计算客户端的 hash 值，将其落在哈希环的某个位置上
   3. 选取哈希环顺时针方向距离客户端位置最近的一个服务端节点，如果当前节点是虚拟节点，则根据映射规则将其路由到真是节点
 
 ## 四、手写三类Hash算法
+
+### 4.1 普通Hash算法示意
+
+```java
+public class GeneralHash {
+    public static void main(String[] args) {
+        // 假设客户端 IP 如下
+        String[] clients = new String[]{"10.78.12.3", "113.25.63.4", "126.12.3.8"};
+
+        // 假设服务端数量，编号对应（0，1，2）
+        int serverCount = 3;
+        for (String client : clients) {
+            // hash(ip) % node_counts = index
+            int hash = Math.abs(client.hashCode());
+            int index = hash % serverCount;
+            System.out.println("客户端" + client + "被路由到服务端" + index);
+        }
+    }
+}
+```
+
+### 4.2 一致性Hash算法示意
+
+```java
+public class ConsistentHashWithoutVirtual {
+    public static void main(String[] args) {
+        // 1. 把服务节点映射到Hash环上
+        String[] servers = new String[]{"192.78.12.3", "192.25.63.4", "192.12.3.5", "192.168.17.6"};
+        // 选有序map，为了表达顺序性，代表hash环的顺时针指向性
+        SortedMap<Integer/* hash 值*/, String/* ip 地址*/> mapping = new TreeMap<>();
+        for (String server : servers) {
+            int hash = Math.abs(server.hashCode());
+            // 因为假设的哈希环长度就是 Integer.MAX_VALUE，所以只要计算出是整数，就可以认为在环上了
+            mapping.put(hash, server);
+        }
+
+        // 2. 计算客户端的Hash值
+        String[] clients = new String[]{"10.78.12.3", "113.25.63.4", "126.12.3.8"};
+        for (String client : clients) {
+            int hash = client.hashCode();
+            // 3. 客户端按顺时针就近取服务节点
+            SortedMap<Integer, String> tailMap = mapping.tailMap(hash);
+            String server;
+            if (tailMap.isEmpty()) {
+                server = mapping.get(mapping.firstKey());
+            } else {
+                server = mapping.get(tailMap.firstKey());
+            }
+            System.out.println("客户端" + client + "被路由到服务节点" + server);
+        }
+    }
+}
+```
+
+### 4.3 带虚拟节点的一致性Hash算法示意
+
+```java
+public class ConsistentHashWithVirtual {
+    public static void main(String[] args) {
+        // 1. 把服务节点映射到Hash环上
+        String[] servers = new String[]{"192.78.12.3", "192.25.63.4"};
+
+        // 针对每个真是节点虚拟出的节点格式
+        int virtualCount = 3;
+
+        // 选有序map，为了表达顺序性，代表hash环的顺时针指向性
+        SortedMap<Integer/* hash 值*/, String/* ip 地址*/> mapping = new TreeMap<>();
+        for (String server : servers) {
+            int hash = Math.abs(server.hashCode());
+            // 因为假设的哈希环长度就是 Integer.MAX_VALUE，所以只要计算出是整数，就可以认为在环上了
+            mapping.put(hash, server);
+            // 处理虚拟节点
+            for (int i = 0; i < virtualCount; i++) {
+                mapping.put(Math.abs((server + "#" + i).hashCode()), "虚拟节点" + i + "映射到：" + server);
+            }
+        }
+
+        // 2. 计算客户端的Hash值
+        String[] clients = new String[]{"10.78.12.3", "113.25.63.4", "126.12.3.8"};
+        for (String client : clients) {
+            int hash = client.hashCode();
+            // 3. 客户端按顺时针就近取服务节点
+            SortedMap<Integer, String> tailMap = mapping.tailMap(hash);
+            String server;
+            if (tailMap.isEmpty()) {
+                server = mapping.get(mapping.firstKey());
+            } else {
+                server = mapping.get(tailMap.firstKey());
+            }
+            System.out.println("客户端" + client + "被路由到服务节点" + server);
+        }
+    }
+}
+```
 
