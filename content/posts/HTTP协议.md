@@ -1,8 +1,8 @@
 ---
-title: "HTTP报文"
+title: "01 HTTP协议"
 date: 2023-11-11T20:37:34+08:00
 categories: ["Web安全和加速"]
-tags: ["HTTP"]
+tags: ["网络协议"]
 draft: false
 code:
   copy: true
