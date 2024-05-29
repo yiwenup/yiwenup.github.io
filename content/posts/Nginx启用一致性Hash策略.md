@@ -1,5 +1,5 @@
 ---
-title: "06 Nginx启用一致性Hash策略"
+title: "05 Nginx启用一致性Hash策略"
 date: 2024-05-10T13:50:32+08:00
 categories: ["Nginx"]
 tags: ["Nginx","应用服务器","技巧","解决方案"]
