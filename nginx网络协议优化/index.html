@@ -1,0 +1,381 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=X-UA-Compatible content="IE=edge, chrome=1"><title>06 Nginx网络协议优化 - Yiwenup - 持续沉淀</title><meta name=Description content="Yiwenup - 持续沉淀"><meta property="og:url" content="http://www.yiwenup.cloud/nginx%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E4%BC%98%E5%8C%96/">
+<meta property="og:site_name" content="Yiwenup - 持续沉淀"><meta property="og:title" content="06 Nginx网络协议优化"><meta property="og:description" content="一、底层网络协议的影响 只要是基于web的网络请求，在HTTP/1.1协议下，都绕不开传输层TCP的三次握手，以及安全层SSL/TLS的安全通"><meta property="og:locale" content="zh_CN"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-05-10T18:50:32+08:00"><meta property="article:modified_time" content="2024-05-10T18:50:32+08:00"><meta property="article:tag" content="Nginx"><meta property="article:tag" content="应用服务器"><meta property="article:tag" content="技巧"><meta property="article:tag" content="解决方案"><meta property="og:image" content="http://www.yiwenup.cloud/logo.png"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://www.yiwenup.cloud/logo.png"><meta name=twitter:title content="06 Nginx网络协议优化"><meta name=twitter:description content="一、底层网络协议的影响 只要是基于web的网络请求，在HTTP/1.1协议下，都绕不开传输层TCP的三次握手，以及安全层SSL/TLS的安全通"><meta name=application-name content="Yiwenup - 持续沉淀"><meta name=apple-mobile-web-app-title content="Yiwenup - 持续沉淀"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://www.yiwenup.cloud/nginx%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E4%BC%98%E5%8C%96/><link rel=prev href=http://www.yiwenup.cloud/nginx%E5%90%AF%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7hash%E7%AD%96%E7%95%A5/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"06 Nginx网络协议优化","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/www.yiwenup.cloud\/nginx%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E4%BC%98%E5%8C%96\/"},"image":["http:\/\/www.yiwenup.cloud\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Nginx, 应用服务器, 技巧, 解决方案","wordcount":5609,"url":"http:\/\/www.yiwenup.cloud\/nginx%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E4%BC%98%E5%8C%96\/","datePublished":"2024-05-10T18:50:32+08:00","dateModified":"2024-05-10T18:50:32+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":{"@type":"ImageObject","url":"http:\/\/www.yiwenup.cloud\/images\/avatar.png","width":320,"height":320}},"author":{"@type":"Person","name":"yiwenup"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/categories/><i class='fas fa-folder-open'></i> 分类 </a><a class=menu-item href=/tags/><i class='fas fa-tags fa-fw'></i> 标签 </a><a class=menu-item href=/posts/><i class='fas fa-book'></i> 所有文章 </a><a class=menu-item href=/></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/categories/ title><i class='fas fa-folder-open'></i>分类</a><a class=menu-item href=/tags/ title><i class='fas fa-tags fa-fw'></i>标签</a><a class=menu-item href=/posts/ title><i class='fas fa-book'></i>所有文章</a><a class=menu-item href=/ title></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">06 Nginx网络协议优化</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-feather-alt"></i></a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/nginx/><i class="far fa-folder fa-fw"></i>Nginx</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2024-05-10>2024-05-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 5609 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 12 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#一底层网络协议的影响>一、底层网络协议的影响</a></li><li><a href=#二针对tls的优化>二、针对TLS的优化</a></li><li><a href=#三协议升级>三、协议升级</a></li><li><a href=#四-会话恢复机制选型>四、 会话恢复机制选型</a></li><li><a href=#五开启hsts机制>五、开启HSTS机制</a></li><li><a href=#六启用ocsp-staping>六、启用OCSP Staping</a></li></ul></li></ul></nav></div></div><div class=content id=content><h2 id=一底层网络协议的影响>一、底层网络协议的影响</h2><p>只要是基于<code>web</code>的网络请求，在<code>HTTP/1.1</code>协议下，都绕不开传输层<code>TCP</code>的三次握手，以及安全层<code>SSL/TLS</code>的安全通道建立。</p><p>此外，再加上客户端和服务端在网络传输上的一些本地计算，包含：证书校验、报文完整性校验等。</p><p>这些时耗是在业务逻辑之外的底层网络所产生的，不是业务逻辑优化能够解决的，所以只能从底层考虑优化方向。</p><h2 id=二针对tls的优化>二、针对TLS的优化</h2><blockquote><p>如果当前服务需要一些网络安全守护的话，最便捷的做法就是上<code>SSL/TLS</code>安全层，升级为<code>HTTPS</code>，这对于<code>Nginx</code>来说就是以下几行配置的事，其余的就是向<code>CA</code>申请密钥这种商业行为了。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>server</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kn>listen</span> <span class=mi>443</span> <span class=s>ssl</span> <span class=s>http2</span> <span class=s>default_server</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># listen [::]:443 ssl http2 default_server;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># server_name _;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>root</span> <span class=s>/usr/share/nginx/html</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务证书
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate</span> <span class=s>&#34;/etc/pki/nginx/server.crt&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务私钥
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate_key</span> <span class=s>&#34;/etc/pki/nginx/private/server.key&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></blockquote><p>升级为<code>HTTPS</code>后，主要对网络有性能影响的就是<code>TLS</code>三次握手建立安全通道的过程，这个过程至少需要客户端和服务端往返两次（2*RTT，Round Trip Time），确认三个随机数用于后续通信报文的对称加密密钥生成。</p><p>优化主要是可以<strong>开启<code>抢跑(False Start)</code>策略</strong>，指的就是让<code>TLS</code>在完成第一次<code>RTT</code>的时候就可以直接发送应用报文了，不需要等待<code>TLS</code>整个握手完成再进行。</p><p>开启方式如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>server</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kn>listen</span> <span class=mi>443</span> <span class=s>ssl</span> <span class=s>http2</span> <span class=s>default_server</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># listen [::]:443 ssl http2 default_server;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># server_name _;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>root</span> <span class=s>/usr/share/nginx/html</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务证书
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate</span> <span class=s>&#34;/etc/pki/nginx/server.crt&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务私钥
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate_key</span> <span class=s>&#34;/etc/pki/nginx/private/server.key&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启 False Start
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_prefer_server_ciphers</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用服务端算法优先，由服务器告诉客户端用哪些加密算法。当然，配置的这些算法，客户端也是需要支持的，减少一次客户端和服务端协商算法的过程
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_ciphers</span> <span class=s>ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:!aNULL:!MD5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=三协议升级>三、协议升级</h2><p>默认情况下，<code>Nginx</code>应用服务器都是使用的<code>HTTP/1.1</code>协议，而<code>HTTP/2</code>相对于<code>HTTP/1.1</code>已经很成熟了，并且做了很大的性能优化，包括：头部压缩、二进制分帧、多路复用、服务端推送等。</p><p>优化主要是指定上使用的协议为<code>HTTP/2</code>即可。</p><p>配置方式如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>server</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用 HTTP/2 协议
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>listen</span> <span class=mi>443</span> <span class=s>ssl</span> <span class=s>http2</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># listen [::]:443 ssl http2 default_server;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># server_name _;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>root</span> <span class=s>/usr/share/nginx/html</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务证书
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate</span> <span class=s>&#34;/etc/pki/nginx/server.crt&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务私钥
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate_key</span> <span class=s>&#34;/etc/pki/nginx/private/server.key&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启 False Start
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_prefer_server_ciphers</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用服务端算法优先，由服务器告诉客户端用哪些加密算法。当然，配置的这些算法，客户端也是需要支持的，减少一次客户端和服务端协商算法的过程
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_ciphers</span> <span class=s>ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:!aNULL:!MD5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=四-会话恢复机制选型>四、 会话恢复机制选型</h2><p>在<code>TLS/1.1</code>和<code>TLS/1.2</code>中，会话恢复指的是<code>TLS</code>握手建立完成后的<code>session</code>，和我们应用层开发时候所说的<code>session</code>要做区分。会话恢复用在<code>TLS</code>安全通道建立完成后，客户端或服务端突然断开连接了，后面再启动的时候，通过会话恢复机制能快速建立起安全通信，避免再来一次握手的过程。</p><p>目前，<code>TLS/1.1</code>和<code>TLS/1.2</code>支持<code>Session ID</code>和<code>Session Ticket</code>两种会话恢复机制</p><ul><li><p><code>Session ID</code>：一次<code>TLS</code>握手的结果是建立一条对称加密的数据通道，这条数据通道相关的参数都可以在内存中保存的，所以服务端就可以针对这一套参数值生成一个<code>Session ID</code>，使用该<code>ID</code>就可以直接复原对称加密的通信通道。所以当客户端下一次请求到达的时候，客户端如果携带了<code>Session ID</code>，服务端就可以根据这个<code>Session ID</code>找到对应的<code>Secure Context</code>，从而复原信道。但是分布式服务下，<strong><code>Session ID</code>需要搭配一定的负载均衡策略，保证相同客户端请求能路由到同一服务端才行</strong>，可通过以下配置开启：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>server</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用 HTTP/2 协议
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>listen</span> <span class=mi>443</span> <span class=s>ssl</span> <span class=s>http2</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># listen [::]:443 ssl http2 default_server;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># server_name _;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>root</span> <span class=s>/usr/share/nginx/html</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务证书
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate</span> <span class=s>&#34;/etc/pki/nginx/server.crt&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务私钥
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate_key</span> <span class=s>&#34;/etc/pki/nginx/private/server.key&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启 False Start
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_prefer_server_ciphers</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用服务端算法优先，由服务器告诉客户端用哪些加密算法。当然，配置的这些算法，客户端也是需要支持的，减少一次客户端和服务端协商算法的过程
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_ciphers</span> <span class=s>ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:!aNULL:!MD5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># ssl_session_cache off | none | [builtin[:size]] [shared:name:size];
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># off: 使用会话缓存是严格被禁止的: nginx 明确告诉客户端会话不可以重复使用。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># none: 使用会话缓存是温和地不允许的: nginx告诉客户端会话也许可以重用，但并不会真的在缓存中保存会话参数。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># builtin: 内置于OpenSSL的缓存; 只被一个worker进程使用.缓存大小用会话作为单位被指明。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 如果缓存大小未被给出，它就等于 20480 个会话。使用内置缓存会引起内存碎片。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># shared: 一个缓存被所有worker进程共享。缓存大小用bytes作为单位被指明。1MB可以存储大约4000个会话。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 每一个共享的缓存应该有一个唯一的名称。拥有相同名称的缓存可以被多个虚拟服务(virtual server)所使用。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 目前使用较多的配置是built-in和shared同时使用（ssl_session_cache builtin:1000 shared:SSL:10m;）
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># Nginx官方说只使用shared，性能会更高
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_session_cache</span> <span class=s>shared:SSL:10m</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kn>ssl_session_timeout</span> <span class=mi>30m</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></li><li><p><code>Session Ticket</code>是由服务端加密提供给客户端的，在客户端存储，所以只要请求携带了这个信息，能够在服务端进行解密，那么就能快速恢复通信，是天然支持分布式的，唯一的代价就是服务端的解密开销，开启方式如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>server</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用 HTTP/2 协议
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>listen</span> <span class=mi>443</span> <span class=s>ssl</span> <span class=s>http2</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># listen [::]:443 ssl http2 default_server;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># server_name _;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>root</span> <span class=s>/usr/share/nginx/html</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务证书
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate</span> <span class=s>&#34;/etc/pki/nginx/server.crt&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务私钥
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate_key</span> <span class=s>&#34;/etc/pki/nginx/private/server.key&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启 False Start
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_prefer_server_ciphers</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用服务端算法优先，由服务器告诉客户端用哪些加密算法。当然，配置的这些算法，客户端也是需要支持的，减少一次客户端和服务端协商算法的过程
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_ciphers</span> <span class=s>ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:!aNULL:!MD5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启Session Ticket，此处没有指定加密算法，openssl默认会生成随机数的key。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 如果需要手动指定，配置：ssl_session_ticket_key和encode_decode.key;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># key文件可以由openssl命令生成，例如：openssl rand 80&gt; ticket.key
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 如果存在Nginx集群，多个集群应用使用同一份key文件，为保证安全性须每隔一定频率更换key。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_session_tickets</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></li><li><p>实际上，在<code>HTTP/3</code>的<code>TLS/1.3+</code>版本之后，<code>Session ID</code>和<code>Session Ticket</code>都会被完全取消，取而代之的是<code>PSK（Pre Shared Key）</code>。这个<code>PSK</code>并不是说每个客户端都要和服务端提前共享一个密钥，而是与握手相同的，首先使用非对称加密方法直接提前协商一个密钥出来（psk_dhe_ke ），或者直接从之前协商出来的密钥参数中得出一个密钥（psk_ke）。</p></li></ul><h2 id=五开启hsts机制>五、开启HSTS机制</h2><blockquote><p>此前我们都是通过在<code>Nginx</code>上加一行配置，实现客户端浏览器即使访问<code>http://xxxx</code>，通过<code>301</code>跳转也能路由到<code>https://xxxx</code>上：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>server</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kn>listen</span> <span class=mi>80</span> <span class=s>default_server</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kn>server_name</span> <span class=s>yiwenup.cloud</span> <span class=s>www.yiwenup.cloud</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kn>return</span> <span class=mi>301</span> <span class=s>https://</span><span class=nv>$server_name$request_uri</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></blockquote><p>但是这种方式会导致一次客户端服务端额外通信，产生多余的<code>RTT</code>，可以开启<code>HSTS（HTTP Security Transport Server）</code>机制，强制让客户端使用<code>HTTPS</code>协议，开启方式如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>server</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用 HTTP/2 协议
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>listen</span> <span class=mi>443</span> <span class=s>ssl</span> <span class=s>http2</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kn>server_name</span> <span class=s>yiwenup.cloud</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># listen [::]:443 ssl http2 default_server;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># server_name _;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>root</span> <span class=s>/usr/share/nginx/html</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务证书
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate</span> <span class=s>&#34;/etc/pki/nginx/server.crt&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务私钥
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate_key</span> <span class=s>&#34;/etc/pki/nginx/private/server.key&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启 False Start
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_prefer_server_ciphers</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用服务端算法优先，由服务器告诉客户端用哪些加密算法。当然，配置的这些算法，客户端也是需要支持的，减少一次客户端和服务端协商算法的过程
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_ciphers</span> <span class=s>ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:!aNULL:!MD5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启Session Ticket，此处没有指定加密算法，openssl默认会生成随机数的key。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 如果需要手动指定，配置：ssl_session_ticket_key和encode_decode.key;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># key文件可以由openssl命令生成，例如：openssl rand 80&gt; ticket.key
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 如果存在Nginx集群，多个集群应用使用同一份key文件，为保证安全性须每隔一定频率更换key。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_session_tickets</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#1. max-age：单位：秒。 HSTS header 过期时间，一般设置为1年，即31536000秒。而每次Response Header都带上HSTS Header，则可不断刷新其过期时间。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>#2. includeSubDomains：需要开启HSTS的域名/子域名。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 在接下来的一年（即31536000秒）中，浏览器只要向xxx或其子域名发送HTTP请求时，必须采用HTTPS来发起连接。比如，用户点击超链接或在地址栏输入 http://xxx/ ，浏览器应当自动将 http 转写成 https，然后直接向https://xxx/ 发送请求。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>add_header</span> <span class=s>Strict-Transport-Security</span> <span class=s>&#34;max-age=31536000</span><span class=p>;</span><span class=kn>includeSubDomains&#34;</span> <span class=s>always</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>HSTS</code>原理如下：</p><ol><li>第一次通过<code>HTTPS</code>请求，服务器响应<code>Strict-Transport-Security</code>头，以后尝试访问这个网站的请求都会自动把<code>HTTP</code>替换为<code>HTTPS</code>。</li><li>当<code>HSTS</code>头设置的过期时间到了，后面通过<code>HTTP</code>的访问恢复到正常模式，不会再自动跳转到<code>HTTPS</code>。</li><li>每次浏览器接收到<code>Strict-Transport-Security</code>头，它都会更新这个网站的过期时间，所以网站可以刷新这些信息，防止过期发生。</li><li>Chrome、Firefox等浏览器里，当尝试访问该域名下的内容时，会产生一个<code>307 Internal Redirect</code>（内部跳转），自动跳转到HTTPS请求。</li></ol><h2 id=六启用ocsp-staping>六、启用OCSP Staping</h2><blockquote><p>OCSP（Online Certificate Status Protocol，在线证书状态协议）具体实现是一个在线证书查询接口，它建立一个可实时响应的机制，让浏览器发送查询证书请求到CA服务器，然后CA服务器实时响应验证证书是否合法有效，这样可以实时查询每一张证书的有效性。</p></blockquote><p><code>OCSP</code>这套机制需要网络环境，因为<code>CA</code>服务通常部署在国外，按实时查询的话是会有一定的延时的。OCSP Stapling 就是为了解决 OCSP 性能问题，其工作原理如下：</p><ol><li>网站服务器将自行查询<code>OCSP</code>服务器并缓存响应结果，然后在与浏览器进行<code>TLS</code>连接时将<code>OCSP</code>查询结果通过<code>Certificate Status</code>消息发送给浏览器，这样浏览器就不需要再去查询了。</li><li>浏览器客户端也不再需要向任何第三方披露用户的浏览习惯，完美解决了隐私问题。</li><li>当客户端向服务器发起<code>SSL</code>握手请求时，服务器将证书的<code>OCSP</code>信息随证书链一同发送给客户端，避免了客户端验证会产生的阻塞问题。</li><li>由于<code>OCSP</code>响应是无法伪造的，因此这一过程也不会产生额外的安全问题。</li></ol><p>启用方式如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>server</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用 HTTP/2 协议
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>listen</span> <span class=mi>443</span> <span class=s>ssl</span> <span class=s>http2</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kn>server_name</span> <span class=s>yiwenup.cloud</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># listen [::]:443 ssl http2 default_server;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># server_name _;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>root</span> <span class=s>/usr/share/nginx/html</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务证书
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate</span> <span class=s>&#34;/etc/pki/nginx/server.crt&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务私钥
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate_key</span> <span class=s>&#34;/etc/pki/nginx/private/server.key&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启 False Start
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_prefer_server_ciphers</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用服务端算法优先，由服务器告诉客户端用哪些加密算法。当然，配置的这些算法，客户端也是需要支持的，减少一次客户端和服务端协商算法的过程
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_ciphers</span> <span class=s>ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:!aNULL:!MD5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启Session Ticket，此处没有指定加密算法，openssl默认会生成随机数的key。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 如果需要手动指定，配置：ssl_session_ticket_key和encode_decode.key;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># key文件可以由openssl命令生成，例如：openssl rand 80&gt; ticket.key
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 如果存在Nginx集群，多个集群应用使用同一份key文件，为保证安全性须每隔一定频率更换key。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_session_tickets</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#1. max-age：单位：秒。 HSTS header 过期时间，一般设置为1年，即31536000秒。而每次Response Header都带上HSTS Header，则可不断刷新其过期时间。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>#2. includeSubDomains：需要开启HSTS的域名/子域名。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 在接下来的一年（即31536000秒）中，浏览器只要向xxx或其子域名发送HTTP请求时，必须采用HTTPS来发起连接。比如，用户点击超链接或在地址栏输入 http://xxx/ ，浏览器应当自动将 http 转写成 https，然后直接向https://xxx/ 发送请求。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>add_header</span> <span class=s>Strict-Transport-Security</span> <span class=s>&#34;max-age=31536000</span><span class=p>;</span><span class=kn>includeSubDomains&#34;</span> <span class=s>always</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启 OCSP Stapling ---当客户端访问时 NginX 将去指定的证书中查找 OCSP 服务的地址，获得响应内容后通过证书链下发给客户端。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_stapling</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用OCSP响应验证，OCSP信息响应适用的证书
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_stapling_verify</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 指定完整的证书链
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_trusted_certificate</span> <span class=s>/path/chain.pem</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 根据Nginx文档，最好使用本地DNS服务，可以防止DNS欺骗(DNS spoofing)。使用公共的DNS服务，存在安全隐患。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 添加resolver解析OSCP响应服务器的主机名，valid表示缓存。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>resolver</span> <span class=mi>8</span><span class=s>.8.8.8</span> <span class=mi>8</span><span class=s>.8.4.4</span> <span class=s>服务器ip1</span> <span class=s>服务器ip2</span> <span class=s>valid=6000s</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># resolver_timeout表示网络超时时间
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>resolver_timeout</span> <span class=s>5s；</span>
+</span></span><span class=line><span class=cl><span class=err>}</span>
+</span></span></code></pre></td></tr></table></div></div><hr><p>综上，比较推荐的<code>Nginx</code>网络协议侧优化方式总结如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>server</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用 HTTP/2 协议
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>listen</span> <span class=mi>443</span> <span class=s>ssl</span> <span class=s>http2</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kn>server_name</span> <span class=s>yiwenup.cloud</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># listen [::]:443 ssl http2 default_server;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># server_name _;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>root</span> <span class=s>/usr/share/nginx/html</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务证书
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate</span> <span class=s>&#34;/etc/pki/nginx/server.crt&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 配置服务私钥
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_certificate_key</span> <span class=s>&#34;/etc/pki/nginx/private/server.key&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启 False Start
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_prefer_server_ciphers</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用服务端算法优先，由服务器告诉客户端用哪些加密算法。当然，配置的这些算法，客户端也是需要支持的，减少一次客户端和服务端协商算法的过程
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_ciphers</span> <span class=s>ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:!aNULL:!MD5</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启Session Ticket，此处没有指定加密算法，openssl默认会生成随机数的key。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 如果需要手动指定，配置：ssl_session_ticket_key和encode_decode.key;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># key文件可以由openssl命令生成，例如：openssl rand 80&gt; ticket.key
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 如果存在Nginx集群，多个集群应用使用同一份key文件，为保证安全性须每隔一定频率更换key。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_session_tickets</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1>#1. max-age：单位：秒。 HSTS header 过期时间，一般设置为1年，即31536000秒。而每次Response Header都带上HSTS Header，则可不断刷新其过期时间。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>#2. includeSubDomains：需要开启HSTS的域名/子域名。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 在接下来的一年（即31536000秒）中，浏览器只要向xxx或其子域名发送HTTP请求时，必须采用HTTPS来发起连接。比如，用户点击超链接或在地址栏输入 http://xxx/ ，浏览器应当自动将 http 转写成 https，然后直接向https://xxx/ 发送请求。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>add_header</span> <span class=s>Strict-Transport-Security</span> <span class=s>&#34;max-age=31536000</span><span class=p>;</span><span class=kn>includeSubDomains&#34;</span> <span class=s>always</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 开启 OCSP Stapling ---当客户端访问时 NginX 将去指定的证书中查找 OCSP 服务的地址，获得响应内容后通过证书链下发给客户端。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_stapling</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用OCSP响应验证，OCSP信息响应适用的证书
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_stapling_verify</span> <span class=no>on</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 指定完整的证书链
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>ssl_trusted_certificate</span> <span class=s>/path/chain.pem</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 根据Nginx文档，最好使用本地DNS服务，可以防止DNS欺骗(DNS spoofing)。使用公共的DNS服务，存在安全隐患。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1># 添加resolver解析OSCP响应服务器的主机名，valid表示缓存。
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>resolver</span> <span class=mi>8</span><span class=s>.8.8.8</span> <span class=mi>8</span><span class=s>.8.4.4</span> <span class=s>服务器ip1</span> <span class=s>服务器ip2</span> <span class=s>valid=6000s</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># resolver_timeout表示网络超时时间
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>resolver_timeout</span> <span class=s>5s；</span>
+</span></span><span class=line><span class=cl><span class=err>}</span>
+</span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2024-05-10</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/nginx/>Nginx</a>,&nbsp;<a href=/tags/%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%99%A8/>应用服务器</a>,&nbsp;<a href=/tags/%E6%8A%80%E5%B7%A7/>技巧</a>,&nbsp;<a href=/tags/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/>解决方案</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/nginx%E5%90%AF%E7%94%A8%E4%B8%80%E8%87%B4%E6%80%A7hash%E7%AD%96%E7%95%A5/ class=prev rel=prev title="05 Nginx启用一致性Hash策略"><i class="fas fa-angle-left fa-fw"></i>05 Nginx启用一致性Hash策略</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021 - 2024</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>yiwenup</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:0},comment:{},lightGallery:{actualSize:!1,exThumbImage:"data-thumbnail",hideBarsDelay:2e3,selector:".lightgallery",speed:400,thumbContHeight:80,thumbWidth:80,thumbnail:!0},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},twemoji:!0}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
