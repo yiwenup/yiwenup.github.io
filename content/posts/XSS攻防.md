@@ -10,6 +10,8 @@ toc:
   enable: true
 ---
 
+> 漏洞扫描可以借助工具：Safe3WVS，Burp Suite ，AWVS，AppScan，W3af，Arachni，Acunetix 等提前自测。
+
 > `XSS（Cross Site Script）`为跨站脚本攻击，取首字母简写为避免和`CSS`冲突而命名。**攻击者通常会向页面嵌入恶意脚本代码，当用于访问时会出发该脚本执行形成攻击。**
 >
 > **`XSS`的本质就是数据和脚本没有分离，界限混淆，缺少区分处理，使得浏览器渲染数据的同时将脚本一并执行了。**
@@ -157,6 +159,37 @@ xhr.send();
    ```nginx
    // 设置响应对于 iframe 的策略
    add_header X-Frame-Options SAMEORIGIN;
+   ```
+
+3. 使用`CSP`协议为响应资源限制加载策略
+
+   > `CSP（Content-Security-Policy）`内容安全策略是一个额外的安全层，用于检测并削弱某些特定类型的攻击，包括跨站脚本 (XSS) 和数据注入攻击等。
+   >
+   > 核心思想：网站通过发送一个 CSP 头部，来告诉浏览器什么是被授权执行的与什么是需要被禁止的。
+   >
+   > `CSP`有两种配置：
+   >
+   > - Content-Security-Policy：配置好并启用后，不符合 CSP 的外部资源就会被阻止加载
+   > - Content-Security-Policy-Report-Only：表示**不限制选项执行**，只是记录违反限制的行为。它必须与 report-uri 选项配合使用
+
+   ```nginx
+   # Filter 配置方式可参考，此处演示 Nginx 的配置方式
+   # 也可用于 HTML 的 <meta http-equiv="content-security-policy" content="xxx"/> 标签指定
+   add_header Content-Security-Policy default-src 'self' *.yiwenup.cloud # 表示限制所有外部资源，仅从指定域名及子域名加载
+   add_header Content-Security-Policy default-src 'self'; img-src *; media-src media1.com media2.com; script-src script.yiwenup.cloud; report-uri /_/csp-reports # 表示图片可以从任意地方加载，媒体文件仅从指定位置加载，脚本文件仅从指定位置加载，对于违例的访问将记录信息发送至 csp-reports 处理
+   ```
+
+   ```json
+   // CSP 报告的请求格式
+   {
+       "csp-report": {
+           "document-uri": "xxxx",
+           "referrer": "",
+           "block-uri": "yyyyy",
+           "violated-directive": "ppppp",
+           "original-policy": "default-src 'self'; img-src *; media-src media1.com media2.com; script-src script.yiwenup.cloud; report-uri /_/csp-reports"
+       }
+   }
    ```
 
    
