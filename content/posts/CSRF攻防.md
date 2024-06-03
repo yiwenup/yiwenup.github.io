@@ -45,8 +45,24 @@ toc:
 
 ## 二、防护策略
 
-1. `Referer`校验
+1. 技术上`Referer`校验
 
-   浏览器在给服务端发送请求的时候，实际上会在请求头带着`Referer`字段，该字段标识当前请求是从`referer`地址发出的。可以在网关、过滤器之类的地方，新增校验逻辑
+   浏览器在给服务端发送请求的时候，实际上会在请求头带着`Referer`字段，该字段标识当前请求是从`referer`地址发出的。可以在网关、过滤器之类的地方，新增校验逻辑，可以参考如下：
 
-2. 二次校验
+   ```java
+   // 对于登陆之类的接口，做白名单放行
+   String referer = request.getHeader("referer");
+   StringBuilder sb = new StringBuilder();
+   sb.append(request.getScheme()).append("://").append(request.getServerName());
+   if (referer == null || referer == "" || !referer.startsWith(sb.toString())) {
+   	response.setContentType("text/plain; charset=utf-8");
+   	response.getWriter().write("非法访问，请通过页面正常访问！");
+   	return false;
+   }
+   return true;
+   ```
+
+2. 业务上二次校验
+
+   - 对于修改密码或者重置密码的业务，需要输入原密码并校验正确性
+   - 对于转账支付类业务，需要输入短信验证码
