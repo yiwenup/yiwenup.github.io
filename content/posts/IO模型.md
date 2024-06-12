@@ -29,7 +29,76 @@ toc:
 
 编程示例：
 
+```java
+/**
+ * 文件描述
+ *
+ * @Project yiwenup-sample
+ * @Package cloud.yiwenup.sample.socket
+ * @Author yiwenup
+ * @Description 服务端
+ */
+public class ServerDemo {
 
+    public static final Executor EXECUTOR = Executors.newFixedThreadPool(3);
+
+    public static void main(String[] args) throws Exception {
+        try (ServerSocket serverSocket = new ServerSocket(9999)) {
+            System.out.println("服务端启动...");
+            while (true) {
+                Socket accept = serverSocket.accept();
+                System.out.println("监听客户端...");
+                EXECUTOR.execute(() -> {
+                    handle(accept);
+                });
+            }
+        }
+    }
+
+    private static void handle(Socket accept) {
+        try (
+                InputStream is = accept.getInputStream();
+                OutputStream os = accept.getOutputStream();
+        ) {
+            byte[] bytes = new byte[1024];
+            int read = is.read(bytes);
+            System.out.println("服务端线程" + Thread.currentThread().getName() + "接收到客户端消息：" + new String(bytes, 0, read));
+            os.write("服务端收到".getBytes());
+        } catch (Exception ignored) {
+
+        }
+
+    }
+}
+```
+
+```java
+/**
+ * 文件描述
+ *
+ * @Project yiwenup-sample
+ * @Package cloud.yiwenup.sample.socket
+ * @Author yiwenup
+ * @Description 客户端
+ */
+public class ClientDemo {
+    public static void main(String[] args) throws Exception {
+        while (true) {
+            try (Socket socket = new Socket("127.0.0.1", 9999)) {
+                OutputStream os = socket.getOutputStream();
+                System.out.print("请输入：");
+                Scanner scanner = new Scanner(System.in);
+                String msg = scanner.nextLine();
+                os.write(msg.getBytes());
+                InputStream is = socket.getInputStream();
+                byte[] bytes = new byte[1024];
+                int read = is.read(bytes);
+                System.out.println("客户端收到服务端信息：" + new String(bytes, 0, read));
+            }
+        }
+    }
+}
+```
 
 ## 二、NIO
 
@@ -82,7 +151,95 @@ Selector 能够检测多个注册的服务端通道上是否有事件发生，�
 
 ### 2.4 编程示例
 
+```java
+/**
+ * 文件描述
+ *
+ * @Project yiwenup-sample
+ * @Package cloud.yiwenup.sample.nio
+ * @Author yiwenup
+ * @Description 客户端连接
+ */
+public class ClientChannelDemo {
+    public static void main(String[] args) {
+        try (SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress("127.0.0.1", 9999));) {
+            socketChannel.write(ByteBuffer.wrap("客户端发的消息".getBytes()));
+            ByteBuffer allocated = ByteBuffer.allocate(1024);
+            int read = socketChannel.read(allocated);
+            System.out.println("客户端收到服务端消息：" + new String(allocated.array(), 0, read));
+        } catch (Exception ignored) {
+            // NOP
+        }
+    }
+}
+```
 
+```java
+/**
+ * 文件描述
+ *
+ * @Project yiwenup-sample
+ * @Package cloud.yiwenup.sample.nio.selector
+ * @Author yiwenup
+ * @Description 服务端
+ */
+public class ServerChannelDemo {
+    public static void main(String[] args) {
+        try (Selector selector = Selector.open();
+             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        ) {
+            serverSocketChannel.bind(new InetSocketAddress(9999));
+            serverSocketChannel.configureBlocking(false);
+            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+            System.out.println("服务端已启动...");
+            while (true) {
+                int select = selector.select(2000L);
+                if (select == 0) {
+                    // 没有事件
+                    continue;
+                }
+                Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                Iterator<SelectionKey> iterator = selectionKeys.iterator();
+                while (iterator.hasNext()) {
+                    SelectionKey key = iterator.next();
+                    if (key.isAcceptable()) {
+                        handleConnection(serverSocketChannel, selector);
+                    }
+                    if (key.isReadable()) {
+                        handleRead(key);
+                    }
+                    iterator.remove();
+                }
+            }
+        } catch (Exception ignored) {
+            // NOP
+        }
+    }
+
+    private static void handleRead(SelectionKey key) {
+        try (SocketChannel socketChannel = (SocketChannel) key.channel();) {
+            ByteBuffer allocated = ByteBuffer.allocate(1024);
+            int read = socketChannel.read(allocated);
+            System.out.println("服务端收到客户端消息：" + new String(allocated.array(), 0, read));
+            socketChannel.write(ByteBuffer.wrap("服务端收到".getBytes()));
+        } catch (Exception ignored) {
+            // NOP
+        }
+    }
+
+    private static void handleConnection(ServerSocketChannel serverSocketChannel, Selector selector) {
+        try {
+            // 这里不要把 connection 释放掉，会导致 read 的时候拿不到该资源
+            SocketChannel socketChannel = serverSocketChannel.accept();
+            System.out.println("有客户端链接...");
+            socketChannel.configureBlocking(false);
+            socketChannel.register(selector, SelectionKey.OP_READ);
+        } catch (Exception ignored) {
+            // NOP
+        }
+    }
+}
+```
 
 ## 三、AIO
 
