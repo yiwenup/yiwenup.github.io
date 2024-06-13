@@ -1,0 +1,422 @@
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=X-UA-Compatible content="IE=edge, chrome=1"><title>02 Netty基本使用 - Yiwenup - 持续沉淀</title><meta name=Description content="Yiwenup - 持续沉淀"><meta property="og:url" content="http://www.yiwenup.cloud/netty%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+<meta property="og:site_name" content="Yiwenup - 持续沉淀"><meta property="og:title" content="02 Netty基本使用"><meta property="og:description" content="一、服务端编程 Netty服务端实现一般需要以下几个主要步骤： 创建Boss和Worker线程组，根据他们的职责分工Worker线程组需要多分配"><meta property="og:locale" content="zh_CN"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-02-07T09:37:34+08:00"><meta property="article:modified_time" content="2024-02-07T09:37:34+08:00"><meta property="article:tag" content="Netty"><meta property="article:tag" content="入门"><meta property="og:image" content="http://www.yiwenup.cloud/logo.png"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://www.yiwenup.cloud/logo.png"><meta name=twitter:title content="02 Netty基本使用"><meta name=twitter:description content="一、服务端编程 Netty服务端实现一般需要以下几个主要步骤： 创建Boss和Worker线程组，根据他们的职责分工Worker线程组需要多分配"><meta name=application-name content="Yiwenup - 持续沉淀"><meta name=apple-mobile-web-app-title content="Yiwenup - 持续沉淀"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://www.yiwenup.cloud/netty%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/><link rel=prev href=http://www.yiwenup.cloud/netty%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/><link rel=next href=http://www.yiwenup.cloud/freemarker%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E4%B8%8E%E5%9C%BA%E6%99%AF/><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"02 Netty基本使用","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/www.yiwenup.cloud\/netty%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8\/"},"image":["http:\/\/www.yiwenup.cloud\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Netty, 入门","wordcount":2340,"url":"http:\/\/www.yiwenup.cloud\/netty%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8\/","datePublished":"2024-02-07T09:37:34+08:00","dateModified":"2024-02-07T09:37:34+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":{"@type":"ImageObject","url":"http:\/\/www.yiwenup.cloud\/images\/avatar.png","width":320,"height":320}},"author":{"@type":"Person","name":"yiwenup"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/categories/><i class='fas fa-folder-open'></i> 分类 </a><a class=menu-item href=/tags/><i class='fas fa-tags fa-fw'></i> 标签 </a><a class=menu-item href=/posts/><i class='fas fa-book'></i> 所有文章 </a><a class=menu-item href=/></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Yiwenup - 持续沉淀"><span class=header-title-pre><i class='fas fa-piggy-bank'></i></span> Yiwen Up <span class=header-title-post><i class='fas fa-leaf'></i></span></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/categories/ title><i class='fas fa-folder-open'></i>分类</a><a class=menu-item href=/tags/ title><i class='fas fa-tags fa-fw'></i>标签</a><a class=menu-item href=/posts/ title><i class='fas fa-book'></i>所有文章</a><a class=menu-item href=/ title></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">02 Netty基本使用</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-feather-alt"></i></a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/><i class="far fa-folder fa-fw"></i>网络编程</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2024-02-07>2024-02-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2340 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#一服务端编程>一、服务端编程</a></li><li><a href=#二客户端编程>二、客户端编程</a></li><li><a href=#三编解码器>三、编解码器</a></li></ul></li></ul></nav></div></div><div class=content id=content><h2 id=一服务端编程>一、服务端编程</h2><p><code>Netty</code>服务端实现一般需要以下几个主要步骤：</p><ol><li>创建<code>Boss</code>和<code>Worker</code>线程组，根据他们的职责分工<code>Worker</code>线程组需要多分配一些线程来处理具体业务</li><li>通过<code>ServerBoostrap</code>启动助手引导启动服务端：包含设置<code>Boss</code>和<code>Worker</code>线程组，以及他们的<code>SO_BACKLOG</code>和<code>SO_KEEPALIVE</code>参数设置；<code>NIO</code>通道指定；通过<code>ChannelInitializer</code>在<code>pipline</code>中注册业务处理<code>Handler</code>，此处的<code>Handler</code>一般用<code>Inbound</code>入站的就行了</li><li>绑定<code>Server</code>端口，这里要注意，如果不是使用<code>addListener</code>回调方式的话，则需要使用<code>sync()</code>方法将异步转同步</li><li>通过<code>shutdownGracefully</code>方法将<code>Boss</code>和<code>Worker</code>线程组释放资源</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span><span class=lnt>89
+</span><span class=lnt>90
+</span><span class=lnt>91
+</span><span class=lnt>92
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>NettyServer</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 创建 Boss 线程组，由于只需要处理连接，所以线程数量可以分配少一些</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>NioEventLoopGroup</span><span class=w> </span><span class=n>boosGroup</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>NioEventLoopGroup</span><span class=p>(</span><span class=n>1</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 创建 Worker 线程组，由于实际处理业务，所以线程数量需要多分配一些，建议是 2 的次幂</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>NioEventLoopGroup</span><span class=w> </span><span class=n>workGroup</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>NioEventLoopGroup</span><span class=p>(</span><span class=n>2</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 创建服务端引导实例</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ServerBootstrap</span><span class=w> </span><span class=n>serverBootstrap</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ServerBootstrap</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>group</span><span class=p>(</span><span class=n>boosGroup</span><span class=p>,</span><span class=w> </span><span class=n>workGroup</span><span class=p>)</span><span class=w> </span><span class=c1>// 分配 boss 和 worker 线程组</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>channel</span><span class=p>(</span><span class=n>NioServerSocketChannel</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w> </span><span class=c1>// 使用 NIO 通道</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>option</span><span class=p>(</span><span class=n>ChannelOption</span><span class=p>.</span><span class=na>SO_BACKLOG</span><span class=p>,</span><span class=w> </span><span class=n>32</span><span class=p>)</span><span class=w> </span><span class=c1>// 这里设置 Boss 线程处理连接时，等待队列的大小</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>childOption</span><span class=p>(</span><span class=n>ChannelOption</span><span class=p>.</span><span class=na>SO_KEEPALIVE</span><span class=p>,</span><span class=w> </span><span class=n>Boolean</span><span class=p>.</span><span class=na>TRUE</span><span class=p>)</span><span class=w> </span><span class=c1>// 这里设置 worker 线程为 keepalive</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>childHandler</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>ChannelInitializer</span><span class=o>&lt;</span><span class=n>SocketChannel</span><span class=o>&gt;</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>initChannel</span><span class=p>(</span><span class=n>SocketChannel</span><span class=w> </span><span class=n>socketChannel</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=c1>// 将具体业务处理的 Handler 注册在 pipline 中</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=n>socketChannel</span><span class=p>.</span><span class=na>pipeline</span><span class=p>().</span><span class=na>addLast</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>ChannelInboundHandler</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelRegistered</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelUnregistered</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelActive</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelInactive</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelRead</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=n>o</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                </span><span class=n>ByteBuf</span><span class=w> </span><span class=n>byteBuf</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>ByteBuf</span><span class=p>)</span><span class=w> </span><span class=n>o</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;服务端收到客户端消息：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>byteBuf</span><span class=p>.</span><span class=na>toString</span><span class=p>(</span><span class=n>StandardCharsets</span><span class=p>.</span><span class=na>UTF_8</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelReadComplete</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                </span><span class=n>channelHandlerContext</span><span class=p>.</span><span class=na>writeAndFlush</span><span class=p>(</span><span class=n>Unpooled</span><span class=p>.</span><span class=na>copiedBuffer</span><span class=p>(</span><span class=s>&#34;服务端收到...&#34;</span><span class=p>,</span><span class=w> </span><span class=n>StandardCharsets</span><span class=p>.</span><span class=na>UTF_8</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>userEventTriggered</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=n>o</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelWritabilityChanged</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>exceptionCaught</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>,</span><span class=w> </span><span class=n>Throwable</span><span class=w> </span><span class=n>throwable</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                </span><span class=n>throwable</span><span class=p>.</span><span class=na>printStackTrace</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                </span><span class=n>channelHandlerContext</span><span class=p>.</span><span class=na>close</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>handlerAdded</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>handlerRemoved</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=p>});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 绑定端口号</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>serverBootstrap</span><span class=p>.</span><span class=na>bind</span><span class=p>(</span><span class=n>9999</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>addListener</span><span class=p>((</span><span class=n>ChannelFutureListener</span><span class=p>)</span><span class=w> </span><span class=n>bind</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>bind</span><span class=p>.</span><span class=na>isSuccess</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;服务端启动成功...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>bind</span><span class=p>.</span><span class=na>channel</span><span class=p>().</span><span class=na>closeFuture</span><span class=p>().</span><span class=na>addListener</span><span class=p>(</span><span class=n>close</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>close</span><span class=p>.</span><span class=na>isSuccess</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;服务端关闭...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=n>boosGroup</span><span class=p>.</span><span class=na>shutdownGracefully</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=n>workGroup</span><span class=p>.</span><span class=na>shutdownGracefully</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=二客户端编程>二、客户端编程</h2><p><code>Netty</code>客户端实现一般需要以下几个主要步骤：</p><ol><li>创建一个线程组，客户端不像服务端会承受比较大的请求压力，这里只需要使用一个线程池组就行</li><li>通过<code>Bootstrap</code>启动助手引导启动服务端：包含线程组；<code>NIO</code>通道指定；通过<code>ChannelInitializer</code>在<code>pipline</code>中注册业务处理<code>Handler</code>，此处的<code>Handler</code>一般用<code>Inbound</code>入站的就行了</li><li>绑定服务端的<code>ip</code>和<code>port</code>，如果不是使用<code>addListener</code>回调方式的话，则需要使用<code>sync()</code>方法将异步转同步</li><li>通过<code>shutdownGracefully</code>方法将线程组释放资源</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>NettyClient</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 创建线程池组，用于处理事件</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>NioEventLoopGroup</span><span class=w> </span><span class=n>eventLoopGroup</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>NioEventLoopGroup</span><span class=p>(</span><span class=n>1</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 使用启动助手引导启动</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Bootstrap</span><span class=w> </span><span class=n>bootstrap</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Bootstrap</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>group</span><span class=p>(</span><span class=n>eventLoopGroup</span><span class=p>)</span><span class=w> </span><span class=c1>// 配置线程池</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>channel</span><span class=p>(</span><span class=n>NioSocketChannel</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w> </span><span class=c1>// 指定 NIO 通道</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>handler</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>ChannelInitializer</span><span class=o>&lt;</span><span class=n>SocketChannel</span><span class=o>&gt;</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>initChannel</span><span class=p>(</span><span class=n>SocketChannel</span><span class=w> </span><span class=n>socketChannel</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=c1>// 将具体业务处理的 Handler 注册在 pipline 中</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=n>socketChannel</span><span class=p>.</span><span class=na>pipeline</span><span class=p>().</span><span class=na>addLast</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>ChannelInboundHandler</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelRegistered</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>ctx</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelUnregistered</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>ctx</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelActive</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>ctx</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                </span><span class=n>ctx</span><span class=p>.</span><span class=na>writeAndFlush</span><span class=p>(</span><span class=n>Unpooled</span><span class=p>.</span><span class=na>copiedBuffer</span><span class=p>(</span><span class=s>&#34;这里是客户端...&#34;</span><span class=p>,</span><span class=w> </span><span class=n>StandardCharsets</span><span class=p>.</span><span class=na>UTF_8</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelInactive</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>ctx</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelRead</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>ctx</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=n>msg</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                </span><span class=n>ByteBuf</span><span class=w> </span><span class=n>byteBuf</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>ByteBuf</span><span class=p>)</span><span class=w> </span><span class=n>msg</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;客户端收到服务端消息：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>byteBuf</span><span class=p>.</span><span class=na>toString</span><span class=p>(</span><span class=n>StandardCharsets</span><span class=p>.</span><span class=na>UTF_8</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelReadComplete</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>ctx</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>userEventTriggered</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>ctx</span><span class=p>,</span><span class=w> </span><span class=n>Object</span><span class=w> </span><span class=n>evt</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>channelWritabilityChanged</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>ctx</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>exceptionCaught</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>ctx</span><span class=p>,</span><span class=w> </span><span class=n>Throwable</span><span class=w> </span><span class=n>cause</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>handlerAdded</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>ctx</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>handlerRemoved</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>ctx</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=p>});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 指定服务端连接地址和端口号</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>bootstrap</span><span class=p>.</span><span class=na>connect</span><span class=p>(</span><span class=s>&#34;127.0.0.1&#34;</span><span class=p>,</span><span class=w> </span><span class=n>9999</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>addListener</span><span class=p>((</span><span class=n>ChannelFutureListener</span><span class=p>)</span><span class=w> </span><span class=n>future</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>future</span><span class=p>.</span><span class=na>isSuccess</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;客户端启动成功...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=n>future</span><span class=p>.</span><span class=na>channel</span><span class=p>().</span><span class=na>closeFuture</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>.</span><span class=na>addListener</span><span class=p>(</span><span class=n>closeFuture</span><span class=w> </span><span class=o>-&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>closeFuture</span><span class=p>.</span><span class=na>isSuccess</span><span class=p>())</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;客户端关闭...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                    </span><span class=n>eventLoopGroup</span><span class=p>.</span><span class=na>shutdownGracefully</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                            </span><span class=p>});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=三编解码器>三、编解码器</h2><p>在服务端和客户端编程的时候，我们通过<code>ChannelInitializer</code>在<code>pipline</code>中注册业务处理<code>Handler</code>，对于每一个注册的<code>InBoundHandler</code>我们都要手动将<code>ByteBuf</code>解码为字符串或者将字符串编码为<code>ByteBuf</code>。</p><p><code>Netty</code>提供的编（解）码器实现了<code>ChannelHandlerAdapter</code>，也是一种特殊的<code>ChannelHandler</code>，说明是可以注册在<code>pipline</code>中的，而<code>pipline</code>是一条<code>Handler</code>组织成的调用链路，因此这类编解码器可以在具体逻辑执行前后总体完成编码和解码工作。</p><ul><li><p>编码器：继承<code>MessageToMessageDecoder</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>EncodeHandler</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>MessageToMessageEncoder</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>encode</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>s</span><span class=p>,</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=n>list</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;经过编码器....&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>list</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=n>Unpooled</span><span class=p>.</span><span class=na>copiedBuffer</span><span class=p>(</span><span class=n>s</span><span class=p>,</span><span class=w> </span><span class=n>StandardCharsets</span><span class=p>.</span><span class=na>UTF_8</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>解码器：继承<code>MessageToMessageEncoder</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>DecodeHandler</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>MessageToMessageDecoder</span><span class=o>&lt;</span><span class=n>ByteBuf</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>decode</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>,</span><span class=w> </span><span class=n>ByteBuf</span><span class=w> </span><span class=n>byteBuf</span><span class=p>,</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=n>list</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;经过解码器...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>list</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=n>byteBuf</span><span class=p>.</span><span class=na>toString</span><span class=p>(</span><span class=n>StandardCharsets</span><span class=p>.</span><span class=na>UTF_8</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li><li><p>编解码器：继承<code>MessageToMessageCodec</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>CodecHandler</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>MessageToMessageCodec</span><span class=o>&lt;</span><span class=n>ByteBuf</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>encode</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>,</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>s</span><span class=p>,</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=n>list</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;编码...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>list</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=n>Unpooled</span><span class=p>.</span><span class=na>copiedBuffer</span><span class=p>(</span><span class=n>s</span><span class=p>,</span><span class=w> </span><span class=n>CharsetUtil</span><span class=p>.</span><span class=na>UTF_8</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>decode</span><span class=p>(</span><span class=n>ChannelHandlerContext</span><span class=w> </span><span class=n>channelHandlerContext</span><span class=p>,</span><span class=w> </span><span class=n>ByteBuf</span><span class=w> </span><span class=n>byteBuf</span><span class=p>,</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Object</span><span class=o>&gt;</span><span class=w> </span><span class=n>list</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;解码...&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>list</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=n>byteBuf</span><span class=p>.</span><span class=na>toString</span><span class=p>(</span><span class=n>CharsetUtil</span><span class=p>.</span><span class=na>UTF_8</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></li></ul></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2024-02-07</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/netty/>Netty</a>,&nbsp;<a href=/tags/%E5%85%A5%E9%97%A8/>入门</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/netty%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/ class=prev rel=prev title="02 Netty线程模型"><i class="fas fa-angle-left fa-fw"></i>02 Netty线程模型</a>
+<a href=/freemarker%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4%E4%B8%8E%E5%9C%BA%E6%99%AF/ class=next rel=next title=Freemarker自定义指令与场景>Freemarker自定义指令与场景<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021 - 2024</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>yiwenup</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/css/lightgallery.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css><script type=text/javascript src=https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/twemoji@13.0.0/dist/twemoji.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lightgallery.js@1.2.0/dist/js/lightgallery.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-thumbnail.js@1.2.0/dist/lg-thumbnail.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lg-zoom.js@1.2.0/dist/lg-zoom.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:0},comment:{},lightGallery:{actualSize:!1,exThumbImage:"data-thumbnail",hideBarsDelay:2e3,selector:".lightgallery",speed:400,thumbContHeight:80,thumbWidth:80,thumbnail:!0},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},twemoji:!0}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
