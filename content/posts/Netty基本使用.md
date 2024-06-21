@@ -1,5 +1,5 @@
 ---
-title: "02 Netty基本使用"
+title: "03 Netty基本使用"
 date: 2024-02-07T09:37:34+08:00
 categories: ["网络编程"]
 tags: ["Netty","入门"]
@@ -262,4 +262,10 @@ public class NettyClient {
   }
   ```
 
-  
+
+除了上述基于`Netty`提供的扩展方式编排自己的编解码逻辑之外，`Netty`本身也提供了一系列的编解码器供使用，**主要注意的事项是：编解码器在`addLast`到`pipeline`需要在实际业务处理`handle`之前，否则是不会生效的**。
+
+- StringEncoder：字符串编码器
+- StringDecoder：字符串解码器
+- HttpServerCodec：用于`HTTP`请求的编解码
+- ...
