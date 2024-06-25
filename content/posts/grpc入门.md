@@ -2,7 +2,7 @@
 title: "gRpc入门"
 date: 2022-08-29T11:24:29+08:00
 categories: ["gRpc"]
-tags: ["gRpc","入门"]
+tags: ["RPC","入门"]
 draft: false
 code:
   copy: true
