@@ -1,5 +1,5 @@
 ---
-title: "Zookeeper集群搭建"
+title: "01 Zookeeper集群搭建"
 date: 2024-03-02T18:12:00+08:00
 categories: ["Zookeeper"]
 tags: ["zookeeper","入门"]
